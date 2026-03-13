@@ -18,7 +18,7 @@
         "height": 600,
         "minWidth": 600,
         "minHeight": 400,
-        "url": "index.html#/main"
+        "url": "main.html"
       },
       {
         "label": "popup",
@@ -37,7 +37,7 @@
         "resizable": false,
         "shadow": false,
         "skipTaskbar": true,
-        "url": "index.html#/popup",
+        "url": "popup.html",
         "visible": false,
         "visibleOnAllWorkspaces": true
       }

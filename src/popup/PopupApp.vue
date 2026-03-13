@@ -4,6 +4,6 @@
 
 <template>
   <div class="min-h-screen grid place-items-center">
-    {{ $t('hello-world') }}
+    Popup App {{ $t('hello-world') }}
   </div>
 </template>

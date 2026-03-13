@@ -1,28 +1,31 @@
-import path, {resolve} from "node:path";
+import path from "node:path";
 import { defineConfig } from "vite";
 import Vue from "@vitejs/plugin-vue";
 import TailwindCSS from "@tailwindcss/vite";
-import VueRouter from "vue-router/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [
-    VueRouter({
-      dts: "src/typed-router.d.ts",
-    }),
     Vue(),
     TailwindCSS(),
     VueI18nPlugin({
-      include: resolve(__dirname, "src/locales/**"),
+      include: path.resolve(__dirname, "src/locales/**"),
     }),
   ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "main.html"),
+        popup: path.resolve(__dirname, "popup.html"),
+      },
     },
   },
 
