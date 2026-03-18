@@ -1,18 +1,18 @@
 [package]
 name = "snipora"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Snipora is a lightweight, local-first snippet manager for fast capture, simple organization, and quick search, keeping everyday text at your fingertips."
+authors = ["snipora"]
+homepage = "https://github.com/snipora"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [lib]
-# The `_lib` suffix may seem redundant but it is necessary
-# to make the lib name unique and wouldn't conflict with the bin name.
-# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
 name = "snipora_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
+
+[profile.release]
+lto = "thin"
+opt-level = "s"
+strip = true
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
