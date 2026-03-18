@@ -29,6 +29,7 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             commands::windows::popup_hide,
+            commands::windows::popup_adjust_height,
         ])
         .setup(|app| {
             let app_handle = app.handle();

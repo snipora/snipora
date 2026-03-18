@@ -3,6 +3,10 @@ use tauri::{AppHandle, Emitter, Manager, WindowEvent};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
 use tauri_plugin_log::log::warn;
 
+
+const POPUP_PADDING: f32 = 0.2;  // 20%
+
+
 fn get_popup_window(app: &AppHandle) -> tauri::WebviewWindow {
     app
         .get_webview_window("popup")
@@ -39,7 +43,7 @@ pub fn show_and_focus(app: &AppHandle) {
             .expect("failed to show popup window");
     }
 
-    center_on_cursor_monitor(&window);
+    move_to_cursor_monitor(&window);
 
     if !window.is_focused().unwrap_or(false) {
         window.set_focus()
@@ -59,7 +63,7 @@ pub fn hide(app: &AppHandle) {
         .expect("failed to hide popup window");
 }
 
-fn center_on_cursor_monitor(window: &tauri::WebviewWindow) {
+fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
     if let Ok(cursor) = window.cursor_position() {
         let monitor = window
             .monitor_from_point(cursor.x, cursor.y)
@@ -76,11 +80,33 @@ fn center_on_cursor_monitor(window: &tauri::WebviewWindow) {
         let window_size = window.outer_size().unwrap_or_default();
 
         let x = monitor_pos.x + ((monitor_size.width as i32 - window_size.width as i32) / 2);
-        let y = monitor_pos.y + ((monitor_size.height as i32 - window_size.height as i32) / 2);
+        let y = monitor_pos.y + ((monitor_size.height as f32 * POPUP_PADDING) as i32);
 
         window.set_position(tauri::PhysicalPosition { x, y })
             .expect("failed to set window position");
     } else {
         warn!("failed to get cursor position in order to center window on monitor");
     }
+}
+
+pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
+    let window = get_popup_window(app);
+    let window_width = window.inner_size().unwrap().width as i32;
+
+    let monitor = window
+        .current_monitor()
+        .ok().flatten()
+        .expect("failed to get monitor");
+
+    let monitor_height = monitor.size().height as f32;
+    let max_height = (monitor_height * (1. - POPUP_PADDING*2.)) as i32;
+
+    let clamped_height = preferred_height.min(max_height);
+
+    window
+        .set_size(tauri::LogicalSize {
+            width: window_width,
+            height: clamped_height,
+        })
+        .expect("failed to set window size");
 }

@@ -2,6 +2,9 @@ use tauri::{AppHandle};
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 
+/**
+ * Creates the tray-menu.
+ */
 pub fn create_tray(app: &AppHandle) {
     let menu = Menu::with_items(app, &[
         // todo: I18N
