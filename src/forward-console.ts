@@ -5,9 +5,9 @@ function forwardConsole(
     logger: (message: string) => Promise<void>
 ) {
   const original = console[fnName];
-  console[fnName] = (message) => {
-    original(message);
-    logger(message);
+  console[fnName] = (...args) => {
+    original(...args);
+    logger(args.map(v => typeof v === "string" ? v : JSON.stringify(v)).join(" "));
   };
 }
 

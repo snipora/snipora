@@ -16,8 +16,8 @@
         "title": "Snipora",
         "width": 800,
         "height": 600,
-        "minWidth": 600,
-        "minHeight": 400,
+        "minWidth": 768,
+        "minHeight": 512,
         "url": "main.html"
       },
       {
@@ -28,8 +28,8 @@
         "center": true,
         "closable": false,
         "decorations": false,
-        "width": 400,
-        "height": 200,
+        "width": 512,
+        "height": 384,
         "maximizable": false,
         "minimizable": false,
         "preventOverflow": true,
