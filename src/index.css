@@ -114,7 +114,10 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
+  body[data-app="main"] {
     @apply bg-background text-foreground;
+  }
+  body[data-app="popup"] {
+    @apply text-foreground;
   }
 }

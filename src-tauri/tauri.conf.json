@@ -24,6 +24,7 @@
         "label": "popup",
         "title": "Snipora - Popup",
         "alwaysOnTop": true,
+        "backgroundColor": [0, 0, 0, 0],
         "center": true,
         "closable": false,
         "decorations": false,
@@ -35,6 +36,7 @@
         "resizable": false,
         "shadow": false,
         "skipTaskbar": true,
+        "transparent": true,
         "url": "popup.html",
         "visible": false,
         "visibleOnAllWorkspaces": true
