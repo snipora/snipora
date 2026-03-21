@@ -18,7 +18,8 @@
         "height": 600,
         "minWidth": 768,
         "minHeight": 512,
-        "url": "main.html"
+        "url": "main.html",
+        "visible": false
       },
       {
         "label": "popup",

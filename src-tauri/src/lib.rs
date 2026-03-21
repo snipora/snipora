@@ -1,8 +1,10 @@
+use tauri::Manager;
 use tauri_plugin_window_state::StateFlags;
 
-mod windows;
-mod tray;
 mod commands;
+mod db;
+mod tray;
+mod windows;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -28,16 +30,29 @@ pub fn run() {
             .build()
         )
         .invoke_handler(tauri::generate_handler![
+            commands::clipboard::insert_snippet,
+            commands::snippets::create_snippet,
+            commands::snippets::update_snippet,
+            commands::snippets::delete_snippet,
+            commands::snippets::get_all_snippets,
+            commands::snippets::get_snippet_by_id,
+            commands::snippets::get_recent_snippets,
+            commands::snippets::search_snippets,
+            commands::tags::get_all_tags,
             commands::windows::popup_hide,
             commands::windows::popup_adjust_height,
         ])
         .setup(|app| {
             let app_handle = app.handle();
+            let conn = db::init_db()
+                .expect("failed to init db");
+            app.manage(std::sync::Mutex::new(conn));
             tray::tray::create_tray(app_handle);
             windows::main_window::init_main_window(app_handle);
             windows::popup_window::init_popup_window(app_handle);
             // todo: change `visible: false` for main-window in `tauri.conf.json`
             // todo: and add check for `--from-autostart` to call `windows::main_window::show_and_focus`
+            windows::main_window::show_and_focus(app_handle);
             Ok(())
         })
         .run(tauri::generate_context!())
