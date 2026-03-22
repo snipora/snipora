@@ -1,1 +1,9 @@
-hello-world: "Hello World"
+sidebar:
+  new-snippet:
+    label: New Snippet
+  all-snippets:
+    label: All Snippets
+  untagged:
+    label: Untagged
+  settings:
+    label: Settings

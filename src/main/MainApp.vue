@@ -1,9 +1,13 @@
 <script setup lang="ts">
-
+import {AppSidebar} from "@/main/sidebar";
+import {SidebarProvider} from "@/components/ui/sidebar";
 </script>
 
 <template>
-  <div class="min-h-screen grid place-items-center">
-    Main App {{ $t('hello-world') }}
-  </div>
+  <SidebarProvider>
+    <AppSidebar />
+    <main>
+
+    </main>
+  </SidebarProvider>
 </template>
