@@ -18,7 +18,7 @@ strip = true
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = ["tray-icon"] }
+tauri = { version = "2", features = ["tray-icon", "image-ico", "image-png"] }
 tauri-plugin-log = "2"
 tauri-plugin-notification = "2"
 tauri-plugin-autostart = "2"
