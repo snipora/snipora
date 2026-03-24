@@ -101,7 +101,7 @@ pub fn get_snippet_by_id(
     
     let snippet = crate::db::snippets::get_snippet_with_tags_by_id(&conn, &snippet_id)
         .map_err(|e| e.to_string())?;
-    
+
     Ok(snippet.map(|s| SnippetDto {
         id: s.id.clone(),
         label: s.label.clone(),

@@ -17,7 +17,6 @@ pub struct SnippetWithTags {
     pub tags: Vec<String>,
 }
 
-
 pub fn create_snippet(
     tx: &rusqlite::Transaction,
     label: String,
@@ -70,7 +69,7 @@ pub fn get_snippet_with_tags_by_id(
     id: &str,
 ) -> rusqlite::Result<Option<SnippetWithTags>> {
     let snippet = get_snippet_by_id(&conn, id)?;
-    
+
     if let Some(snippet) = snippet {
         let tags = get_tags_for_snippet(conn, &snippet.id)?;
 

@@ -2,8 +2,7 @@ use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_window_state::{StateFlags, WindowExt};
 
 fn get_main_window(app: &AppHandle) -> tauri::WebviewWindow {
-    app
-        .get_webview_window("main")
+    app.get_webview_window("main")
         .expect("couldn't get main window")
 }
 

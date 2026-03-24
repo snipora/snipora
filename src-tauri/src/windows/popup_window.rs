@@ -3,13 +3,10 @@ use tauri::{AppHandle, Emitter, Manager, WindowEvent};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
 use tauri_plugin_log::log::warn;
 
-
-const POPUP_PADDING: f32 = 0.2;  // 20%
-
+const POPUP_PADDING: f32 = 0.2; // 20%
 
 fn get_popup_window(app: &AppHandle) -> tauri::WebviewWindow {
-    app
-        .get_webview_window("popup")
+    app.get_webview_window("popup")
         .expect("couldn't get popup window")
 }
 
@@ -27,8 +24,7 @@ pub fn init_popup_window(app: &AppHandle) {
     let shortcut = Shortcut::from_str("Ctrl+Shift+Space")
         .expect("failed to parse shortcut");
 
-    app
-        .global_shortcut()
+    app.global_shortcut()
         .on_shortcut(shortcut, |app_handle, _shortcut, _event| {
             show_and_focus(app_handle);
         })
@@ -70,7 +66,8 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
             .ok().flatten()
             .unwrap_or_else(|| {
                 warn!("failed to get monitor from point. fallback to primary-monitor");
-                window.primary_monitor().ok().flatten()
+                window.primary_monitor()
+                    .ok().flatten()
                     .expect("failed to get primary monitor")
             });
 
@@ -99,7 +96,7 @@ pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
         .expect("failed to get monitor");
 
     let monitor_height = monitor.size().height as f32;
-    let max_height = (monitor_height * (1. - POPUP_PADDING*2.)) as i32;
+    let max_height = (monitor_height * (1. - POPUP_PADDING * 2.)) as i32;
 
     let clamped_height = preferred_height.min(max_height);
 

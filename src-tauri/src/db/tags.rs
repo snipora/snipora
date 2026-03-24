@@ -9,7 +9,10 @@ fn normalize_tag(input: &str) -> rusqlite::Result<String> {
         return Err(rusqlite::Error::InvalidParameterName("tag too long".into()));
     }
 
-    if !tag.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-' || c == '_') {
+    if !tag
+        .chars()
+        .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-' || c == '_')
+    {
         return Err(rusqlite::Error::InvalidParameterName("invalid characters in tag".into()));
     }
 
@@ -26,7 +29,7 @@ ORDER BY name ASC
     "#)?;
     
     let rows = stmt.query_map([], |row| row.get(0))?;
-    
+
     Ok(rows.filter_map(Result::ok).collect())
 }
 
@@ -43,7 +46,7 @@ WHERE st.snippet_id = ?1
     "#)?;
     
     let rows = stmt.query_map([snippet_id], |row| row.get(0))?;
-    
+
     Ok(rows.filter_map(Result::ok).collect())
 }
 
@@ -86,7 +89,7 @@ pub fn set_snippet_tags(
         let normalized = normalize_tag(&tag)?;
         unique_tags.insert(normalized);
     }
-    
+
     tx.execute(
         r#"
 DELETE FROM snippet_tags

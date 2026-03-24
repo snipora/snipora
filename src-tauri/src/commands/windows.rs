@@ -6,7 +6,6 @@ pub fn popup_hide(app_handle: tauri::AppHandle) {
     crate::windows::popup_window::hide(&app_handle);
 }
 
-
 /**
  * Adjusts the window-height of the popup window with a preferred height.
  * The actual new height may differ.
