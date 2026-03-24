@@ -6,6 +6,8 @@ mod db;
 mod tray;
 mod windows;
 
+rust_i18n::i18n!("locales");
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -31,6 +33,7 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             commands::clipboard::insert_snippet,
+            commands::settings::set_locale,
             commands::snippets::create_snippet,
             commands::snippets::update_snippet,
             commands::snippets::delete_snippet,

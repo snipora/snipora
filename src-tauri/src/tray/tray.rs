@@ -14,13 +14,7 @@ fn get_tray(app: &AppHandle) -> tauri::tray::TrayIcon {
  * Creates the tray-menu.
  */
 pub fn create_tray(app: &AppHandle) {
-    let menu = Menu::with_items(app, &[
-        // todo: I18N
-        &MenuItem::with_id(app, "open", "Open Snipora", true, None::<&str>).unwrap(),
-        &MenuItem::with_id(app, "settings", "Settings", true, None::<&str>).unwrap(),
-        &MenuItem::with_id(app, "quit", "Quit Snipora", true, None::<&str>).unwrap(),
-    ])
-        .expect("failed to create tray-menu");
+    let menu = create_tray_menu(app);
 
     TrayIconBuilder::with_id(TRAY_ID)
         .icon(get_icon_image(app, TrayIconTheme::AppIcon)  // todo: get theme from settings
@@ -48,6 +42,41 @@ pub fn create_tray(app: &AppHandle) {
         .expect("failed to create tray icon");
 }
 
+fn create_tray_menu(app: &AppHandle) -> Menu<tauri::Wry> {
+    Menu::with_items(
+        app,
+        &[
+            &MenuItem::with_id(
+                app,
+                "open",
+                &rust_i18n::t!("tray.open"),
+                true, None::<&str>,
+            ).unwrap(),
+            &MenuItem::with_id(
+                app,
+                "settings",
+                &rust_i18n::t!("tray.settings"),
+                true, None::<&str>,
+            ).unwrap(),
+            &MenuItem::with_id(
+                app,
+                "quit",
+                &rust_i18n::t!("tray.quit"),
+                true, None::<&str>,
+            ).unwrap(),
+        ],
+    )
+    .expect("failed to create tray-menu")
+}
+
+pub fn rebuild_tray_menu(app: &AppHandle) {
+    let tray = get_tray(app);
+    let menu = create_tray_menu(app);
+    if let Err(e) = tray.set_menu(Some(menu)) {
+        warn!("failed to rebuild tray menu: {e}");
+    }
+}
+
 pub enum TrayIconTheme {
     AppIcon,
     Light,
@@ -62,12 +91,15 @@ impl std::str::FromStr for TrayIconTheme {
             "app" | "app-icon" => Ok(Self::AppIcon),
             "light" => Ok(Self::Light),
             "dark" => Ok(Self::Dark),
-            _ => Err(format!("unknown tray icon theme: {s}"))
+            _ => Err(format!("unknown tray icon theme: {s}")),
         }
     }
 }
 
-fn get_icon_image(app: &AppHandle, theme: TrayIconTheme) -> Result<tauri::image::Image<'static>, String> {
+fn get_icon_image(
+    app: &AppHandle,
+    theme: TrayIconTheme,
+) -> Result<tauri::image::Image<'static>, String> {
     #[cfg(target_os = "windows")]
     let ext = "ico";
     #[cfg(not(target_os = "windows"))]
