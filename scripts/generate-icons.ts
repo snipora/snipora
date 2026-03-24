@@ -12,7 +12,7 @@ type Variant = { input: string, name: string };
 const variants: Variant[] = [
   { input: "snipora.svg", name: "app" },
   { input: "snipora-icon--dark.svg", name: "dark" },
-  { input: "snipora-icon--dark.svg", name: "light" },
+  { input: "snipora-icon--light.svg", name: "light" },
 ];
 
 fs.mkdirSync(OUTPUT_ROOT, { recursive: true })
