@@ -40,6 +40,7 @@ pub fn run() {
             commands::snippets::get_all_snippets,
             commands::snippets::get_snippet_by_id,
             commands::snippets::get_recent_snippets,
+            commands::snippets::get_untagged_snippets,
             commands::snippets::search_snippets,
             commands::tags::get_all_tags,
             commands::tray::set_tray_icon,

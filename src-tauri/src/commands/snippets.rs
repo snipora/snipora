@@ -137,6 +137,26 @@ pub fn get_recent_snippets(
 }
 
 #[tauri::command]
+pub fn get_untagged_snippets(
+    state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
+) -> Result<Vec<SnippetDto>, String> {
+    let conn = state.lock()
+        .expect("failed to get db-conn");
+    
+    let untagged_snippets = crate::db::snippets::get_untagged_snippets(&conn)
+        .map_err(|e| e.to_string())?;
+    
+    Ok(untagged_snippets.iter().map(|s| {
+        SnippetDto {
+            id: s.id.clone(),
+            label: s.label.clone(),
+            snippet: s.snippet.clone(),
+            tags: vec![],
+        }
+    }).collect())
+}
+
+#[tauri::command]
 pub fn search_snippets(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     query: String,

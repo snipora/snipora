@@ -44,3 +44,10 @@ export async function invokeGetAllSnippets(): Promise<SnippetDto[]> {
 export async function invokeGetRecentSnippets(limit: number): Promise<SnippetDto[]> {
   return invoke<SnippetDto[]>("get_recent_snippets", { limit });
 }
+
+/**
+ * returns all snippets that have no tag
+ */
+export async function invokeGetAllUntaggedSnippets(): Promise<SnippetDto[]> {
+  return invoke<SnippetDto[]>("get_untagged_snippets");
+}

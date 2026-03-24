@@ -5,9 +5,6 @@ pub struct Snippet {
     pub id: String,
     pub label: String,
     pub snippet: String,
-    pub created_at: i64,
-    pub updated_at: i64,
-    pub last_used_at: Option<i64>,
 }
 
 pub struct SnippetWithTags {
@@ -42,7 +39,7 @@ pub fn get_snippet_by_id(
 ) -> rusqlite::Result<Option<Snippet>> {
     let mut stmt = conn.prepare(
         r#"
-SELECT id, label, snippet, created_at, updated_at, last_used_at
+SELECT id, label, snippet
 FROM snippets
 WHERE id = ?1
         "#,
@@ -55,9 +52,6 @@ WHERE id = ?1
             id: row.get(0)?,
             label: row.get(1)?,
             snippet: row.get(2)?,
-            created_at: row.get(3)?,
-            updated_at: row.get(4)?,
-            last_used_at: row.get(5)?,
         }))
     } else {
         Ok(None)
@@ -146,7 +140,7 @@ pub fn get_recent_snippets(
 ) -> rusqlite::Result<Vec<Snippet>> {
     let mut stmt = conn.prepare(
         r#"
-SELECT id, label, snippet, created_at, updated_at, last_used_at
+SELECT id, label, snippet
 FROM snippets
 ORDER BY last_used_at DESC NULLS LAST
 LIMIT ?1
@@ -158,9 +152,6 @@ LIMIT ?1
             id: row.get(0)?,
             label: row.get(1)?,
             snippet: row.get(2)?,
-            created_at: row.get(3)?,
-            updated_at: row.get(4)?,
-            last_used_at: row.get(5)?,
         })
     })?;
 
@@ -211,6 +202,31 @@ ORDER BY s.updated_at DESC
     }
 
     Ok(map.into_values().collect())
+}
+
+pub fn get_untagged_snippets(
+    conn: &rusqlite::Connection,
+) -> rusqlite::Result<Vec<Snippet>> {
+    let mut stmt = conn.prepare(r#"
+SELECT s.id, s.label, s.snippet
+FROM snippets s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM snippet_tags st
+    WHERE st.snippet_id = s.id
+)
+ORDER BY s.updated_at DESC
+    "#)?;
+
+    let rows = stmt.query_map([], |row| {
+        Ok(Snippet {
+            id: row.get(0)?,
+            label: row.get(1)?,
+            snippet: row.get(2)?,
+        })
+    })?;
+
+    Ok(rows.filter_map(Result::ok).collect())
 }
 
 pub fn search_snippets(
