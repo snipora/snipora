@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/sidebar";
 import {computedAsync} from "@vueuse/core";
 import {invokeGetAllTags} from "@/api/commands";
+import {useViewState} from "@/main/views/useViewState.ts";
 
 const allTags = computedAsync(() => invokeGetAllTags());
+const { viewState, setViewState } = useViewState();
 </script>
 
 <template>
@@ -21,7 +23,11 @@ const allTags = computedAsync(() => invokeGetAllTags());
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem v-for="tag in allTags" :key="tag">
-            <SidebarMenuButton class="capitalize" :is-active="false">
+            <SidebarMenuButton
+                class="capitalize"
+                :is-active="viewState.id === 'snippets-by-tag' && tag === viewState.tag"
+                @click="setViewState({ id: 'snippets-by-tag', tag })"
+            >
               <LucideTag :style="{ fill: stringToColor(`${tag}`) }" />
               <span>
                 {{ tag }}

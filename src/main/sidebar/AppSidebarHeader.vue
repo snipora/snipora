@@ -2,6 +2,9 @@
 import {SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar";
 import {LucideDiamondPlus, LucideHash} from "lucide-vue-next";
 import {LucideTagOff} from "@/components/icons";
+import {useViewState} from "@/main/views/useViewState.ts";
+
+const { viewState, setViewState } = useViewState();
 </script>
 
 <template>
@@ -14,13 +17,19 @@ import {LucideTagOff} from "@/components/icons";
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem>
-        <SidebarMenuButton>
+        <SidebarMenuButton
+            :is-active="viewState.id === 'all-snippets'"
+            @click="setViewState({ id: 'all-snippets' })"
+        >
           <LucideHash />
           {{ $t('sidebar.all-snippets.label') }}
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem>
-        <SidebarMenuButton>
+        <SidebarMenuButton
+            :is-active="viewState.id === 'untagged-snippets'"
+            @click="setViewState({ id: 'untagged-snippets' })"
+        >
           <LucideTagOff />
           {{ $t('sidebar.untagged.label') }}
         </SidebarMenuButton>
