@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {useSmartPopupHeight} from "@/composables/useSmartPopupHeight.ts";
 import {usePopupEscapeListener} from "@/composables/usePopupEscapeListener.ts";
+import {useColorMode} from "@vueuse/core";
 
+useColorMode({ writeDefaults: false });
 useSmartPopupHeight();
 usePopupEscapeListener();
 </script>
