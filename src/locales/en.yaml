@@ -7,3 +7,28 @@ sidebar:
     label: Untagged
   settings:
     label: Settings
+settings:
+  general:
+    title: General
+    startup:
+      label: Launch on Startup
+      description: Automatically launch Snipora when you log in
+    shortcut:
+      label: Open Search Popup Shortcut
+      placeholder: "Ctrl+Shift+Space"
+  appearance:
+    title: Appearance
+    trayTheme:
+      label: Tray Icon Theme
+      description: Choose how the tray icon appears
+      options:
+        logo: Logo
+        light: Light
+        dark: Dark
+    uiTheme:
+      label: UI Theme
+      description: Choose the application theme
+      options:
+        system: System
+        light: Light
+        dark: Dark
