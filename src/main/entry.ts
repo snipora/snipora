@@ -14,3 +14,12 @@ createApp(MainApp)
       },
     })
     .mount("#app");
+
+if (import.meta.env.DEV) {
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey && event.key === "r") || (event.key === "F5")) {
+      event.preventDefault();
+      window.location.reload();
+    }
+  });
+}
