@@ -160,7 +160,7 @@ pub fn get_untagged_snippets(
 pub fn search_snippets(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     query: String,
-    limit: i64,
+    limit: Option<i64>,
 ) -> Result<Vec<SnippetDto>, String> {
     let conn = state.lock()
         .expect("failed to get db-conn");

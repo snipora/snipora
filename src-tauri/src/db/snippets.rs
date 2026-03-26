@@ -232,7 +232,7 @@ ORDER BY s.updated_at DESC
 pub fn search_snippets(
     conn: &rusqlite::Connection,
     query: &str,
-    limit: i64,
+    limit: Option<i64>,
 ) -> rusqlite::Result<Vec<SnippetWithTags>> {
     let (terms, tags) = parse_query(&query);
 
@@ -305,9 +305,11 @@ ORDER BY s.last_used_at DESC NULLS LAST
         "#);
     }
 
-    sql_str.push_str(r#"
-LIMIT ?
-    "#);
+    if limit.is_some() {
+        sql_str.push_str(r#"
+    LIMIT ?
+        "#);
+    }
 
     let mut stmt = conn.prepare(&sql_str)?;
 
@@ -321,7 +323,9 @@ LIMIT ?
         params.push(tag);
     }
 
-    params.push(&limit);
+    if limit.is_some() {
+        params.push(&limit);
+    }
 
     let rows = stmt.query_map(&params[..], |row| {
         Ok((
