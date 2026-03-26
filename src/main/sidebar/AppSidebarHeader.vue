@@ -3,6 +3,7 @@ import {SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/
 import {LucideDiamondPlus, LucideHash} from "lucide-vue-next";
 import {LucideTagOff} from "@/components/icons";
 import {useViewState} from "@/main/views/useViewState.ts";
+import NewSnippetDialog from "@/main/dialogs/NewSnippetDialog.vue";
 
 const { viewState, setViewState } = useViewState();
 </script>
@@ -10,12 +11,14 @@ const { viewState, setViewState } = useViewState();
 <template>
   <SidebarHeader>
     <SidebarMenu>
-      <SidebarMenuItem>
-        <SidebarMenuButton>
-          <LucideDiamondPlus />
-          {{ $t('sidebar.new-snippet.label') }}
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+      <NewSnippetDialog>
+        <SidebarMenuItem>
+            <SidebarMenuButton>
+              <LucideDiamondPlus />
+              {{ $t('sidebar.new-snippet.label') }}
+            </SidebarMenuButton>
+        </SidebarMenuItem>
+      </NewSnippetDialog>
       <SidebarMenuItem>
         <SidebarMenuButton
             :is-active="viewState.id === 'all-snippets'"

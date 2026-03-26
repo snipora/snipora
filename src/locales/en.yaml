@@ -32,3 +32,16 @@ settings:
         system: System
         light: Light
         dark: Dark
+dialogs:
+  new-snippet:
+    dialog-title: Create New Snippet
+    dialog-description: Add a new snippet to your collection.
+    form:
+      label-placeholder: Enter a descriptive label
+      snippet-placeholder: Paste your snippet content here
+      tags-placeholder: Add tags...
+      cancel: Cancel
+      create: Create
+components:
+  tags-input-with-completion:
+    no-tags: No Tags
