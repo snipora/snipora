@@ -31,6 +31,13 @@ export async function invokeDeleteSnippet(snippetId: SnippetDto["id"]): Promise<
 }
 
 /**
+ * returns snippets based on a query
+ */
+export async function invokeSearchSnippets(query: string, limit?: number): Promise<SnippetDto[]> {
+  return invoke<SnippetDto[]>("search_snippets", { query, limit });
+}
+
+/**
  * returns all snippets
  */
 export async function invokeGetAllSnippets(): Promise<SnippetDto[]> {
