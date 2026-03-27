@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import {LucideProps} from "@lucide/vue";
+
+defineProps<LucideProps>();
+</script>
+
 <template>
   <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,6 +15,7 @@
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      v-bind="$props"
   >
     <path d="m14 4-1.414-1.414A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414L4 14" />
     <path d="M2 22 22 2" />
