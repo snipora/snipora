@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {stringToColor} from "@/lib/coloring.ts";
-import {LucideTag} from "lucide-vue-next";
+import {LucideTag} from "@lucide/vue";
 import {
   SidebarContent,
   SidebarGroup,

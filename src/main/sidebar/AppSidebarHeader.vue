@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar";
-import {LucideDiamondPlus, LucideHash} from "lucide-vue-next";
+import {LucideDiamondPlus, LucideHash} from "@lucide/vue";
 import {LucideTagOff} from "@/components/icons";
 import {useViewState} from "@/main/views/useViewState.ts";
 import NewSnippetDialog from "@/main/dialogs/NewSnippetDialog.vue";

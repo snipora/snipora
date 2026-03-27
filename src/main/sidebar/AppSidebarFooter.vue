@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar";
-import {LucideSettings} from "lucide-vue-next";
+import {LucideSettings} from "@lucide/vue";
 import {useViewState} from "@/main/views/useViewState.ts";
 
 const { viewState, setViewState } = useViewState();

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {LucideProps} from "@lucide/vue";
 
-defineProps<LucideProps>();
+defineProps</* @vue-ignore */ LucideProps>();
 </script>
 
 <template>

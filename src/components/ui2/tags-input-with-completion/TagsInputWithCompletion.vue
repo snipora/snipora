@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tags-input";
 import {stringToColor} from "@/lib/coloring.ts";
 import {Button} from "@/components/ui/button";
-import {LucideChevronDown, LucideCheck, LucideTag} from "lucide-vue-next";
+import {LucideChevronDown, LucideCheck, LucideTag} from "@lucide/vue";
 
 const props = defineProps<{
   defaultValue?: string[]
