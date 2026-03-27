@@ -43,7 +43,6 @@ const autostartEnabled = useAutostart();
             <FieldTitle>{{ $t("settings.general.startup.label") }}</FieldTitle>
             <FieldDescription>
               {{ $t("settings.general.startup.description") }}
-              {{ autostartEnabled }}
             </FieldDescription>
           </FieldContent>
           <Switch :model-value="autostartEnabled" @update:model-value="e => autostartEnabled = e" />
