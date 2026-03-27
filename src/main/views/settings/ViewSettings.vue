@@ -19,7 +19,7 @@ import {
   SniporaIconLight,
   SniporaLogo,
 } from "@/components/icons";
-import {LucideMoon, LucideSun, LucideSunMoon} from "lucide-vue-next";
+import {LucideMoon, LucideSun, LucideSunMoon} from "@lucide/vue";
 import {invokeSetTrayIcon} from "@/api/commands";
 import {useAutostart} from "@/composables/useAutostart.ts";
 
@@ -45,7 +45,11 @@ const autostartEnabled = useAutostart();
               {{ $t("settings.general.startup.description") }}
             </FieldDescription>
           </FieldContent>
-          <Switch :model-value="autostartEnabled" @update:model-value="e => autostartEnabled = e" />
+          <Switch
+              :model-value="autostartEnabled"
+              @update:model-value="v => autostartEnabled = v"
+              class="cursor-pointer"
+          />
         </Field>
 
         <Field orientation="horizontal">
@@ -78,7 +82,7 @@ const autostartEnabled = useAutostart();
               default-value="logo"
               @update:model-value="d => invokeSetTrayIcon(d as 'app')"
           >
-            <FieldLabel>
+            <FieldLabel class="cursor-pointer">
               <Field orientation="horizontal">
                 <FieldContent>
                   <div class="size-10 grid place-items-center rounded-md border bg-background text-foreground">
@@ -92,7 +96,7 @@ const autostartEnabled = useAutostart();
               </Field>
             </FieldLabel>
 
-            <FieldLabel>
+            <FieldLabel class="cursor-pointer">
               <Field orientation="horizontal">
                 <FieldContent>
                   <div class="light size-10 grid place-items-center rounded-md border bg-background text-foreground">
@@ -106,7 +110,7 @@ const autostartEnabled = useAutostart();
               </Field>
             </FieldLabel>
 
-            <FieldLabel>
+            <FieldLabel class="cursor-pointer">
               <Field orientation="horizontal">
                 <FieldContent>
                   <div class="dark size-10 grid place-items-center rounded-md border bg-background text-foreground">
@@ -128,7 +132,7 @@ const autostartEnabled = useAutostart();
             {{ $t("settings.appearance.uiTheme.description") }}
           </FieldDescription>
           <RadioGroup class="grid-cols-3" v-model="storeColor">
-            <FieldLabel class="bg-background text-foreground" :class="systemColor">
+            <FieldLabel class="bg-background text-foreground cursor-pointer" :class="systemColor">
               <Field orientation="horizontal">
                 <FieldContent>
                   <FieldTitle class="text-center">
@@ -140,7 +144,7 @@ const autostartEnabled = useAutostart();
               </Field>
             </FieldLabel>
 
-            <FieldLabel class="bg-background text-foreground light">
+            <FieldLabel class="bg-background text-foreground cursor-pointer light">
               <Field orientation="horizontal">
                 <FieldContent>
                   <FieldTitle class="text-center">
@@ -152,7 +156,7 @@ const autostartEnabled = useAutostart();
               </Field>
             </FieldLabel>
 
-            <FieldLabel class="bg-background text-foreground dark">
+            <FieldLabel class="bg-background text-foreground cursor-pointer dark">
               <Field orientation="horizontal">
                 <FieldContent>
                   <FieldTitle class="text-center">
