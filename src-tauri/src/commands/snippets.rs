@@ -1,8 +1,10 @@
 use tauri_plugin_log::log::warn;
 use crate::commands::dto::SnippetDto;
+use crate::commands::utils::emit_data_changed;
 
 #[tauri::command]
 pub fn create_snippet(
+    app: tauri::AppHandle,
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     label: String,
     snippet: String,
@@ -21,12 +23,14 @@ pub fn create_snippet(
 
     tx.commit()
         .expect("failed to commit transaction");
+    emit_data_changed(app);
 
     Ok(id)
 }
 
 #[tauri::command]
 pub fn update_snippet(
+    app: tauri::AppHandle,
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     id: String,
     label: String,
@@ -46,12 +50,14 @@ pub fn update_snippet(
 
     tx.commit()
         .expect("failed to commit transaction");
+    emit_data_changed(app);
 
     Ok(())
 }
 
 #[tauri::command]
 pub fn delete_snippet(
+    app: tauri::AppHandle,
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     snippet_id: String,
 ) -> Result<(), String> {
@@ -67,6 +73,7 @@ pub fn delete_snippet(
 
     tx.commit()
         .expect("failed to commit transaction");
+    emit_data_changed(app);
 
     Ok(())
 }
