@@ -1,4 +1,3 @@
-use tauri_plugin_log::log::warn;
 use crate::commands::dto::SnippetDto;
 use crate::commands::utils::emit_data_changed;
 
@@ -88,13 +87,14 @@ pub fn get_all_snippets(
     let snippets = crate::db::snippets::get_all_snippets_with_tags(&conn)
         .map_err(|e| e.to_string())?;
 
-    Ok(snippets.iter().map(|s| {
-        SnippetDto {
-            id: s.id.clone(),
-            label: s.label.clone(),
-            snippet: s.snippet.clone(),
-            tags: s.tags.clone(),
-        }
+    Ok(snippets.iter().map(|s| SnippetDto {
+        id: s.id.clone(),
+        label: s.label.clone(),
+        snippet: s.snippet.clone(),
+        created_at: s.created_at,
+        updated_at: s.updated_at,
+        last_used_at: s.last_used_at,
+        tags: s.tags.clone(),
     }).collect())
 }
 
@@ -113,54 +113,11 @@ pub fn get_snippet_by_id(
         id: s.id.clone(),
         label: s.label.clone(),
         snippet: s.snippet.clone(),
+        created_at: s.created_at,
+        updated_at: s.updated_at,
+        last_used_at: s.last_used_at,
         tags: s.tags.clone(),
     }))
-}
-
-#[tauri::command]
-pub fn get_recent_snippets(
-    state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
-    limit: i64,
-) -> Result<Vec<SnippetDto>, String> {
-    let conn = state.lock()
-        .expect("failed to get db-conn");
-
-    let recent_snippets = crate::db::snippets::get_recent_snippets(&conn, limit)
-        .map_err(|e| e.to_string())?;
-
-    Ok(recent_snippets.iter().map(|s| {
-        let tags = crate::db::tags::get_tags_for_snippet(&conn, &s.id)
-            .unwrap_or_else(|_| {
-                warn!("failed to get tags for snippet {}", &s.id);
-                vec![]
-            });
-        SnippetDto {
-            id: s.id.clone(),
-            label: s.label.clone(),
-            snippet: s.snippet.clone(),
-            tags: tags.clone(),
-        }
-    }).collect())
-}
-
-#[tauri::command]
-pub fn get_untagged_snippets(
-    state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
-) -> Result<Vec<SnippetDto>, String> {
-    let conn = state.lock()
-        .expect("failed to get db-conn");
-    
-    let untagged_snippets = crate::db::snippets::get_untagged_snippets(&conn)
-        .map_err(|e| e.to_string())?;
-    
-    Ok(untagged_snippets.iter().map(|s| {
-        SnippetDto {
-            id: s.id.clone(),
-            label: s.label.clone(),
-            snippet: s.snippet.clone(),
-            tags: vec![],
-        }
-    }).collect())
 }
 
 #[tauri::command]
@@ -180,6 +137,9 @@ pub fn search_snippets(
             id: s.id.clone(),
             label: s.label.clone(),
             snippet: s.snippet.clone(),
+            created_at: s.created_at,
+            updated_at: s.updated_at,
+            last_used_at: s.last_used_at,
             tags: s.tags.clone(),
         }
     }).collect())

@@ -5,12 +5,18 @@ pub struct Snippet {
     pub id: String,
     pub label: String,
     pub snippet: String,
+    pub created_at: i64,
+    pub updated_at: i64,
+    pub last_used_at: Option<i64>,
 }
 
 pub struct SnippetWithTags {
     pub id: String,
     pub label: String,
     pub snippet: String,
+    pub created_at: i64,
+    pub updated_at: i64,
+    pub last_used_at: Option<i64>,
     pub tags: Vec<String>,
 }
 
@@ -39,7 +45,7 @@ pub fn get_snippet_by_id(
 ) -> rusqlite::Result<Option<Snippet>> {
     let mut stmt = conn.prepare(
         r#"
-SELECT id, label, snippet
+SELECT id, label, snippet, created_at, updated_at, last_used_at
 FROM snippets
 WHERE id = ?1
         "#,
@@ -52,6 +58,9 @@ WHERE id = ?1
             id: row.get(0)?,
             label: row.get(1)?,
             snippet: row.get(2)?,
+            created_at: row.get(3)?,
+            updated_at: row.get(4)?,
+            last_used_at: row.get(5)?,
         }))
     } else {
         Ok(None)
@@ -71,6 +80,9 @@ pub fn get_snippet_with_tags_by_id(
             id: snippet.id,
             label: snippet.label,
             snippet: snippet.snippet,
+            created_at: snippet.created_at,
+            updated_at: snippet.updated_at,
+            last_used_at: snippet.last_used_at,
             tags: tags,
         }))
     } else {
@@ -134,36 +146,12 @@ WHERE id = ?1
     Ok(())
 }
 
-pub fn get_recent_snippets(
-    conn: &rusqlite::Connection,
-    limit: i64,
-) -> rusqlite::Result<Vec<Snippet>> {
-    let mut stmt = conn.prepare(
-        r#"
-SELECT id, label, snippet
-FROM snippets
-ORDER BY last_used_at DESC NULLS LAST
-LIMIT ?1
-        "#,
-    )?;
-
-    let rows = stmt.query_map([limit], |row| {
-        Ok(Snippet {
-            id: row.get(0)?,
-            label: row.get(1)?,
-            snippet: row.get(2)?,
-        })
-    })?;
-
-    Ok(rows.filter_map(Result::ok).collect())
-}
-
 pub fn get_all_snippets_with_tags(
     conn: &rusqlite::Connection,
 ) -> rusqlite::Result<Vec<SnippetWithTags>> {
     let mut stmt = conn.prepare(
         r#"
-SELECT s.id, s.label, s.snippet, t.name
+SELECT s.id, s.label, s.snippet, s.created_at, s.updated_at, s.last_used_at, t.name
 FROM snippets s
 LEFT JOIN snippet_tags st
     ON s.id = st.snippet_id
@@ -180,21 +168,25 @@ ORDER BY s.updated_at DESC
             row.get::<_, String>(0)?,
             row.get::<_, String>(1)?,
             row.get::<_, String>(2)?,
-            row.get::<_, Option<String>>(3)?,
+            row.get::<_, i64>(3)?,
+            row.get::<_, i64>(4)?,
+            row.get::<_, Option<i64>>(5)?,
+            row.get::<_, Option<String>>(6)?,
         ))
     })?;
 
     for row in rows {
-        let (id, label, snippet, tag) = row?;
+        let (id, label, snippet, created_at, updated_at, last_used_at, tag) = row?;
 
-        let entry = map
-            .entry(id.clone())
-            .or_insert(SnippetWithTags {
-                id,
-                label,
-                snippet,
-                tags: vec![],
-            });
+        let entry = map.entry(id.clone()).or_insert(SnippetWithTags {
+            id,
+            label,
+            snippet,
+            created_at,
+            updated_at,
+            last_used_at,
+            tags: vec![],
+        });
 
         if let Some(tag) = tag {
             entry.tags.push(tag);
@@ -202,31 +194,6 @@ ORDER BY s.updated_at DESC
     }
 
     Ok(map.into_values().collect())
-}
-
-pub fn get_untagged_snippets(
-    conn: &rusqlite::Connection,
-) -> rusqlite::Result<Vec<Snippet>> {
-    let mut stmt = conn.prepare(r#"
-SELECT s.id, s.label, s.snippet
-FROM snippets s
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM snippet_tags st
-    WHERE st.snippet_id = s.id
-)
-ORDER BY s.updated_at DESC
-    "#)?;
-
-    let rows = stmt.query_map([], |row| {
-        Ok(Snippet {
-            id: row.get(0)?,
-            label: row.get(1)?,
-            snippet: row.get(2)?,
-        })
-    })?;
-
-    Ok(rows.filter_map(Result::ok).collect())
 }
 
 pub fn search_snippets(
@@ -247,7 +214,7 @@ pub fn search_snippets(
     };
 
     let mut sql_str = String::from(r#"
-SELECT s.id, s.label, s.snippet, t.name
+SELECT s.id, s.label, s.snippet, s.created_at, s.updated_at, s.last_used_at, t.name
 FROM snippets s
     "#);
 
@@ -332,23 +299,27 @@ ORDER BY s.last_used_at DESC NULLS LAST
             row.get::<_, String>(0)?,
             row.get::<_, String>(1)?,
             row.get::<_, String>(2)?,
-            row.get::<_, Option<String>>(3)?,
+            row.get::<_, i64>(3)?,
+            row.get::<_, i64>(4)?,
+            row.get::<_, Option<i64>>(5)?,
+            row.get::<_, Option<String>>(6)?,
         ))
     })?;
 
     let mut map = std::collections::HashMap::<String, SnippetWithTags>::new();
 
     for row in rows {
-        let (id, label, snippet, tag) = row?;
+        let (id, label, snippet, created_at, updated_at, last_used_at, tag) = row?;
 
-        let entry = map
-            .entry(id.clone())
-            .or_insert(SnippetWithTags {
-                id,
-                label,
-                snippet,
-                tags: vec![],
-            });
+        let entry = map.entry(id.clone()).or_insert(SnippetWithTags {
+            id,
+            label,
+            snippet,
+            created_at,
+            updated_at,
+            last_used_at,
+            tags: vec![],
+        });
 
         if let Some(tag) = tag {
             if !entry.tags.contains(&tag) {
