@@ -9,11 +9,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
-import {computedAsync} from "@vueuse/core";
-import {invokeGetAllTags} from "@/api/commands";
 import {useViewState} from "@/main/views/useViewState.ts";
+import {useAllTags} from "@/composables/data/useAllTags.ts";
 
-const allTags = computedAsync(() => invokeGetAllTags());
+const { tags } = useAllTags();
 const { viewState, setViewState } = useViewState();
 </script>
 
@@ -22,7 +21,7 @@ const { viewState, setViewState } = useViewState();
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          <SidebarMenuItem v-for="tag in allTags" :key="tag">
+          <SidebarMenuItem v-for="tag in tags" :key="tag">
             <SidebarMenuButton
                 class="capitalize"
                 :is-active="viewState.id === 'snippets-by-tag' && tag === viewState.tag"

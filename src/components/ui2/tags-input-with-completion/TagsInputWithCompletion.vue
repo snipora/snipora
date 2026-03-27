@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import {computedAsync, useVModel} from "@vueuse/core";
-import {invokeGetAllTags} from "@/api/commands";
+import {useVModel} from "@vueuse/core";
 import {Popover, PopoverAnchor, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {computed, ref, watch} from "vue";
 import {ListboxContent, ListboxFilter, ListboxItem, ListboxItemIndicator, ListboxRoot, useFilter} from "reka-ui";
@@ -14,6 +13,7 @@ import {
 import {stringToColor} from "@/lib/coloring.ts";
 import {Button} from "@/components/ui/button";
 import {LucideChevronDown, LucideCheck, LucideTag} from "@lucide/vue";
+import {useAllTags} from "@/composables/data/useAllTags.ts";
 
 const props = defineProps<{
   defaultValue?: string[]
@@ -30,7 +30,7 @@ const modelValue = useVModel(props, "modelValue", emits, {
   defaultValue: props.defaultValue,
 });
 
-const knownTags = computedAsync(invokeGetAllTags);
+const { tags: knownTags } = useAllTags();
 const popoverOpen = ref(false);
 const searchTerm = ref("");
 
