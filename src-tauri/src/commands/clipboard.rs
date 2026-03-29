@@ -1,9 +1,12 @@
 #[tauri::command]
 pub fn insert_snippet(
-    state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
+    state_conn: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
+    state_clipboard: tauri::State<std::sync::Mutex<arboard::Clipboard>>,
     snippet_id: String,
 ) -> Result<(), String> {
-    let mut conn = state.lock()
+    let mut clipboard = state_clipboard.lock()
+        .expect("failed to get clipboard");
+    let mut conn = state_conn.lock()
         .expect("failed to get db-conn");
     let tx = conn.transaction()
         .expect("failed to start transaction");
@@ -15,11 +18,6 @@ pub fn insert_snippet(
     if snippet.snippet.trim().is_empty() {
         return Err("snippet is empty".into());
     }
-
-    use arboard::Clipboard;
-
-    let mut clipboard = Clipboard::new()
-        .map_err(|e| e.to_string())?;
 
     clipboard.set_text(snippet.snippet)
         .map_err(|e| e.to_string())?;

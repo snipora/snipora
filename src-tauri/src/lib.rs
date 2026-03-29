@@ -50,6 +50,10 @@ pub fn run() {
             let conn = db::init_db()
                 .expect("failed to init db");
             app.manage(std::sync::Mutex::new(conn));
+            let clipboard = arboard::Clipboard::new()
+                .expect("failed to create clipboard");
+            app.manage(std::sync::Mutex::new(clipboard));
+
             tray::tray::create_tray(app_handle);
             windows::main_window::init_main_window(app_handle);
             windows::popup_window::init_popup_window(app_handle);
