@@ -72,7 +72,7 @@ async function handleSubmit() {
         />
         <Textarea
             v-model="snippet"
-            class="max-h-96"
+            class="max-h-96 font-mono placeholder:font-sans"
             required
             :placeholder="$t('dialogs.new-snippet.form.snippet-placeholder')"
         />
