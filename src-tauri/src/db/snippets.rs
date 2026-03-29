@@ -203,7 +203,7 @@ pub fn search_snippets(
 ) -> rusqlite::Result<Vec<SnippetWithTags>> {
     let (terms, tags) = parse_query(&query);
 
-    if query.is_empty() || tags.is_empty() {
+    if terms.is_empty() && tags.is_empty() {
         return Err(rusqlite::Error::InvalidParameterName("query is empty".into()));
     }
 
@@ -220,8 +220,8 @@ FROM snippets s
 
     if fts_query.is_some() {
         sql_str.push_str(r#"
-JOIN snippets_fts f
-    ON s.rowid = f.rowid
+JOIN snippets_fts
+    ON s.rowid = snippets_fts.rowid
         "#);
     }
 
@@ -235,7 +235,7 @@ WHERE 1=1
 
     if fts_query.is_some() {
         sql_str.push_str(r#"
-AND f MATCH ?1
+AND snippets_fts MATCH ?1
         "#);
     }
 
@@ -264,7 +264,7 @@ AND s.id IN (
 
     if fts_query.is_some() {
         sql_str.push_str(r#"
-ORDER BY bm25(f)
+ORDER BY bm25(snippets_fts)
         "#);
     } else {
         sql_str.push_str(r#"
