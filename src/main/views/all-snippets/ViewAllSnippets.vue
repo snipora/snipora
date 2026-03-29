@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
-import {SnippetCard} from "@/components/ui2/snippet-card";
+import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
 
 const { snippets } = useAllSnippets();
 </script>
 
 <template>
-  <div class="grid gap-6">
-    <SnippetCard v-for="snippet in snippets" :key="snippet.id" :snippet="snippet" />
-  </div>
+  <SnippetList>
+    <SnippetListEntry v-for="snippet in snippets" :key="snippet.id" :snippet="snippet" />
+  </SnippetList>
 </template>
