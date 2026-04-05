@@ -46,6 +46,8 @@ pub fn update_snippet(
 
     crate::db::tags::set_snippet_tags(&tx, &id, tags)
         .map_err(|e| e.to_string())?;
+    crate::db::tags::cleanup_unused_tags(&tx)
+        .map_err(|e| e.to_string())?;
 
     tx.commit()
         .expect("failed to commit transaction");
@@ -67,8 +69,8 @@ pub fn delete_snippet(
 
     crate::db::snippets::delete_snippet(&tx, &snippet_id)
         .map_err(|e| e.to_string())?;
-
-    // todo: cleanup tags that are no longer used
+    crate::db::tags::cleanup_unused_tags(&tx)
+        .map_err(|e| e.to_string())?;
 
     tx.commit()
         .expect("failed to commit transaction");

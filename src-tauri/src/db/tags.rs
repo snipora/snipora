@@ -112,3 +112,16 @@ VALUES (?1, ?2)
 
     Ok(())
 }
+
+pub fn cleanup_unused_tags(
+    tx: &rusqlite::Transaction,
+) -> rusqlite::Result<()> {
+    tx.execute(r#"
+DELETE FROM tags
+WHERE id NOT IN (
+    SELECT DISTINCT tag_id FROM snippet_tags
+)
+    "#, [])?;
+
+    Ok(())
+}
