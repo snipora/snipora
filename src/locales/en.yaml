@@ -11,13 +11,17 @@ settings:
   general:
     title: General
     startup:
-      label: Launch on Startup
-      description: Automatically launch Snipora when you log in
+      label: Launch at Startup
+      description: Automatically launch Snipora when you log in to your computer
     shortcut:
-      label: Open Search Popup Shortcut
-      placeholder: "Ctrl+Shift+Space"
+      label: Search Popup Shortcut
+      description: Select the shortcut you want to use to open the search popup
+      placeholder: Ctrl+Shift+Space
   appearance:
     title: Appearance
+    show-tag-counts:
+      label: Tag Count in Sidebar
+      description: Show number of snippets next to each tag
     trayTheme:
       label: Tray Icon Theme
       description: Choose how the tray icon appears

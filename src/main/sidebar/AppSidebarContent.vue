@@ -12,7 +12,7 @@ import {
 import {useViewState} from "@/main/views/useViewState.ts";
 import {useAllTags} from "@/composables/data/useAllTags.ts";
 
-const { tags } = useAllTags();
+const { tags, tagCounts } = useAllTags();
 const { viewState, setViewState } = useViewState();
 </script>
 
@@ -31,7 +31,9 @@ const { viewState, setViewState } = useViewState();
               <span>
                 {{ tag }}
               </span>
-              <!--<span class="ml-auto text-muted-foreground">{{ snippetCount }}</span>-->
+              <span v-if="true" class="ml-auto text-xs text-muted-foreground">
+                {{ tagCounts.get(tag) }}
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

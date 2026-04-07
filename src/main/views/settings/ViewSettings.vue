@@ -55,6 +55,9 @@ const autostartEnabled = useAutostart();
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>{{ $t("settings.general.shortcut.label") }}</FieldTitle>
+            <FieldDescription>
+              {{ $t("settings.general.shortcut.description") }}
+            </FieldDescription>
           </FieldContent>
           <Input
             :placeholder="$t('settings.general.shortcut.placeholder')"
@@ -72,6 +75,20 @@ const autostartEnabled = useAutostart();
       </FieldLegend>
 
       <FieldGroup class="flex flex-col gap-6">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>{{ $t("settings.appearance.show-tag-counts.label") }}</FieldTitle>
+            <FieldDescription>
+              {{ $t("settings.appearance.show-tag-counts.description") }}
+            </FieldDescription>
+          </FieldContent>
+          <Switch
+              :model-value="true"
+              disabled
+              class="cursor-pointer"
+          />
+        </Field>
+
         <Field orientation="vertical">
           <FieldTitle>{{ $t("settings.appearance.trayTheme.label") }}</FieldTitle>
           <FieldDescription>
@@ -79,7 +96,7 @@ const autostartEnabled = useAutostart();
           </FieldDescription>
           <RadioGroup
               class="grid-cols-3"
-              default-value="logo"
+              default-value="app"
               @update:model-value="d => invokeSetTrayIcon(d as 'app')"
           >
             <FieldLabel class="cursor-pointer">
