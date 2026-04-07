@@ -15,9 +15,16 @@ import {Textarea} from "@/components/ui/textarea";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet} from "@/api/commands/snippets";
 import {TagsInputWithCompletion} from "@/components/ui2/tags-input-with-completion";
+import {defineShortcuts} from "@/composables/defineShortcut.ts";
 
 const isOpen = ref(false);
 const isSubmitting = ref(false);
+
+defineShortcuts({
+  "ctrl_n": () => {
+    isOpen.value = true;
+  },
+});
 
 const label = ref("");
 const snippet = ref("");
@@ -68,6 +75,7 @@ async function handleSubmit() {
         <Input
             v-model="label"
             required
+            autofocus
             :placeholder="$t('dialogs.new-snippet.form.label-placeholder')"
         />
         <Textarea
