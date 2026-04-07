@@ -125,3 +125,29 @@ WHERE id NOT IN (
 
     Ok(())
 }
+
+pub fn delete_tag(
+    tx: &rusqlite::Transaction,
+    tag_name: &str,
+) -> rusqlite::Result<()> {
+    let normalized = normalize_tag(tag_name)?;
+
+    tx.execute(
+        r#"
+DELETE FROM snippet_tags
+WHERE tag_id IN (
+    SELECT id FROM tags WHERE name = ?1
+)
+        "#,
+        rusqlite::params![normalized],
+    )?;
+
+    tx.execute(
+        r#"
+DELETE FROM tags WHERE name = ?1
+        "#,
+        rusqlite::params![normalized],
+    )?;
+
+    Ok(())
+}

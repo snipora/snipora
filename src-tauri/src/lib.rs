@@ -41,6 +41,7 @@ pub fn run() {
             commands::snippets::get_snippet_by_id,
             commands::snippets::search_snippets,
             commands::tags::get_all_tags,
+            commands::tags::delete_tag,
             commands::tray::set_tray_icon,
             commands::windows::popup_hide,
             commands::windows::popup_adjust_height,
