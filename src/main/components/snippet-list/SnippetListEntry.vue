@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {SnippetDto} from "@/api/dto.ts";
-import {LucidePencil, LucideTrash} from "@lucide/vue";
+import {LucideCopy, LucidePencil, LucideTrash} from "@lucide/vue";
 import {
   SnippetCard, SnippetCardAction,
   SnippetCardActions,
@@ -18,6 +18,10 @@ function handleEdit() {
 
 }
 
+function handleDuplicate() {
+
+}
+
 async function handleDelete() {
   await invokeDeleteSnippet(props.snippet.id);
 }
@@ -29,6 +33,9 @@ async function handleDelete() {
     <SnippetCardActions>
       <SnippetCardAction @click="handleEdit">
         <LucidePencil />
+      </SnippetCardAction>
+      <SnippetCardAction @click="handleDuplicate">
+        <LucideCopy />
       </SnippetCardAction>
       <!-- todo: dialog for confirmation -->
       <SnippetCardAction class="hover:text-destructive" @click="handleDelete">
