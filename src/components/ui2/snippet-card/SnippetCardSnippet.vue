@@ -2,7 +2,7 @@
 import {HTMLAttributes} from "vue";
 import {cn} from "@/lib/utils.ts";
 import {Button} from "@/components/ui/button";
-import {LucideCopy, LucideCopyCheck} from "@lucide/vue";
+import {LucideClipboardCheck, LucideClipboardCopy} from "@lucide/vue";
 import {useClipboard} from "@vueuse/core";
 
 const props = defineProps<{
@@ -26,8 +26,8 @@ async function handleCopy() {
       class="relative overflow-hidden"
   >
     <Button v-if="showCopy" variant="ghost" size="icon-sm" class="bg-secondary opacity-0 group-hover/snippet-card:opacity-100 transition-opacity absolute top-0 right-0 cursor-pointer" @click="handleCopy">
-      <LucideCopyCheck v-if="recentlyCopied" />
-      <LucideCopy v-else />
+      <LucideClipboardCheck v-if="recentlyCopied" />
+      <LucideClipboardCopy v-else />
     </Button>
     <pre :class="cn('font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs overflow-x-scroll', props.class)">{{ snippet }}</pre>
   </div>
