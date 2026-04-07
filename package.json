@@ -11,6 +11,7 @@
     "generate-icons": "node scripts/generate-icons.ts"
   },
   "dependencies": {
+    "@lucide/vue": "^1.7.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-autostart": "^2.5.1",
     "@tauri-apps/plugin-global-shortcut": "^2.3.1",
@@ -18,9 +19,9 @@
     "@tauri-apps/plugin-notification": "^2.3.3",
     "@tauri-apps/plugin-window-state": "^2.4.1",
     "@vueuse/core": "^14.2.1",
+    "@vueuse/math": "^14.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "@lucide/vue": "^1.7.0",
     "reka-ui": "^2.9.2",
     "tailwind-merge": "^3.5.0",
     "vue": "^3.5.13",
