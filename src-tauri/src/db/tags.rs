@@ -19,20 +19,6 @@ fn normalize_tag(input: &str) -> rusqlite::Result<String> {
     Ok(tag)
 }
 
-pub fn get_all_tags(
-    conn: &rusqlite::Connection,
-) -> rusqlite::Result<Vec<String>> {
-    let mut stmt = conn.prepare(r#"
-SELECT name
-FROM tags
-ORDER BY name ASC
-    "#)?;
-    
-    let rows = stmt.query_map([], |row| row.get(0))?;
-
-    Ok(rows.filter_map(Result::ok).collect())
-}
-
 pub fn get_tags_for_snippet(
     conn: &rusqlite::Connection,
     snippet_id: &str,

@@ -1,21 +1,27 @@
-import {createSharedComposable, useThrottleFn} from "@vueuse/core";
-import {onMounted, ref} from "vue";
-import {invokeGetAllTags} from "@/api/commands";
-import {onDataChanged} from "@/composables/onDataChanged.ts";
-import {Tag} from "@/api/dto.ts";
+import {createSharedComposable} from "@vueuse/core";
+import {computed} from "vue";
+import {useAllSnippets} from "./useAllSnippets.ts";
 
 export const useAllTags = createSharedComposable(() => {
-  const tags = ref<Tag[] | null>(null);
+  const {snippets} = useAllSnippets();
 
-  async function fetchTags() {
-    tags.value = await invokeGetAllTags();
-  }
-  const fetchThrottled = useThrottleFn(fetchTags, 100);
+  const tagCounts = computed(() => {
+    const counts = new Map<string, number>();
+    for (const snippet of snippets.value ?? []) {
+      for (const tag of snippet.tags) {
+        counts.set(tag, (counts.get(tag) ?? 0) + 1);
+      }
+    }
+    return counts;
+  });
 
-  onMounted(fetchTags);
-  onDataChanged(fetchThrottled);
+  const tags = computed(() => {
+    return Array.from(tagCounts.value.keys())
+        .sort((a, b) => a.localeCompare(b));
+  });
 
   return {
     tags,
+    tagCounts,
   };
 });
