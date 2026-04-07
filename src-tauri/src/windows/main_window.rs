@@ -21,12 +21,19 @@ pub fn init_main_window(app: &AppHandle) {
 pub fn show_and_focus(app: &AppHandle) {
     let window = get_main_window(app);
 
-    window.unminimize()
-        .expect("failed to unminimize main window");
+    if window.is_minimized().unwrap_or(true) {
+        window.unminimize()
+            .expect("failed to unminimize main window");
+    }
+
     window.restore_state(StateFlags::POSITION | StateFlags::SIZE | StateFlags::MAXIMIZED)
         .expect("failed to restore main window state");
-    window.show()
-        .expect("failed to show main window");
+
+    if !window.is_visible().unwrap_or(false) {
+        window.show()
+            .expect("failed to show main window");
+    }
+
     window.set_focus()
         .expect("failed to focus main window");
 }
@@ -34,8 +41,10 @@ pub fn show_and_focus(app: &AppHandle) {
 pub fn hide(app: &AppHandle) {
     let window = get_main_window(app);
 
-    window.hide()
-        .expect("failed to hide main window");
+    if window.is_visible().unwrap_or(true) {
+        window.hide()
+            .expect("failed to hide main window");
+    }
 }
 
 pub fn show_settings(app: &AppHandle) {

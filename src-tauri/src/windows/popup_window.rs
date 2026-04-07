@@ -55,8 +55,10 @@ pub fn show_and_focus(app: &AppHandle) {
 pub fn hide(app: &AppHandle) {
     let window = get_popup_window(app);
 
-    window.hide()
-        .expect("failed to hide popup window");
+    if window.is_visible().unwrap_or(true) {
+        window.hide()
+            .expect("failed to hide popup window");
+    }
 }
 
 fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
