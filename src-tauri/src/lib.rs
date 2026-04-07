@@ -8,6 +8,10 @@ mod windows;
 
 rust_i18n::i18n!("locales");
 
+fn is_from_autostart(args: Vec<String>) -> bool {
+    args.iter().any(|arg| arg == "--from-autostart")
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -16,9 +20,10 @@ pub fn run() {
             .with_state_flags(StateFlags::POSITION | StateFlags::SIZE | StateFlags::MAXIMIZED)
             .build()
         )
-        .plugin(tauri_plugin_single_instance::init(|app_handle, _args, _cwd| {
-            // todo: check for `--from-autostart`?
-            windows::main_window::show_and_focus(app_handle);
+        .plugin(tauri_plugin_single_instance::init(|app_handle, args, _cwd| {
+            if !is_from_autostart(args) {
+                windows::main_window::show_and_focus(app_handle);
+            }
         }))
         .plugin(tauri_plugin_notification::init())
         .plugin(
@@ -58,9 +63,11 @@ pub fn run() {
             tray::tray::create_tray(app_handle);
             windows::main_window::init_main_window(app_handle);
             windows::popup_window::init_popup_window(app_handle);
-            // todo: change `visible: false` for main-window in `tauri.conf.json`
-            // todo: and add check for `--from-autostart` to call `windows::main_window::show_and_focus`
-            windows::main_window::show_and_focus(app_handle);
+
+            if !is_from_autostart(std::env::args().collect()) {
+                windows::main_window::show_and_focus(app_handle);
+            }
+
             Ok(())
         })
         .run(tauri::generate_context!())
