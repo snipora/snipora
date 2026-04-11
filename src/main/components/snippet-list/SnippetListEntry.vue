@@ -7,7 +7,7 @@ import {
   SnippetCardHeader,
   SnippetCardSnippet,
   SnippetCardTags
-} from "@/components/ui2/snippet-card";
+} from "@/main/components/snippet-card";
 import {invokeDeleteSnippet} from "@/api/commands";
 
 const props = defineProps<{

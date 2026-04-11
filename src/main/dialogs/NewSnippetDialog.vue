@@ -14,7 +14,7 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet} from "@/api/commands/snippets";
-import {TagsInputWithCompletion} from "@/components/ui2/tags-input-with-completion";
+import {TagsInputWithCompletion} from "@/main/components/tags-input-with-completion";
 import {defineShortcuts} from "@/composables/defineShortcut.ts";
 
 const isOpen = ref(false);
