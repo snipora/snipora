@@ -4,8 +4,13 @@ import {LucideDiamondPlus, LucideHash} from "@lucide/vue";
 import {LucideTagOff} from "@/components/icons";
 import {useViewState} from "@/main/views/useViewState.ts";
 import NewSnippetDialog from "@/main/dialogs/NewSnippetDialog.vue";
+import {useUntaggedSnippets} from "@/composables/data/useUntaggedSnippets.ts";
+import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
 
 const { viewState, setViewState } = useViewState();
+
+const { snippets: allSnippets } = useAllSnippets();
+const { untaggedSnippets } = useUntaggedSnippets();
 </script>
 
 <template>
@@ -25,16 +30,26 @@ const { viewState, setViewState } = useViewState();
             @click="setViewState({ id: 'all-snippets' })"
         >
           <LucideHash />
-          {{ $t('sidebar.all-snippets.label') }}
+          <span>
+            {{ $t('sidebar.all-snippets.label') }}
+          </span>
+          <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
+            {{ allSnippets?.length }}
+          </span>
         </SidebarMenuButton>
       </SidebarMenuItem>
-      <SidebarMenuItem>
+      <SidebarMenuItem v-if="untaggedSnippets?.length">
         <SidebarMenuButton
             :is-active="viewState.id === 'untagged-snippets'"
             @click="setViewState({ id: 'untagged-snippets' })"
         >
           <LucideTagOff />
-          {{ $t('sidebar.untagged.label') }}
+          <span>
+            {{ $t('sidebar.untagged.label') }}
+          </span>
+          <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
+            {{ untaggedSnippets.length }}
+          </span>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

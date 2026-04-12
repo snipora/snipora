@@ -31,7 +31,7 @@ const { viewState, setViewState } = useViewState();
               <span>
                 {{ tag }}
               </span>
-              <span v-if="true" class="ml-auto text-xs text-muted-foreground">
+              <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
                 {{ tagCounts.get(tag) }}
               </span>
             </SidebarMenuButton>
