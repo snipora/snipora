@@ -46,6 +46,11 @@ dialogs:
       tags-placeholder: Add tags...
       cancel: Cancel
       create: Create
+  delete-snippet:
+    dialog-title: Delete Snippet
+    dialog-description: Are you sure you want to delete this snippet? This action cannot be undone.
+    confirm: Delete
+    cancel: Cancel
 components:
   tags-input-with-completion:
     no-tags: No Tags
