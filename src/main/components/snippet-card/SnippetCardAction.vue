@@ -6,7 +6,7 @@ defineProps<ButtonProps>();
 </script>
 
 <template>
-  <Button size="icon-sm" variant="outline" v-bind="$attrs">
+  <Button v-bind="$props" size="icon-sm" variant="outline">
     <slot />
   </Button>
 </template>
