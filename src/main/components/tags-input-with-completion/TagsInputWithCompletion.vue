@@ -57,14 +57,22 @@ watch(searchTerm, (s) => {
         multiple
     >
       <PopoverAnchor as-child>
-        <TagsInput v-model="modelValue" class="w-full">
+        <TagsInput
+            v-model="modelValue"
+            :convert-value="value => value.toLowerCase()"
+            @add-tag="searchTerm = ''"
+            :delimiter="/\W+/"
+            add-on-paste
+            add-on-tab
+            class="w-full"
+        >
           <TagsInputItem v-for="tag in modelValue" :key="tag" :value="tag" class="capitalize" :style="{ backgroundColor: stringToColor(tag) }">
             <TagsInputItemText />
             <TagsInputItemDelete />
           </TagsInputItem>
 
           <ListboxFilter v-model="searchTerm" as-child>
-            <TagsInputInput :placeholder="placeholder" @keydown.enter="searchTerm = ''" @keydown.down="popoverOpen = true" />
+            <TagsInputInput :placeholder="placeholder" class="capitalize placeholder:normal-case" @keydown.down="popoverOpen = true" />
           </ListboxFilter>
 
           <PopoverTrigger as-child>
