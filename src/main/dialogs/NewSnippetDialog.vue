@@ -16,9 +16,11 @@ import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet} from "@/api/commands/snippets";
 import {TagsInputWithCompletion} from "@/main/components/tags-input-with-completion";
 import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {LucideCircleAlert} from "@lucide/vue";
 
 const isOpen = ref(false);
-const isSubmitting = ref(false);
 
 defineShortcuts({
   "ctrl_n": () => {
@@ -36,25 +38,20 @@ function resetForm() {
   tags.value = [];
 }
 
-async function handleSubmit() {
+
+const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAction(async () => {
   if (!label.value.trim() || !snippet.value.trim()) {
     return;
   }
 
-  isSubmitting.value = true;
-
-  try {
-    await invokeCreateSnippet({
-      label: label.value.trim(),
-      snippet: snippet.value.trim(),
-      tags: tags.value,
-    });
-    isOpen.value = false;
-    resetForm();
-  } finally {
-    isSubmitting.value = false;
-  }
-}
+  await invokeCreateSnippet({
+    label: label.value.trim(),
+    snippet: snippet.value.trim(),
+    tags: tags.value,
+  });
+  isOpen.value = false;
+  resetForm();
+});
 </script>
 
 <template>
@@ -89,6 +86,15 @@ async function handleSubmit() {
             :placeholder="$t('dialogs.new-snippet.form.tags-placeholder')"
         />
       </form>
+      <Alert v-if="lastError" variant="destructive">
+        <LucideCircleAlert />
+        <AlertTitle>
+          {{ $t('dialogs.new-snippet.error.title') }}
+        </AlertTitle>
+        <AlertDescription>
+          {{ lastError.message }}
+        </AlertDescription>
+      </Alert>
       <DialogFooter>
         <Button
             type="button"
