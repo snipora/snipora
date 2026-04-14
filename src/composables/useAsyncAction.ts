@@ -1,6 +1,6 @@
 import {ref} from "vue";
 
-export function useAsyncAction<P extends unknown[], R, E = Error>(
+export function useAsyncAction<P extends unknown[], R, E extends Error>(
     action: (...args: P) => Promise<R>,
     options?: {
       onSuccess?: (result: R) => void,
@@ -20,7 +20,8 @@ export function useAsyncAction<P extends unknown[], R, E = Error>(
       lastResult.value = result;
       options?.onSuccess?.(result);
       return result;
-    } catch (error) {
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(`${e}`);
       lastError.value = error as E;
       options?.onError?.(error as E);
       return undefined;
