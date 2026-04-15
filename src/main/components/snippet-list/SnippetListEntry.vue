@@ -22,6 +22,7 @@ import {Button} from "@/components/ui/button";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet, invokeDeleteSnippet} from "@/api/commands";
 import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import EditSnippetDialog from "@/main/dialogs/EditSnippetDialog.vue";
 
 const props = defineProps<{
   snippet: SnippetDto
@@ -47,9 +48,11 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
   <SnippetCard>
     <SnippetCardHeader :label="snippet.label" />
     <SnippetCardActions>
-      <SnippetCardAction>
-        <LucidePencil />
-      </SnippetCardAction>
+      <EditSnippetDialog :snippet="snippet">
+        <SnippetCardAction>
+          <LucidePencil />
+        </SnippetCardAction>
+      </EditSnippetDialog>
       <SnippetCardAction :disabled="isDuplicating" @click="handleDuplicate">
         <Spinner v-if="isDuplicating" />
         <LucideCopy v-else />

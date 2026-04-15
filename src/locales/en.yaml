@@ -48,6 +48,17 @@ dialogs:
       create: Create
     error:
       title: Unable to create snippet
+  edit-snippet:
+    dialog-title: Edit Snippet
+    dialog-description: Update the snippet data.
+    form:
+      label-placeholder: Enter a descriptive label
+      snippet-placeholder: Paste your snippet content here
+      tags-placeholder: Add tags...
+      cancel: Cancel
+      save: Save
+    error:
+      title: Unable to update snippet
   delete-snippet:
     dialog-title: Delete Snippet
     dialog-description: Are you sure you want to delete this snippet? This action cannot be undone.
