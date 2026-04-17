@@ -17,6 +17,15 @@ settings:
       label: Search Popup Shortcut
       description: Select the shortcut you want to use to open the search popup
       placeholder: Ctrl+Shift+Space
+    use-behavior:
+      label: Snippet Usage Behavior
+      description: Choose how snippets are used
+      clipboard:
+        label: Copy to Clipboard
+        description: Copies the snippet content directly into your clipboard
+      paste:
+        label: Auto-Paste
+        description: Automatically pastes the snippet (coming soon)
   appearance:
     title: Appearance
     show-tag-counts:

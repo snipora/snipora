@@ -19,9 +19,10 @@ import {
   SniporaIconLight,
   SniporaLogo,
 } from "@/components/icons";
-import {LucideMoon, LucideSun, LucideSunMoon} from "@lucide/vue";
+import {LucideClipboardCopy, LucideMoon, LucidePencilLine, LucideSun, LucideSunMoon} from "@lucide/vue";
 import {invokeSetTrayIcon} from "@/api/commands";
 import {useAutostart} from "@/composables/useAutostart.ts";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 const colorMode = useColorMode();
 const systemColor = colorMode.system;
@@ -40,7 +41,9 @@ const autostartEnabled = useAutostart();
       <FieldGroup class="flex flex-col gap-6">
         <Field orientation="horizontal">
           <FieldContent>
-            <FieldTitle>{{ $t("settings.general.startup.label") }}</FieldTitle>
+            <FieldTitle>
+              {{ $t("settings.general.startup.label") }}
+            </FieldTitle>
             <FieldDescription>
               {{ $t("settings.general.startup.description") }}
             </FieldDescription>
@@ -54,15 +57,54 @@ const autostartEnabled = useAutostart();
 
         <Field orientation="horizontal">
           <FieldContent>
-            <FieldTitle>{{ $t("settings.general.shortcut.label") }}</FieldTitle>
+            <FieldTitle>
+              {{ $t("settings.general.shortcut.label") }}
+            </FieldTitle>
             <FieldDescription>
               {{ $t("settings.general.shortcut.description") }}
             </FieldDescription>
           </FieldContent>
           <Input
-            :placeholder="$t('settings.general.shortcut.placeholder')"
-            class="w-48"
+              disabled
+              :placeholder="$t('settings.general.shortcut.placeholder')"
+              class="w-48"
           />
+        </Field>
+
+        <Field orientation="horizontal">
+          <FieldContent>
+            <FieldTitle>
+              {{ $t('settings.general.use-behavior.label') }}
+            </FieldTitle>
+            <FieldDescription>
+              {{ $t('settings.general.use-behavior.description') }}
+            </FieldDescription>
+          </FieldContent>
+          <Select default-value="clipboard">
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="clipboard">
+                <template #default>
+                  <LucideClipboardCopy />
+                  {{ $t('settings.general.use-behavior.clipboard.label') }}
+                </template>
+                <template #description>
+                  {{ $t('settings.general.use-behavior.clipboard.description') }}
+                </template>
+              </SelectItem>
+              <SelectItem value="paste" disabled>
+                <template #default>
+                  <LucidePencilLine />
+                  {{ $t('settings.general.use-behavior.paste.label') }}
+                </template>
+                <template #description>
+                  {{ $t('settings.general.use-behavior.paste.description') }}
+                </template>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </Field>
       </FieldGroup>
     </FieldSet>
@@ -77,7 +119,9 @@ const autostartEnabled = useAutostart();
       <FieldGroup class="flex flex-col gap-6">
         <Field orientation="horizontal">
           <FieldContent>
-            <FieldTitle>{{ $t("settings.appearance.show-tag-counts.label") }}</FieldTitle>
+            <FieldTitle>
+              {{ $t("settings.appearance.show-tag-counts.label") }}
+            </FieldTitle>
             <FieldDescription>
               {{ $t("settings.appearance.show-tag-counts.description") }}
             </FieldDescription>
@@ -90,7 +134,9 @@ const autostartEnabled = useAutostart();
         </Field>
 
         <Field orientation="vertical">
-          <FieldTitle>{{ $t("settings.appearance.trayTheme.label") }}</FieldTitle>
+          <FieldTitle>
+            {{ $t("settings.appearance.trayTheme.label") }}
+          </FieldTitle>
           <FieldDescription>
             {{ $t("settings.appearance.trayTheme.description") }}
           </FieldDescription>
@@ -144,7 +190,9 @@ const autostartEnabled = useAutostart();
         </Field>
 
         <Field orientation="vertical">
-          <FieldTitle>{{ $t("settings.appearance.uiTheme.label") }}</FieldTitle>
+          <FieldTitle>
+            {{ $t("settings.appearance.uiTheme.label") }}
+          </FieldTitle>
           <FieldDescription>
             {{ $t("settings.appearance.uiTheme.description") }}
           </FieldDescription>
