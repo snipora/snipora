@@ -56,7 +56,7 @@ const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAct
 
 <template>
   <Dialog v-model:open="isOpen">
-    <DialogTrigger>
+    <DialogTrigger as-child>
       <slot />
     </DialogTrigger>
     <DialogScrollContent class="max-w-2xl">

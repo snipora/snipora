@@ -79,6 +79,6 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
       </DialogScrollContent>
     </Dialog>
     <SnippetCardTags :tags="snippet.tags" />
-    <SnippetCardSnippet :snippet="snippet.snippet" show-copy />
+    <SnippetCardSnippet :snippet="snippet.snippet" />
   </SnippetCard>
 </template>

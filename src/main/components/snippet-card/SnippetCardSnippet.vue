@@ -8,7 +8,6 @@ import {useClipboard} from "@vueuse/core";
 const props = defineProps<{
   class?: HTMLAttributes["class"]
   snippet: string
-  showCopy?: boolean
 }>();
 
 const { copy: copyToClipboard, copied: recentlyCopied } = useClipboard({
@@ -25,7 +24,7 @@ async function handleCopy() {
       data-slot="snippet-card-snippet"
       class="relative overflow-hidden"
   >
-    <Button v-if="showCopy" variant="ghost" size="icon-sm" class="bg-secondary opacity-0 group-hover/snippet-card:opacity-100 transition-opacity absolute top-0 right-0 cursor-pointer" @click="handleCopy">
+    <Button variant="ghost" size="icon-sm" class="bg-secondary opacity-0 group-hover/snippet-card:opacity-100 transition-opacity absolute top-0 right-0 cursor-pointer" @click="handleCopy">
       <LucideClipboardCheck v-if="recentlyCopied" />
       <LucideClipboardCopy v-else />
     </Button>
