@@ -2,6 +2,7 @@
 import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
 import {computed} from "vue";
 import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
+import {DefaultLayout} from "@/main/layouts";
 
 const props = defineProps<{
   tag: string
@@ -15,7 +16,9 @@ const snippets = computed(
 </script>
 
 <template>
-  <SnippetList>
-    <SnippetListEntry v-for="snippet in snippets" :key="snippet.id" :snippet="snippet" />
-  </SnippetList>
+  <DefaultLayout>
+    <SnippetList>
+      <SnippetListEntry v-for="snippet in snippets" :key="snippet.id" :snippet="snippet" />
+    </SnippetList>
+  </DefaultLayout>
 </template>

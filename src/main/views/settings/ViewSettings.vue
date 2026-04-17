@@ -23,6 +23,7 @@ import {LucideClipboardCopy, LucideMoon, LucidePencilLine, LucideSun, LucideSunM
 import {invokeSetTrayIcon} from "@/api/commands";
 import {useAutostart} from "@/composables/useAutostart.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {DefaultLayout} from "@/main/layouts";
 
 const colorMode = useColorMode();
 const systemColor = colorMode.system;
@@ -32,7 +33,7 @@ const autostartEnabled = useAutostart();
 </script>
 
 <template>
-  <div class="flex flex-col gap-8">
+  <DefaultLayout class="flex flex-col gap-8">
     <FieldSet>
       <FieldLegend variant="legend">
         {{ $t("settings.general.title") }}
@@ -236,5 +237,5 @@ const autostartEnabled = useAutostart();
         </Field>
       </FieldGroup>
     </FieldSet>
-  </div>
+  </DefaultLayout>
 </template>

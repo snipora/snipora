@@ -24,9 +24,7 @@ useTauriEventListener("main:show-settings", () => {
   <SidebarProvider>
     <AppSidebar />
     <ScrollArea class="h-svh w-full">
-      <main class="mx-auto max-w-3xl p-4">
-        <component :is="VIEW_TO_COMPONENT[viewState.id]" v-bind="viewState" />
-      </main>
+      <component :is="VIEW_TO_COMPONENT[viewState.id]" v-bind="viewState" />
     </ScrollArea>
   </SidebarProvider>
 </template>
