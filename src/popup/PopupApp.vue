@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useSmartPopupHeight} from "@/popup/composables/useSmartPopupHeight.ts";
 import {usePopupEscapeListener} from "@/popup/composables/usePopupEscapeListener.ts";
-import {useColorMode} from "@vueuse/core";
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {useSearchedSnippets} from "@/popup/composables/useSearchedSnippets.ts";
 import {useRecentSnippets} from "@/composables/data/useRecentSnippets.ts";
@@ -10,8 +9,9 @@ import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
 import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem} from "reka-ui";
 import {LucideSearch} from "@lucide/vue";
 import {Spinner} from "@/components/ui/spinner";
+import {useColorMode} from "@/composables/useColorMode.ts";
 
-useColorMode({ writeDefaults: false });
+useColorMode();
 useSmartPopupHeight();
 usePopupEscapeListener();
 
@@ -73,7 +73,7 @@ useTauriEventListener("popup:focus-input", () => {
           @select.prevent="handleSelect(snippet.id)"
       >
         <div class="size-full">
-          <h3 class="select-none leading-none text-lg font-semibold tracking-tight">
+          <h3 class="select-none text-lg font-semibold tracking-tight">
             {{ snippet.label }}
           </h3>
           <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>

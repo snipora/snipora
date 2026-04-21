@@ -6,8 +6,11 @@ import {useViewState} from "@/main/views/useViewState.ts";
 import NewSnippetDialog from "@/main/dialogs/NewSnippetDialog.vue";
 import {useUntaggedSnippets} from "@/composables/data/useUntaggedSnippets.ts";
 import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
+import {useLocalSettings} from "@/composables/useLocalSettings.ts";
 
 const { viewState, setViewState } = useViewState();
+
+const showTagCounts = useLocalSettings("ui.showTagCounts");
 
 const { snippets: allSnippets } = useAllSnippets();
 const { untaggedSnippets } = useUntaggedSnippets();
@@ -33,7 +36,7 @@ const { untaggedSnippets } = useUntaggedSnippets();
           <span>
             {{ $t('sidebar.all-snippets.label') }}
           </span>
-          <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
+          <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
             {{ allSnippets?.length }}
           </span>
         </SidebarMenuButton>
@@ -47,7 +50,7 @@ const { untaggedSnippets } = useUntaggedSnippets();
           <span>
             {{ $t('sidebar.untagged.label') }}
           </span>
-          <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
+          <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
             {{ untaggedSnippets.length }}
           </span>
         </SidebarMenuButton>

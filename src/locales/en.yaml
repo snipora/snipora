@@ -35,7 +35,7 @@ settings:
       label: Tray Icon Theme
       description: Choose how the tray icon appears
       options:
-        logo: Logo
+        app-icon: Snipora Icon
         light: Light
         dark: Dark
     uiTheme:

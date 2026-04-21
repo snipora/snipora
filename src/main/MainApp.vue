@@ -4,10 +4,11 @@ import {SidebarProvider} from "@/components/ui/sidebar";
 import {provide} from "vue";
 import {INJECTION_KEY_MAIN_VIEW, ViewState, VIEW_TO_COMPONENT} from "@/main/views";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {useColorMode, useLocalStorage} from "@vueuse/core";
+import {useLocalStorage} from "@vueuse/core";
 import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
+import {useColorMode} from "@/composables/useColorMode.ts";
 
-useColorMode({ writeDefaults: false });
+useColorMode();
 
 const viewState = useLocalStorage<ViewState>('view-state', () => ({
   id: "all-snippets",

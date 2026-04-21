@@ -16,3 +16,16 @@ forwardConsole('debug', debug);
 forwardConsole('info', info);
 forwardConsole('warn', warn);
 forwardConsole('error', error);
+
+window.addEventListener("error", (event) => {
+  console.error("Unhandled error:", {
+    message: event.message,
+    file: event.filename,
+    line: event.lineno,
+    column: event.colno,
+    error: event.error,
+  });
+});
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("Unhandled rejection:", event.reason);
+});

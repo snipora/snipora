@@ -1,7 +1,7 @@
 use tauri::{AppHandle, Manager};
 use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
-use tauri_plugin_log::log::warn;
+use crate::settings::internal::{LocalSettings, TrayIconTheme};
 
 const TRAY_ID: &str = "tray";
 
@@ -10,18 +10,22 @@ fn get_tray(app: &AppHandle) -> tauri::tray::TrayIcon {
         .expect("failed to get tray")
 }
 
-/**
- * Creates the tray-menu.
- */
 pub fn create_tray(app: &AppHandle) {
     let menu = create_tray_menu(app);
+    
+    let local_settings = app.state::<std::sync::Mutex<LocalSettings>>()
+        .lock()
+        .expect("failed to lock settings")
+        .clone();
+    
+    let icon = get_icon_image(app, local_settings.tray.icon_theme)
+        .unwrap_or_else(|err| {
+            log::warn!("failed to get app-icon: {err}");
+            app.default_window_icon().unwrap().clone()
+        });
 
     TrayIconBuilder::with_id(TRAY_ID)
-        .icon(get_icon_image(app, TrayIconTheme::AppIcon)  // todo: get theme from settings
-            .unwrap_or_else(|err| {
-                warn!("failed to get app-icon: {err}");
-                app.default_window_icon().unwrap().clone()
-            }))
+        .icon(icon)
         .menu(&menu)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "open" => {
@@ -73,27 +77,19 @@ pub fn rebuild_tray_menu(app: &AppHandle) {
     let tray = get_tray(app);
     let menu = create_tray_menu(app);
     if let Err(e) = tray.set_menu(Some(menu)) {
-        warn!("failed to rebuild tray menu: {e}");
+        log::warn!("failed to rebuild tray menu: {e}");
     }
 }
 
-pub enum TrayIconTheme {
-    AppIcon,
-    Light,
-    Dark,
-}
+pub fn set_tray_icon(app: &AppHandle, theme: TrayIconTheme) -> Result<(), String> {
+    let icon = get_icon_image(app, theme)?;
 
-impl std::str::FromStr for TrayIconTheme {
-    type Err = String;
+    let tray = get_tray(app);
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "app" | "app-icon" => Ok(Self::AppIcon),
-            "light" => Ok(Self::Light),
-            "dark" => Ok(Self::Dark),
-            _ => Err(format!("unknown tray icon theme: {s}")),
-        }
-    }
+    tray.set_icon(Some(icon))
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
 }
 
 fn get_icon_image(
@@ -118,15 +114,4 @@ fn get_icon_image(
 
     tauri::image::Image::from_path(path)
         .map_err(|e| e.to_string())
-}
-
-pub fn set_tray_icon(app: &AppHandle, theme: TrayIconTheme) -> Result<(), String> {
-    let icon = get_icon_image(app, theme)?;
-
-    let tray = get_tray(app);
-
-    tray.set_icon(Some(icon))
-        .map_err(|e| e.to_string())?;
-
-    Ok(())
 }

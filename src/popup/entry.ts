@@ -1,8 +1,11 @@
 import "@/index.css";
 import "@/forward-console.ts";
+import {_initLocalSettings} from "@/composables/useLocalSettings.ts";
 import {App, createApp} from "vue";
 import i18n from "@/i18n";
 import PopupApp from "./PopupApp.vue";
+
+await _initLocalSettings();
 
 createApp(PopupApp)
     .use(i18n)

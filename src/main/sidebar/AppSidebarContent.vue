@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/sidebar";
 import {useViewState} from "@/main/views/useViewState.ts";
 import {useAllTags} from "@/composables/data/useAllTags.ts";
+import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+
+const showTagCounts = useLocalSettings("ui.showTagCounts");
 
 const { tags, tagCounts } = useAllTags();
 const { viewState, setViewState } = useViewState();
@@ -31,7 +34,7 @@ const { viewState, setViewState } = useViewState();
               <span>
                 {{ tag }}
               </span>
-              <span v-if="/* todo: setting */ true" class="ml-auto text-xs text-muted-foreground">
+              <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
                 {{ tagCounts.get(tag) }}
               </span>
             </SidebarMenuButton>

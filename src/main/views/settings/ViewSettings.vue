@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {useColorMode} from "@vueuse/core";
 import {
   Field,
   FieldContent,
@@ -20,16 +19,19 @@ import {
   SniporaLogo,
 } from "@/components/icons";
 import {LucideClipboardCopy, LucideMoon, LucidePencilLine, LucideSun, LucideSunMoon} from "@lucide/vue";
-import {invokeSetTrayIcon} from "@/api/commands";
 import {useAutostart} from "@/composables/useAutostart.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {DefaultLayout} from "@/main/layouts";
+import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+import {useColorMode} from "@/composables/useColorMode.ts";
 
-const colorMode = useColorMode();
-const systemColor = colorMode.system;
-const storeColor = colorMode.store;
+const { colorTheme, systemTheme } = useColorMode();
 
 const autostartEnabled = useAutostart();
+
+const snippetUsageBehavior = useLocalSettings("popup.snippetUsageBehavior");
+const trayTheme = useLocalSettings("tray.iconTheme");
+const showTagCounts = useLocalSettings("ui.showTagCounts");
 </script>
 
 <template>
@@ -81,12 +83,12 @@ const autostartEnabled = useAutostart();
               {{ $t('settings.general.use-behavior.description') }}
             </FieldDescription>
           </FieldContent>
-          <Select default-value="clipboard">
+          <Select v-model="snippetUsageBehavior">
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="clipboard">
+              <SelectItem value="copy-to-clipboard">
                 <template #default>
                   <LucideClipboardCopy />
                   {{ $t('settings.general.use-behavior.clipboard.label') }}
@@ -95,7 +97,7 @@ const autostartEnabled = useAutostart();
                   {{ $t('settings.general.use-behavior.clipboard.description') }}
                 </template>
               </SelectItem>
-              <SelectItem value="paste" disabled>
+              <SelectItem value="simulate-paste" disabled>
                 <template #default>
                   <LucidePencilLine />
                   {{ $t('settings.general.use-behavior.paste.label') }}
@@ -128,8 +130,7 @@ const autostartEnabled = useAutostart();
             </FieldDescription>
           </FieldContent>
           <Switch
-              :model-value="true"
-              disabled
+              v-model="showTagCounts"
               class="cursor-pointer"
           />
         </Field>
@@ -143,8 +144,7 @@ const autostartEnabled = useAutostart();
           </FieldDescription>
           <RadioGroup
               class="grid-cols-3"
-              default-value="app"
-              @update:model-value="d => invokeSetTrayIcon(d as 'app')"
+              v-model="trayTheme"
           >
             <FieldLabel class="cursor-pointer">
               <Field orientation="horizontal">
@@ -153,10 +153,10 @@ const autostartEnabled = useAutostart();
                     <SniporaLogo class="size-6" />
                   </div>
                   <FieldTitle class="text-center">
-                    {{ $t("settings.appearance.trayTheme.options.logo") }}
+                    {{ $t("settings.appearance.trayTheme.options.app-icon") }}
                   </FieldTitle>
                 </FieldContent>
-                <RadioGroupItem value="app" />
+                <RadioGroupItem value="app-icon" />
               </Field>
             </FieldLabel>
 
@@ -197,8 +197,8 @@ const autostartEnabled = useAutostart();
           <FieldDescription>
             {{ $t("settings.appearance.uiTheme.description") }}
           </FieldDescription>
-          <RadioGroup class="grid-cols-3" v-model="storeColor">
-            <FieldLabel class="bg-background text-foreground cursor-pointer" :class="systemColor">
+          <RadioGroup class="grid-cols-3" v-model="colorTheme">
+            <FieldLabel class="bg-background text-foreground cursor-pointer" :class="systemTheme">
               <Field orientation="horizontal">
                 <FieldContent>
                   <FieldTitle class="text-center">

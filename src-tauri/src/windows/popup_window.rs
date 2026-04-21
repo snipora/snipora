@@ -1,7 +1,6 @@
 use std::str::FromStr;
 use tauri::{AppHandle, Emitter, Manager, WindowEvent};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
-use tauri_plugin_log::log::warn;
 
 const POPUP_PADDING: f32 = 0.2; // 20%
 
@@ -67,7 +66,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
             .monitor_from_point(cursor.x, cursor.y)
             .ok().flatten()
             .unwrap_or_else(|| {
-                warn!("failed to get monitor from point. fallback to primary-monitor");
+                log::warn!("failed to get monitor from point. fallback to primary-monitor");
                 window.primary_monitor()
                     .ok().flatten()
                     .expect("failed to get primary monitor")
@@ -84,7 +83,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
         window.set_position(tauri::PhysicalPosition { x, y })
             .expect("failed to set window position");
     } else {
-        warn!("failed to get cursor position in order to center window on monitor");
+        log::warn!("failed to get cursor position in order to center window on monitor");
     }
 }
 
