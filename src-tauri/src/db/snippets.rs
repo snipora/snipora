@@ -1,4 +1,4 @@
-use crate::db::helper::{build_fts_query, parse_query};
+use crate::db::utils::{build_fts_query, parse_query};
 use crate::db::tags::get_tags_for_snippet;
 
 pub struct Snippet {
