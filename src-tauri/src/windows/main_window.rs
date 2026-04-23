@@ -34,8 +34,10 @@ pub fn show_and_focus(app: &AppHandle) {
             .expect("failed to show main window");
     }
 
-    window.set_focus()
-        .expect("failed to focus main window");
+    if !window.is_focused().unwrap_or(false) {
+        window.set_focus()
+            .expect("failed to focus main window");
+    }
 }
 
 pub fn hide(app: &AppHandle) {

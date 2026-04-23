@@ -26,7 +26,6 @@
         "title": "Snipora - Popup",
         "alwaysOnTop": true,
         "backgroundColor": [0, 0, 0, 0],
-        "center": true,
         "closable": false,
         "decorations": false,
         "width": 512,
