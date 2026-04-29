@@ -73,6 +73,9 @@ dialogs:
     dialog-description: Are you sure you want to delete this snippet? This action cannot be undone.
     confirm: Delete
     cancel: Cancel
+popup:
+  input:
+    placeholder: Search for snippets...
 components:
   no-snippets:
     title: Nothing here yet

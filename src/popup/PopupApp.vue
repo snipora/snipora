@@ -56,7 +56,7 @@ useTauriEventListener("popup:focus-input", () => {
           ref="queryInputEl"
           v-model.trim="searchTerm"
           class="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
-          placeholder="Search..."
+          :placeholder="$t('popup.input.placeholder')"
           @keydown.tab.prevent=""
           @keydown.shift.tab.prevent=""
       />
