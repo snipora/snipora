@@ -45,6 +45,7 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             commands::clipboard::insert_snippet,
+            commands::info::os_type,
             commands::settings::fetch_local_settings,
             commands::settings::update_local_settings,
             commands::snippets::create_snippet,

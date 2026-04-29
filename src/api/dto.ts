@@ -1,3 +1,11 @@
+export type OsType =
+    | "windows"
+    | "linux"
+    | "macos"
+    | "ios"
+    | "android"
+
+
 export type Tag = string
 
 export type SnippetDto = {
