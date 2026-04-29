@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
-import {computed} from "vue";
 import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
 import {DefaultLayout} from "@/main/layouts";
+import {useSnippetsByTag} from "@/composables/data/useSnippetsByTag.ts";
 
 const props = defineProps<{
   tag: string
 }>();
 
-const { snippets: allSnippets } = useAllSnippets();
-const snippets = computed(() => allSnippets.value?.filter(s => s.tags.includes(props.tag)))
+const { snippets } = useSnippetsByTag(() => props.tag);
 </script>
 
 <template>
