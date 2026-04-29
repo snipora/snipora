@@ -1,6 +1,8 @@
 sidebar:
   new-snippet:
     label: New Snippet
+  global-search:
+    label: Search Snippets
   all-snippets:
     label: All Snippets
   untagged:
@@ -80,5 +82,8 @@ components:
   no-snippets:
     title: Nothing here yet
     description: Start adding snippets to see them appear
+  something-went-wrong:
+    title: Something went wrong
+    description: This shouldn't have happened.
   tags-input-with-completion:
     no-tags: No Tags
