@@ -9,10 +9,7 @@ const props = defineProps<{
 }>();
 
 const { snippets: allSnippets } = useAllSnippets();
-const snippets = computed(
-    () => allSnippets.value
-        ?.filter(s => s.tags.includes(props.tag))
-)
+const snippets = computed(() => allSnippets.value?.filter(s => s.tags.includes(props.tag)))
 </script>
 
 <template>

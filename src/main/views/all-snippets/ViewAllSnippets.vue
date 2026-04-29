@@ -9,7 +9,7 @@ const { snippets } = useAllSnippets();
 </script>
 
 <template>
-  <CenteredLayout v-if="snippets === null">
+  <CenteredLayout v-if="snippets === undefined">
     <Spinner class="size-8" />
   </CenteredLayout>
   <DefaultLayout v-else-if="snippets.length">

@@ -6,9 +6,8 @@ export const useRecentSnippets = createSharedComposable(() => {
   const {snippets} = useAllSnippets();
 
   const recentSnippets = computed(() => {
-    if (!snippets.value) {
-      return null;
-    }
+    if (snippets.value === undefined) return undefined;
+
     return [...snippets.value]
       .filter((s) => s.last_used_at !== null)
       .sort((a, b) => (b.last_used_at ?? 0) - (a.last_used_at ?? 0));

@@ -6,9 +6,7 @@ export const useUntaggedSnippets = createSharedComposable(() => {
   const {snippets} = useAllSnippets();
 
   const untaggedSnippets = computed(() => {
-    if (!snippets.value) {
-      return null;
-    }
+    if (snippets.value === undefined) return undefined;
     return snippets.value.filter((s) => s.tags.length === 0);
   });
 

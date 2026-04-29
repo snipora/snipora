@@ -35,7 +35,7 @@ const { viewState, setViewState } = useViewState();
                 {{ tag }}
               </span>
               <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
-                {{ tagCounts.get(tag) }}
+                {{ tagCounts?.get(tag) }}
               </span>
             </SidebarMenuButton>
           </SidebarMenuItem>

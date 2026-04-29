@@ -9,7 +9,7 @@ const { untaggedSnippets } = useUntaggedSnippets();
 </script>
 
 <template>
-  <CenteredLayout v-if="untaggedSnippets === null">
+  <CenteredLayout v-if="untaggedSnippets === undefined">
     <Spinner class="size-8" />
   </CenteredLayout>
   <DefaultLayout v-else-if="untaggedSnippets.length">

@@ -5,7 +5,7 @@ import {onDataChanged} from "@/composables/onDataChanged.ts";
 import {SnippetDto} from "@/api/dto.ts";
 
 export const useAllSnippets = createSharedComposable(() => {
-  const snippets = ref<SnippetDto[] | null>(null);
+  const snippets = ref<SnippetDto[] | undefined>(undefined);
 
   async function fetchSnippets() {
     snippets.value = await invokeGetAllSnippets();
