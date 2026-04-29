@@ -47,9 +47,9 @@ useTauriEventListener("popup:focus-input", () => {
       :ignore-filter="true"
       :reset-search-term-on-blur="false"
       :reset_search-term-on-select="false"
-      class="bg-popover text-popover-foreground flex flex-col gap-1 size-full overflow-hidden rounded-md p-1"
+      class="bg-popover text-popover-foreground space-y-1 size-full overflow-clip rounded-md p-1"
   >
-    <div class="flex h-9 items-center gap-2 border-b px-3">
+    <div class="sticky top-1 z-10 bg-popover flex h-9 items-center gap-2 border-b px-3 rounded-lg overflow-clip shadow-xs">
       <Spinner v-if="isSearching" class="size-4 shrink-0 opacity-50" />
       <LucideSearch v-else class="size-4 shrink-0 opacity-50" />
       <ComboboxInput
