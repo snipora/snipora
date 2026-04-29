@@ -17,7 +17,7 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<DialogContentProps & { class?: HTMLAttributes["class"], showCloseButton?: boolean }>(), {
-  showCloseButton: true,
+  showCloseButton: false,
 })
 const emits = defineEmits<DialogContentEmits>()
 
