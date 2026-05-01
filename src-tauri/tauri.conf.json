@@ -4,9 +4,9 @@
   "version": "../package.json",
   "identifier": "com.snipora.snipora",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "just frontend-dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "just frontend-build",
     "frontendDist": "../dist"
   },
   "app": {

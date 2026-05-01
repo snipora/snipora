@@ -3,15 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "type-check": "vue-tsc -b --noEmit",
-    "i18n-check": "vue-i18n-extract --ci --vueFiles 'src/**/*.?(ts|vue)' --languageFiles 'src/locales/*.yaml'",
-    "preview": "vite preview",
-    "tauri": "tauri",
-    "generate-icons": "node scripts/generate-icons.ts"
-  },
   "dependencies": {
     "@lucide/vue": "^1.8.0",
     "@tauri-apps/api": "^2",
