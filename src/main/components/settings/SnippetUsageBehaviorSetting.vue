@@ -2,7 +2,7 @@
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLocalSettings } from "@/composables/useLocalSettings.ts";
-import { LucideClipboardCopy, LucidePencilLine } from "@lucide/vue";
+import {LucideClipboardCopy, LucideClipboardPaste, LucideKeyboard} from "@lucide/vue";
 
 const snippetUsageBehavior = useLocalSettings("popup.snippetUsageBehavior");
 </script>
@@ -25,19 +25,28 @@ const snippetUsageBehavior = useLocalSettings("popup.snippetUsageBehavior");
         <SelectItem value="copy-to-clipboard">
           <template #default>
             <LucideClipboardCopy />
-            {{ $t('settings.general.use-behavior.clipboard.label') }}
+            {{ $t('settings.general.use-behavior.copy-to-clipboard.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.use-behavior.clipboard.description') }}
+            {{ $t('settings.general.use-behavior.copy-to-clipboard.description') }}
           </template>
         </SelectItem>
         <SelectItem value="simulate-paste" disabled>
           <template #default>
-            <LucidePencilLine />
-            {{ $t('settings.general.use-behavior.paste.label') }}
+            <LucideClipboardPaste />
+            {{ $t('settings.general.use-behavior.simulate-paste.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.use-behavior.paste.description') }}
+            {{ $t('settings.general.use-behavior.simulate-paste.description') }}
+          </template>
+        </SelectItem>
+        <SelectItem value="natural-typing" disabled>
+          <template #default>
+            <LucideKeyboard />
+            {{ $t('settings.general.use-behavior.natural-typing.label') }}
+          </template>
+          <template #description>
+            {{ $t('settings.general.use-behavior.natural-typing.description') }}
           </template>
         </SelectItem>
       </SelectContent>

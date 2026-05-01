@@ -22,12 +22,15 @@ settings:
     use-behavior:
       label: Snippet Usage Behavior
       description: Choose how snippets are used
-      clipboard:
+      copy-to-clipboard:
         label: Copy to Clipboard
         description: Copies the snippet content directly into your clipboard
-      paste:
-        label: Auto-Paste
-        description: Automatically pastes the snippet (coming soon)
+      simulate-paste:
+        label: Simulate Paste
+        description: Automatically pastes the snippet
+      natural-typing:
+        label: Natural Typing
+        description: Types the snippet as if you were typing it
   appearance:
     title: Appearance
     show-tag-counts:
