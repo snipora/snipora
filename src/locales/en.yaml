@@ -50,6 +50,14 @@ settings:
         system: System
         light: Light
         dark: Dark
+  info:
+    title: Info
+    version:
+      label: App Version
+      description: Current version of Snipora
+    runtime:
+      label: Runtime Info
+      description: Operating system, architecture and bundle type
 dialogs:
   new-snippet:
     dialog-title: Create New Snippet

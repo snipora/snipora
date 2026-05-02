@@ -1,6 +1,14 @@
 use crate::settings::internal::{SnippetUsageBehavior, TrayIconTheme, UiTheme};
 
 #[derive(serde::Serialize)]
+pub struct RuntimeInfo {
+    pub os: String,
+    pub arch: String,
+    #[serde(rename = "bundleType")]
+    pub bundle_type: String,
+}
+
+#[derive(serde::Serialize)]
 pub struct SnippetDto {
     pub id: String,
     pub label: String,

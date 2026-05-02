@@ -9,6 +9,8 @@ import {
   ShowTagCountsSetting,
   TrayThemeSetting,
   UiThemeSetting,
+  InfoAppVersion,
+  InfoRuntimeInfo,
 } from "@/main/components/settings";
 </script>
 
@@ -18,25 +20,31 @@ import {
       <FieldLegend variant="legend">
         {{ $t("settings.general.title") }}
       </FieldLegend>
-
       <FieldGroup class="flex flex-col gap-6">
         <AutostartSetting />
         <ShortcutSetting />
         <SnippetUsageBehaviorSetting />
       </FieldGroup>
     </FieldSet>
-
     <FieldSeparator />
-
     <FieldSet>
       <FieldLegend variant="legend">
         {{ $t("settings.appearance.title") }}
       </FieldLegend>
-
       <FieldGroup class="flex flex-col gap-6">
         <ShowTagCountsSetting />
         <TrayThemeSetting />
         <UiThemeSetting />
+      </FieldGroup>
+    </FieldSet>
+    <FieldSeparator />
+    <FieldSet>
+      <FieldLegend variant="legend">
+        {{ $t("settings.info.title") }}
+      </FieldLegend>
+      <FieldGroup class="flex flex-col gap-6">
+        <InfoAppVersion />
+        <InfoRuntimeInfo />
       </FieldGroup>
     </FieldSet>
   </DefaultLayout>

@@ -1,6 +1,6 @@
-import {OsType} from "@/api/dto.ts";
+import {RuntimeInfo} from "@/api/dto.ts";
 import {invoke} from "@tauri-apps/api/core";
 
-export async function invokeOsType(): Promise<OsType> {
-  return await invoke<OsType>("os_type");
+export async function invokeRuntimeInfo(): Promise<RuntimeInfo> {
+  return await invoke<RuntimeInfo>("runtime_info");
 }

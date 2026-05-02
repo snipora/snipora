@@ -1,10 +1,8 @@
-export type OsType =
-    | "windows"
-    | "linux"
-    | "macos"
-    | "ios"
-    | "android"
-
+export type RuntimeInfo = {
+  os: "windows" | "macos" | "linux" | (string & {})
+  arch: "x86" | "x86_64" | "arm" | "aarch64" | (string & {})
+  bundleType: "deb" | "rpm" | "appimage" | "msi" | "nsis" | "app" | "dmg" | "unknown"
+}
 
 export type Tag = string
 
