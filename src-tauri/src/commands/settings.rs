@@ -48,6 +48,10 @@ pub fn update_local_settings(
             current.ui.show_tag_counts = show_tag_counts;
         }
         if let Some(theme) = ui.theme {
+            app.set_theme(Some(match theme {
+                settings::internal::UiTheme::Dark => tauri::Theme::Dark,
+                _ => tauri::Theme::Light,
+            }));
             current.ui.theme = theme;
         }
     }
