@@ -16,11 +16,11 @@ export const useAutostart = createSharedComposable(() => {
 
   async function changeAutostart(enable: boolean): Promise<void> {
     if (enable) {
-      console.info("enabling autostart");
+      console.info("Enabling autostart");
       await enableAutostart();
       isAutostartEnabled.value = true;
     } else {
-      console.info("disabling autostart");
+      console.info("Disabling autostart");
       await disableAutostart();
       isAutostartEnabled.value = false;
     }

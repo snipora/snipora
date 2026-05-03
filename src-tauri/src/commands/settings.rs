@@ -19,6 +19,8 @@ pub fn update_local_settings(
     state: State<std::sync::Mutex<LocalSettings>>,
     updated_settings: UpdateLocalSettingsDto,
 ) -> Result<(), String> {
+    log::info!("updated settings: {:?}", updated_settings);
+
     let mut current = state.lock()
         .expect("failed to lock settings");
 

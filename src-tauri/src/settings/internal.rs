@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct LocalSettings {
     pub version: u32,
     pub general: GeneralSettings,
@@ -10,37 +11,38 @@ pub struct LocalSettings {
     pub tray: TraySettings,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct GeneralSettings {
     pub locale: String,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ShortcutsSettings {
-    #[serde(rename = "openPopup")]
     pub open_popup: String,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct PopupSettings {
-    #[serde(rename = "snippetUsageBehavior")]
     pub snippet_usage_behavior: SnippetUsageBehavior,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct UiSettings {
-    #[serde(rename = "showTagCounts")]
     pub show_tag_counts: bool,
     pub theme: UiTheme,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct TraySettings {
-    #[serde(rename = "iconTheme")]
     pub icon_theme: TrayIconTheme,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub enum SnippetUsageBehavior {
     #[default]
@@ -48,7 +50,7 @@ pub enum SnippetUsageBehavior {
     SimulatePaste,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub enum UiTheme {
     #[default]
@@ -57,7 +59,7 @@ pub enum UiTheme {
     Dark,
 }
 
-#[derive(Serialize, Deserialize, Default, Clone)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub enum TrayIconTheme {
     #[default]
