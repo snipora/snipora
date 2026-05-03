@@ -1,13 +1,26 @@
 import { warn, debug, trace, info, error } from '@tauri-apps/plugin-log';
+import {getCurrentWebviewWindow} from "@tauri-apps/api/webviewWindow";
+
+const windowLabel = getCurrentWebviewWindow().label;
+
+function stringify(value: unknown): string {
+  if (typeof value === "string") {
+    return value;
+  } else if (value instanceof Error) {
+    return `${value.name}: ${value.message}`;
+  } else {
+    return JSON.stringify(value);
+  }
+}
 
 function forwardConsole(
     fnName: 'log' | 'debug' | 'info' | 'warn' | 'error',
     logger: (message: string) => Promise<void>
 ) {
-  const original = console[fnName];
+  const browserLogger = console[fnName];
   console[fnName] = (...args) => {
-    original(...args);
-    logger(args.map(v => typeof v === "string" ? v : JSON.stringify(v)).join(" "));
+    browserLogger(...args);
+    logger(`[${windowLabel}]` + args.map(stringify).join(" "));
   };
 }
 
