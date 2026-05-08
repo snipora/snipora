@@ -43,6 +43,8 @@ pub fn run() {
             .arg("--from-autostart")
             .build()
         )
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             commands::clipboard::insert_snippet,
             commands::info::runtime_info,

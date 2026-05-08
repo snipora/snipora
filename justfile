@@ -18,15 +18,15 @@ frontend-dev:
 frontend-build:
     npx vite build
 
-# Build the app for production
-[group: 'build']
-build:
-    npx tauri build
-
 # Build the app without installer bundles
 [group: 'build']
-build-no-bundle:
-    npx tauri build --no-bundle
+build:
+    npx tauri build --no-bundle --no-sign
+
+# Build the app with specific bundler
+[group: 'build']
+build-bundle bundle:
+    npx tauri build --bundles "{{bundle}}" --no-sign
 
 # Check frontend for type errors
 [group: 'checks']

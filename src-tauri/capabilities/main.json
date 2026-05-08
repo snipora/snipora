@@ -9,6 +9,8 @@
     "core:default",
     "autostart:default",
     "log:default",
-    "notification:default"
+    "notification:default",
+    "updater:default",
+    "process:default"
   ]
 }
