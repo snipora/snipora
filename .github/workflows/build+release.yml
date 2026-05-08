@@ -1,0 +1,228 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup just
+        uses: extractions/setup-just@v3
+        with:
+          just-version: 1.50
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm clean-install
+
+      - name: TypeScript check
+        run: just type-check-frontend
+
+      - name: i18n check
+        run: just i18n-check
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+
+      - name: Rust check
+        run: just type-check-backend
+
+  build:
+    needs: preflight
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - platform: 'windows-latest'
+            build-args: ''
+            arch: x86_64
+          - platform: 'ubuntu-latest'
+            build-args: ''
+            arch: x86_64
+          - platform: 'macos-latest'  # for Intel based macs
+            build-args: '--target x86_64-apple-darwin'
+            arch: x86_64
+          - platform: 'macos-latest'  # for Arm based macs (M1 and above)
+            build-args: '--target aarch64-apple-darwin'
+            arch: arm64
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install Frontend Dependencies
+        run: npm clean-install
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+
+      - name: Build (Tauri)
+        run: npx tauri build ${{ matrix.build-args }}
+        env:
+          CARGO_TARGET_DIR: src-tauri/target/${{ matrix.arch }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+      - name: Collect Artifacts (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          set -e; shopt -s nullglob
+          mkdir -p release-artifacts
+          
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/msi/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/
+          
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/msi/*.msi release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/msi/*.msi.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi.sig
+          
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/*-setup.exe release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/*-setup.exe.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe.sig
+
+      - name: Collect Artifacts (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -e; shopt -s nullglob
+          mkdir -p release-artifacts
+          
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/deb/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/
+          
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/*.AppImage release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/*.AppImage.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage.sig
+          
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/deb/*.deb release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/deb/*.deb.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb.sig
+
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/*.rpm release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/*.rpm.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm.sig
+
+      - name: Collect Artifacts (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -e; shopt -s nullglob
+          mkdir -p release-artifacts
+          
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/
+          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/macos/
+          
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/*.dmg release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/*.dmg.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg.sig
+
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/macos/*.app.tar.gz release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz
+          mv src-tauri/target/${{ matrix.arch }}/release/bundle/macos/*.app.tar.gz.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz.sig
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-${{ matrix.arch }}
+          path: |
+            release-artifacts/*
+          if-no-files-found: error
+
+      - name: Bundle Cleanup
+        shell: bash
+        run: rm -rf src-tauri/target/${{ matrix.arch }}/release/bundle
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate updater.json
+        run: node scripts/generate-updater.cjs
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: "Snipora ${{ github.ref_name }}"
+          generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: |
+            release-artifacts/Windows-x86_64/snipora-${{ github.ref_name }}-x86_64.msi
+            release-artifacts/Windows-x86_64/snipora-${{ github.ref_name }}-x86_64-setup.exe
+            
+            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.AppImage
+            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.deb
+            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.rpm
+            
+            release-artifacts/macOS-x86_64/snipora-${{ github.ref_name }}-x86_64.dmg
+            release-artifacts/macOS-x86_64/snipora-${{ github.ref_name }}-x86_64.app.tar.gz
+            
+            release-artifacts/macOS-arm64/snipora-${{ github.ref_name }}-arm64.dmg
+            release-artifacts/macOS-arm64/snipora-${{ github.ref_name }}-arm64.app.tar.gz
+            
+            release-artifacts/updater.json
