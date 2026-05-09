@@ -28,6 +28,10 @@ build:
 build-bundle bundle:
     npx tauri build --bundles "{{bundle}}" --no-sign
 
+# Check frontend and backend for type errors
+[group: 'checks']
+type-check: type-check-frontend type-check-backend
+
 # Check frontend for type errors
 [group: 'checks']
 type-check-frontend:
