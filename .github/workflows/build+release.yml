@@ -37,6 +37,8 @@ jobs:
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: x86_64-unknown-linux-gnu
 
       - name: Cache Rust
         uses: swatinem/rust-cache@v2
@@ -59,16 +61,16 @@ jobs:
       matrix:
         include:
           - platform: 'windows-latest'
-            build-args: ''
+            target: x86_64-pc-windows-msvc
             arch: x86_64
           - platform: 'ubuntu-latest'
-            build-args: ''
+            target: x86_64-unknown-linux-gnu
             arch: x86_64
           - platform: 'macos-latest'  # for Intel based macs
-            build-args: '--target x86_64-apple-darwin'
+            target: x86_64-apple-darwin
             arch: x86_64
           - platform: 'macos-latest'  # for Arm based macs (M1 and above)
-            build-args: '--target aarch64-apple-darwin'
+            target: aarch64-apple-darwin
             arch: arm64
 
     runs-on: ${{ matrix.platform }}
@@ -86,7 +88,7 @@ jobs:
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          target: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          target: ${{ matrix.target }}
 
       - name: Install Frontend Dependencies
         run: npm clean-install
@@ -104,9 +106,8 @@ jobs:
               libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
 
       - name: Build (Tauri)
-        run: npx tauri build ${{ matrix.build-args }}
+        run: npx tauri build --target ${{ matrix.target }}
         env:
-          CARGO_TARGET_DIR: src-tauri/target/${{ matrix.arch }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
@@ -117,15 +118,13 @@ jobs:
           set -e; shopt -s nullglob
           mkdir -p release-artifacts
           
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/msi/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/
+          BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
           
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/msi/*.msi release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/msi/*.msi.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi.sig
+          mv "$BUNDLE_DIR"/msi/*.msi release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi
+          mv "$BUNDLE_DIR"/msi/*.msi.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi.sig
           
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/*-setup.exe release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/nsis/*-setup.exe.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe.sig
+          mv "$BUNDLE_DIR"/nsis/*-setup.exe release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe
+          mv "$BUNDLE_DIR"/nsis/*-setup.exe.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe.sig
 
       - name: Collect Artifacts (Linux)
         if: runner.os == 'Linux'
@@ -134,19 +133,16 @@ jobs:
           set -e; shopt -s nullglob
           mkdir -p release-artifacts
           
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/deb/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/
-          
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/*.AppImage release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/appimage/*.AppImage.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage.sig
-          
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/deb/*.deb release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/deb/*.deb.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb.sig
+          BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
 
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/*.rpm release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/rpm/*.rpm.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm.sig
+          mv "$BUNDLE_DIR"/appimage/*.AppImage release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage
+          mv "$BUNDLE_DIR"/appimage/*.AppImage.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage.sig
+
+          mv "$BUNDLE_DIR"/deb/*.deb release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb
+          mv "$BUNDLE_DIR"/deb/*.deb.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb.sig
+
+          mv "$BUNDLE_DIR"/rpm/*.rpm release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm
+          mv "$BUNDLE_DIR"/rpm/*.rpm.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm.sig
 
       - name: Collect Artifacts (macOS)
         if: runner.os == 'macOS'
@@ -155,15 +151,13 @@ jobs:
           set -e; shopt -s nullglob
           mkdir -p release-artifacts
           
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/
-          ls -alF src-tauri/target/${{ matrix.arch }}/release/bundle/macos/
-          
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/*.dmg release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/dmg/*.dmg.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg.sig
+          BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
 
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/macos/*.app.tar.gz release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz
-          mv src-tauri/target/${{ matrix.arch }}/release/bundle/macos/*.app.tar.gz.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz.sig
+          mv "$BUNDLE_DIR"/dmg/*.dmg release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg
+          # .sig doesn't exist for .dmg
+
+          mv "$BUNDLE_DIR"/macos/*.app.tar.gz release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz
+          mv "$BUNDLE_DIR"/macos/*.app.tar.gz.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz.sig
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -172,10 +166,6 @@ jobs:
           path: |
             release-artifacts/*
           if-no-files-found: error
-
-      - name: Bundle Cleanup
-        shell: bash
-        run: rm -rf src-tauri/target/${{ matrix.arch }}/release/bundle
 
   release:
     needs: build
