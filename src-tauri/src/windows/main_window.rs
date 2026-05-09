@@ -7,6 +7,8 @@ fn get_main_window(app: &AppHandle) -> tauri::WebviewWindow {
 }
 
 pub fn init_main_window(app: &AppHandle) {
+    log::debug!("init_main_window");
+    
     let window = get_main_window(app);
     let app_handle = app.clone();
 

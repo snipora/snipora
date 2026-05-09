@@ -8,6 +8,8 @@ use crate::tray::tray;
 pub fn fetch_local_settings(
     state: State<std::sync::Mutex<LocalSettings>>,
 ) -> Result<LocalSettings, String> {
+    log::debug!("cmd:fetch_local_settings()");
+    
     let settings = state.lock()
         .expect("failed to lock settings");
     Ok(settings.clone())
@@ -19,7 +21,7 @@ pub fn update_local_settings(
     state: State<std::sync::Mutex<LocalSettings>>,
     updated_settings: PartialLocalSettingsDto,
 ) -> Result<(), String> {
-    log::info!("updated settings: {:?}", updated_settings);
+    log::debug!("cmd:update_local_settings({:?})", updated_settings);
 
     let mut current = state.lock()
         .expect("failed to lock settings");

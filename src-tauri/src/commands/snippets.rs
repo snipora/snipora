@@ -9,6 +9,8 @@ pub fn create_snippet(
     snippet: String,
     tags: Vec<String>,
 ) -> Result<String, String> {
+    log::debug!("cmd:create_snippet({:?}, {:?}, {:?})", label, snippet, tags);
+    
     let mut conn = state.lock()
         .expect("failed to get db-conn");
     let tx = conn.transaction()
@@ -36,6 +38,8 @@ pub fn update_snippet(
     snippet: String,
     tags: Vec<String>,
 ) -> Result<(), String> {
+    log::debug!("cmd::update_snippet({:?}, {:?}, {:?}, {:?})", id, label, snippet, tags);
+    
     let mut conn = state.lock()
         .expect("failed to get db-conn");
     let tx = conn.transaction()
@@ -62,6 +66,8 @@ pub fn delete_snippet(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     snippet_id: String,
 ) -> Result<(), String> {
+    log::debug!("cmd:delete_snippet({:?})", snippet_id);
+    
     let mut conn = state.lock()
         .expect("failed to get db-conn");
     let tx = conn.transaction()
@@ -83,6 +89,8 @@ pub fn delete_snippet(
 pub fn get_all_snippets(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
 ) -> Result<Vec<SnippetDto>, String> {
+    log::debug!("cmd:get_all_snippets()");
+    
     let conn = state.lock()
         .expect("failed to get db-conn");
 
@@ -105,6 +113,8 @@ pub fn get_snippet_by_id(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     snippet_id: String,
 ) -> Result<Option<SnippetDto>, String> {
+    log::debug!("cmd:get_snippet_by_id({:?})", snippet_id);
+    
     let conn = state.lock()
         .expect("failed to get db-conn");
     
@@ -128,6 +138,8 @@ pub fn search_snippets(
     query: String,
     limit: Option<i64>,
 ) -> Result<Vec<SnippetDto>, String> {
+    log::debug!("cmd:search_snippets({:?})", query);
+    
     let conn = state.lock()
         .expect("failed to get db-conn");
     

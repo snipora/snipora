@@ -2,6 +2,7 @@ use crate::commands::dto::RuntimeInfo;
 
 #[tauri::command]
 pub fn runtime_info() -> RuntimeInfo {
+    log::debug!("cmd:runtime_info()");
     RuntimeInfo {
         os: std::env::consts::OS.to_lowercase(),
         arch: std::env::consts::ARCH.to_lowercase(),

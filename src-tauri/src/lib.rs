@@ -14,6 +14,16 @@ fn is_from_autostart(args: Vec<String>) -> bool {
     args.iter().any(|arg| arg == "--from-autostart")
 }
 
+fn get_logging_level_filter() -> log::LevelFilter {
+    if cfg!(debug_assertions) { return log::LevelFilter::Debug; }
+
+    let mut args = std::env::args().into_iter();
+    if args.any(|arg| arg == "--debug") {
+        return log::LevelFilter::Debug;
+    }
+    log::LevelFilter::Info
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -30,7 +40,7 @@ pub fn run() {
         .plugin(tauri_plugin_notification::init())
         .plugin(
             tauri_plugin_log::Builder::new()
-                .level(log::LevelFilter::Info)
+                .level(get_logging_level_filter())
                 .clear_targets()
                 .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout))
                 .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir { file_name: None }))

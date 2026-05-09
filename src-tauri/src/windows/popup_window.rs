@@ -10,6 +10,8 @@ fn get_popup_window(app: &AppHandle) -> tauri::WebviewWindow {
 }
 
 pub fn init_popup_window(app: &AppHandle) {
+    log::debug!("init_popup_window");
+
     let window = get_popup_window(app);
     let app_handle = app.clone();
 
@@ -80,6 +82,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
         let x = monitor_pos.x + ((monitor_size.width as i32 - window_size.width as i32) / 2);
         let y = monitor_pos.y + ((monitor_size.height as f32 * POPUP_PADDING) as i32);
 
+        log::debug!("window.set_position({:?}, {:?})", x, y);
         window.set_position(tauri::PhysicalPosition { x, y })
             .expect("failed to set window position");
     } else {
@@ -101,8 +104,9 @@ pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
 
     let clamped_height = preferred_height.min(max_height);
 
+    log::debug!("window.set_size({:?}, {:?})", window_width, clamped_height);
     window
-        .set_size(tauri::LogicalSize {
+        .set_size(tauri::PhysicalSize {
             width: window_width,
             height: clamped_height,
         })

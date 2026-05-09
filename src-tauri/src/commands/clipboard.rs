@@ -4,6 +4,8 @@ pub fn insert_snippet(
     state_clipboard: tauri::State<std::sync::Mutex<arboard::Clipboard>>,
     snippet_id: String,
 ) -> Result<(), String> {
+    log::debug!("cmd:insert_snippet({:?})", snippet_id);
+    
     let mut clipboard = state_clipboard.lock()
         .expect("failed to get clipboard");
     let mut conn = state_conn.lock()

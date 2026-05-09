@@ -7,6 +7,8 @@ pub mod snippets;
 pub mod tags;
 
 pub fn init_db(app_handle: &tauri::AppHandle) -> rusqlite::Result<Connection> {
+    log::debug!("init_db");
+    
     let database_path = get_database_path(&app_handle)
         .expect("Failed to get database path");
     let conn = Connection::open(database_path)?;

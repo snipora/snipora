@@ -4,6 +4,8 @@ pub fn delete_tag(
     state: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
     tag: String,
 ) -> Result<(), String> {
+    log::debug!("cmd:delete_tag({:?})", tag);
+    
     let mut conn = state.lock()
         .expect("failed to get db-conn");
 

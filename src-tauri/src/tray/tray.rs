@@ -11,6 +11,7 @@ fn get_tray(app: &AppHandle) -> tauri::tray::TrayIcon {
 }
 
 pub fn create_tray(app: &AppHandle) {
+    log::info!("creating tray");
     let menu = create_tray_menu(app);
     
     let local_settings = app.state::<std::sync::Mutex<LocalSettings>>()
@@ -29,17 +30,20 @@ pub fn create_tray(app: &AppHandle) {
         .menu(&menu)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "open" => {
+                log::debug!("opening main-window");
                 crate::windows::main_window::show_and_focus(app);
             }
             "settings" => {
+                log::debug!("opening main-window with settings");
                 crate::windows::main_window::show_and_focus(app);
                 crate::windows::main_window::show_settings(app);
             }
             "quit" => {
+                log::info!("app.exit");
                 app.exit(0);
             }
             _ => {
-                println!("menu item {:?} not handled", event.id);
+                log::error!("menu item {:?} not handled", event.id);
             }
         })
         .build(app)
@@ -77,7 +81,7 @@ pub fn rebuild_tray_menu(app: &AppHandle) {
     let tray = get_tray(app);
     let menu = create_tray_menu(app);
     if let Err(e) = tray.set_menu(Some(menu)) {
-        log::warn!("failed to rebuild tray menu: {e}");
+        log::error!("failed to rebuild tray menu: {e}");
     }
 }
 
