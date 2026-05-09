@@ -7,17 +7,6 @@
 dev:
     npx tauri dev
 
-[private]
-[no-exit-message]
-[group: 'development']
-frontend-dev:
-    npx vite dev
-
-[private]
-[group: 'build']
-frontend-build:
-    npx vite build
-
 # Build the app without installer bundles
 [group: 'build']
 build:

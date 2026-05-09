@@ -4,9 +4,9 @@
   "version": "../package.json",
   "identifier": "com.snipora.snipora",
   "build": {
-    "beforeDevCommand": "just frontend-dev",
+    "beforeDevCommand": "npx vite dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "just frontend-build",
+    "beforeBuildCommand": "npx vite build",
     "frontendDist": "../dist"
   },
   "app": {
