@@ -18,7 +18,7 @@ jobs:
       - name: Setup just
         uses: extractions/setup-just@v3
         with:
-          just-version: 1.50
+          just-version: '1.50'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
