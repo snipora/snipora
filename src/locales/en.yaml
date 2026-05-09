@@ -19,7 +19,7 @@ settings:
       label: Search Popup Shortcut
       description: Select the shortcut you want to use to open the search popup
       placeholder: Ctrl+Shift+Space
-    use-behavior:
+    snippet-usage-behavior:
       label: Snippet Usage Behavior
       description: Choose how snippets are used
       copy-to-clipboard:
@@ -27,23 +27,23 @@ settings:
         description: Copies the snippet content directly into your clipboard
       simulate-paste:
         label: Simulate Paste
-        description: Automatically pastes the snippet
+        description: Automatically pastes the snippet (coming soon)
       natural-typing:
         label: Natural Typing
-        description: Types the snippet as if you were typing it
+        description: Types the snippet as if you were typing it (considered)
   appearance:
     title: Appearance
     show-tag-counts:
       label: Tag Count in Sidebar
       description: Show number of snippets next to each tag
-    trayTheme:
+    tray-icon-theme:
       label: Tray Icon Theme
       description: Choose how the tray icon appears
       options:
         app-icon: Snipora Icon
         light: Light
         dark: Dark
-    uiTheme:
+    ui-theme:
       label: UI Theme
       description: Choose the application theme
       options:

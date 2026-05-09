@@ -13,7 +13,7 @@ import {useViewState} from "@/main/views/useViewState.ts";
 import {useAllTags} from "@/composables/data/useAllTags.ts";
 import {useLocalSettings} from "@/composables/useLocalSettings.ts";
 
-const showTagCounts = useLocalSettings("ui.showTagCounts");
+const showTagCounts = useLocalSettings("appearance.showTagCounts");
 
 const { tags, tagCounts } = useAllTags();
 const { viewState, setViewState } = useViewState();

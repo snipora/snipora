@@ -3,7 +3,7 @@ import {createSharedComposable, usePreferredDark} from "@vueuse/core";
 import {computed, watch} from "vue";
 
 export const useColorMode = createSharedComposable(() => {
-  const colorTheme = useLocalSettings("ui.theme");
+  const colorTheme = useLocalSettings("appearance.uiTheme");
 
   const preferredDark = usePreferredDark();
   const systemTheme = computed(() => preferredDark.value ? "dark" : "light");

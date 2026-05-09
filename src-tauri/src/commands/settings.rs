@@ -1,6 +1,6 @@
 use tauri::{Emitter, State};
 
-use crate::commands::dto::UpdateLocalSettingsDto;
+use crate::commands::dto::PartialLocalSettingsDto;
 use crate::settings::{self, internal::LocalSettings};
 use crate::tray::tray;
 
@@ -17,7 +17,7 @@ pub fn fetch_local_settings(
 pub fn update_local_settings(
     app: tauri::AppHandle,
     state: State<std::sync::Mutex<LocalSettings>>,
-    updated_settings: UpdateLocalSettingsDto,
+    updated_settings: PartialLocalSettingsDto,
 ) -> Result<(), String> {
     log::info!("updated settings: {:?}", updated_settings);
 
@@ -30,6 +30,9 @@ pub fn update_local_settings(
             rust_i18n::set_locale(&locale);
             tray::rebuild_tray_menu(&app);
         }
+        if let Some(snippet_usage_behavior) = general.snippet_usage_behavior {
+            current.general.snippet_usage_behavior = snippet_usage_behavior;
+        }
     }
 
     if let Some(shortcuts) = updated_settings.shortcuts {
@@ -39,28 +42,19 @@ pub fn update_local_settings(
         }
     }
 
-    if let Some(popup) = updated_settings.popup {
-        if let Some(snippet_usage_behavior) = popup.snippet_usage_behavior {
-            current.popup.snippet_usage_behavior = snippet_usage_behavior;
+    if let Some(appearance) = updated_settings.appearance {
+        if let Some(show_tag_counts) = appearance.show_tag_counts {
+            current.appearance.show_tag_counts = show_tag_counts;
         }
-    }
-
-    if let Some(ui) = updated_settings.ui {
-        if let Some(show_tag_counts) = ui.show_tag_counts {
-            current.ui.show_tag_counts = show_tag_counts;
-        }
-        if let Some(theme) = ui.theme {
+        if let Some(theme) = appearance.ui_theme {
             app.set_theme(Some(match theme {
                 settings::internal::UiTheme::Dark => tauri::Theme::Dark,
                 _ => tauri::Theme::Light,
             }));
-            current.ui.theme = theme;
+            current.appearance.ui_theme = theme;
         }
-    }
-
-    if let Some(tray_settings) = updated_settings.tray {
-        if let Some(icon_theme) = tray_settings.icon_theme {
-            current.tray.icon_theme = icon_theme.clone();
+        if let Some(icon_theme) = appearance.tray_icon_theme {
+            current.appearance.tray_icon_theme = icon_theme.clone();
             let _ = tray::set_tray_icon(&app, icon_theme);
         }
     }

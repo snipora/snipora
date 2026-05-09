@@ -19,22 +19,16 @@ export type SnippetDto = {
 export type LocalSettingsDto = {
   general: {
     locale: string
+    snippetUsageBehavior: "copy-to-clipboard" | "simulate-paste"
   }
 
   shortcuts: {
     openPopup: string
   }
 
-  popup: {
-    snippetUsageBehavior: "copy-to-clipboard" | "simulate-paste"
-  }
-
-  ui: {
+  appearance: {
     showTagCounts: boolean
-    theme: "system" | "light" | "dark"
-  }
-
-  tray: {
-    iconTheme: "app" | "light" | "dark"
+    uiTheme: "system" | "light" | "dark"
+    trayIconTheme: "app" | "light" | "dark"
   }
 }

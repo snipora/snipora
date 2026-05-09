@@ -18,7 +18,7 @@ pub fn create_tray(app: &AppHandle) {
         .expect("failed to lock settings")
         .clone();
     
-    let icon = get_icon_image(app, local_settings.tray.icon_theme)
+    let icon = get_icon_image(app, local_settings.appearance.tray_icon_theme)
         .unwrap_or_else(|err| {
             log::warn!("failed to get app-icon: {err}");
             app.default_window_icon().unwrap().clone()

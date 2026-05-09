@@ -74,7 +74,7 @@ pub fn run() {
             let local_settings = settings::load_settings(&app_handle)
                 .expect("failed to load settings");
             rust_i18n::set_locale(&local_settings.general.locale);
-            app.set_theme(Some(match local_settings.ui.theme {
+            app.set_theme(Some(match local_settings.appearance.ui_theme {
                 settings::internal::UiTheme::Dark => tauri::Theme::Dark,
                 _ => tauri::Theme::Light,
             }));

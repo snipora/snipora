@@ -10,10 +10,10 @@ const { colorTheme, systemTheme } = useColorMode();
 <template>
   <Field orientation="vertical">
     <FieldTitle>
-      {{ $t("settings.appearance.uiTheme.label") }}
+      {{ $t("settings.appearance.ui-theme.label") }}
     </FieldTitle>
     <FieldDescription>
-      {{ $t("settings.appearance.uiTheme.description") }}
+      {{ $t("settings.appearance.ui-theme.description") }}
     </FieldDescription>
     <RadioGroup class="grid-cols-3" v-model="colorTheme">
       <FieldLabel class="bg-background text-foreground cursor-pointer" :class="systemTheme">
@@ -21,7 +21,7 @@ const { colorTheme, systemTheme } = useColorMode();
           <FieldContent>
             <FieldTitle class="text-center">
               <LucideSunMoon class="size-5" />
-              {{ $t("settings.appearance.uiTheme.options.system") }}
+              {{ $t("settings.appearance.ui-theme.options.system") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="system" />
@@ -33,7 +33,7 @@ const { colorTheme, systemTheme } = useColorMode();
           <FieldContent>
             <FieldTitle class="text-center">
               <LucideSun class="size-5" />
-              {{ $t("settings.appearance.uiTheme.options.light") }}
+              {{ $t("settings.appearance.ui-theme.options.light") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="light" />
@@ -45,7 +45,7 @@ const { colorTheme, systemTheme } = useColorMode();
           <FieldContent>
             <FieldTitle class="text-center">
               <LucideMoon class="size-5" />
-              {{ $t("settings.appearance.uiTheme.options.dark") }}
+              {{ $t("settings.appearance.ui-theme.options.dark") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="dark" />

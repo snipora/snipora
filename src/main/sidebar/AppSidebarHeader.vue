@@ -12,7 +12,7 @@ import {Shortcut} from "@/components/ui2/shortcut";
 
 const { viewState, setViewState } = useViewState();
 
-const showTagCounts = useLocalSettings("ui.showTagCounts");
+const showTagCounts = useLocalSettings("appearance.showTagCounts");
 
 const { snippets: allSnippets } = useAllSnippets();
 const { untaggedSnippets } = useUntaggedSnippets();

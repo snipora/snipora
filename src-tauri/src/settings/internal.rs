@@ -6,15 +6,14 @@ pub struct LocalSettings {
     pub version: u32,
     pub general: GeneralSettings,
     pub shortcuts: ShortcutsSettings,
-    pub popup: PopupSettings,
-    pub ui: UiSettings,
-    pub tray: TraySettings,
+    pub appearance: AppearanceSettings,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GeneralSettings {
     pub locale: String,
+    pub snippet_usage_behavior: SnippetUsageBehavior,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
@@ -25,21 +24,10 @@ pub struct ShortcutsSettings {
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct PopupSettings {
-    pub snippet_usage_behavior: SnippetUsageBehavior,
-}
-
-#[derive(Serialize, Deserialize, Default, Clone, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct UiSettings {
+pub struct AppearanceSettings {
     pub show_tag_counts: bool,
-    pub theme: UiTheme,
-}
-
-#[derive(Serialize, Deserialize, Default, Clone, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct TraySettings {
-    pub icon_theme: TrayIconTheme,
+    pub ui_theme: UiTheme,
+    pub tray_icon_theme: TrayIconTheme,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]

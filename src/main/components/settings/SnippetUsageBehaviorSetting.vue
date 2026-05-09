@@ -4,17 +4,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLocalSettings } from "@/composables/useLocalSettings.ts";
 import {LucideClipboardCopy, LucideClipboardPaste, LucideKeyboard} from "@lucide/vue";
 
-const snippetUsageBehavior = useLocalSettings("popup.snippetUsageBehavior");
+const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
 </script>
 
 <template>
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t('settings.general.use-behavior.label') }}
+        {{ $t('settings.general.snippet-usage-behavior.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t('settings.general.use-behavior.description') }}
+        {{ $t('settings.general.snippet-usage-behavior.description') }}
       </FieldDescription>
     </FieldContent>
     <Select v-model="snippetUsageBehavior">
@@ -25,28 +25,28 @@ const snippetUsageBehavior = useLocalSettings("popup.snippetUsageBehavior");
         <SelectItem value="copy-to-clipboard">
           <template #default>
             <LucideClipboardCopy />
-            {{ $t('settings.general.use-behavior.copy-to-clipboard.label') }}
+            {{ $t('settings.general.snippet-usage-behavior.copy-to-clipboard.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.use-behavior.copy-to-clipboard.description') }}
+            {{ $t('settings.general.snippet-usage-behavior.copy-to-clipboard.description') }}
           </template>
         </SelectItem>
         <SelectItem value="simulate-paste" disabled>
           <template #default>
             <LucideClipboardPaste />
-            {{ $t('settings.general.use-behavior.simulate-paste.label') }}
+            {{ $t('settings.general.snippet-usage-behavior.simulate-paste.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.use-behavior.simulate-paste.description') }}
+            {{ $t('settings.general.snippet-usage-behavior.simulate-paste.description') }}
           </template>
         </SelectItem>
         <SelectItem value="natural-typing" disabled>
           <template #default>
             <LucideKeyboard />
-            {{ $t('settings.general.use-behavior.natural-typing.label') }}
+            {{ $t('settings.general.snippet-usage-behavior.natural-typing.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.use-behavior.natural-typing.description') }}
+            {{ $t('settings.general.snippet-usage-behavior.natural-typing.description') }}
           </template>
         </SelectItem>
       </SelectContent>

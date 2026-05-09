@@ -20,52 +20,38 @@ pub struct SnippetDto {
 }
 
 #[derive(serde::Deserialize, Debug)]
-pub struct UpdateLocalSettingsDto {
+pub struct PartialLocalSettingsDto {
     #[serde(default)]
-    pub general: Option<UpdateGeneralSettings>,
+    pub general: Option<PartialGeneralSettings>,
     #[serde(default)]
-    pub shortcuts: Option<UpdateShortcutsSettings>,
+    pub shortcuts: Option<PartialShortcutsSettings>,
     #[serde(default)]
-    pub popup: Option<UpdatePopupSettings>,
-    #[serde(default)]
-    pub ui: Option<UpdateUiSettings>,
-    #[serde(default)]
-    pub tray: Option<UpdateTraySettings>,
+    pub appearance: Option<PartialAppearanceSettings>,
 }
 
 #[derive(serde::Deserialize, Default, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct UpdateGeneralSettings {
+pub struct PartialGeneralSettings {
     #[serde(default)]
     pub locale: Option<String>,
-}
-
-#[derive(serde::Deserialize, Default, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct UpdateShortcutsSettings {
-    #[serde(default)]
-    pub open_popup: Option<String>,
-}
-
-#[derive(serde::Deserialize, Default, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct UpdatePopupSettings {
     #[serde(default)]
     pub snippet_usage_behavior: Option<SnippetUsageBehavior>,
 }
 
 #[derive(serde::Deserialize, Default, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct UpdateUiSettings {
+pub struct PartialShortcutsSettings {
     #[serde(default)]
-    pub show_tag_counts: Option<bool>,
-    #[serde(default)]
-    pub theme: Option<UiTheme>,
+    pub open_popup: Option<String>,
 }
 
 #[derive(serde::Deserialize, Default, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct UpdateTraySettings {
+pub struct PartialAppearanceSettings {
     #[serde(default)]
-    pub icon_theme: Option<TrayIconTheme>,
+    pub show_tag_counts: Option<bool>,
+    #[serde(default)]
+    pub ui_theme: Option<UiTheme>,
+    #[serde(default)]
+    pub tray_icon_theme: Option<TrayIconTheme>,
 }

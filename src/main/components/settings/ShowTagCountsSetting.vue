@@ -3,7 +3,7 @@ import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/
 import { Switch } from "@/components/ui/switch";
 import { useLocalSettings } from "@/composables/useLocalSettings";
 
-const showTagCounts = useLocalSettings("ui.showTagCounts");
+const showTagCounts = useLocalSettings("appearance.showTagCounts");
 </script>
 
 <template>

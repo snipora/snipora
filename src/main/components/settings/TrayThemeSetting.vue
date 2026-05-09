@@ -4,16 +4,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SniporaIconDark, SniporaIconLight, SniporaLogo } from "@/components/icons";
 import { useLocalSettings } from "@/composables/useLocalSettings";
 
-const trayTheme = useLocalSettings("tray.iconTheme");
+const trayTheme = useLocalSettings("appearance.trayIconTheme");
 </script>
 
 <template>
   <Field orientation="vertical">
     <FieldTitle>
-      {{ $t("settings.appearance.trayTheme.label") }}
+      {{ $t("settings.appearance.tray-icon-theme.label") }}
     </FieldTitle>
     <FieldDescription>
-      {{ $t("settings.appearance.trayTheme.description") }}
+      {{ $t("settings.appearance.tray-icon-theme.description") }}
     </FieldDescription>
     <RadioGroup class="grid-cols-3" v-model="trayTheme">
       <FieldLabel class="cursor-pointer">
@@ -23,7 +23,7 @@ const trayTheme = useLocalSettings("tray.iconTheme");
               <SniporaLogo class="size-6" />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.trayTheme.options.app-icon") }}
+              {{ $t("settings.appearance.tray-icon-theme.options.app-icon") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="app-icon" />
@@ -37,7 +37,7 @@ const trayTheme = useLocalSettings("tray.iconTheme");
               <SniporaIconLight />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.trayTheme.options.light") }}
+              {{ $t("settings.appearance.tray-icon-theme.options.light") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="light" />
@@ -51,7 +51,7 @@ const trayTheme = useLocalSettings("tray.iconTheme");
               <SniporaIconDark />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.trayTheme.options.dark") }}
+              {{ $t("settings.appearance.tray-icon-theme.options.dark") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="dark" />
