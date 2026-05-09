@@ -11,7 +11,7 @@ interface ShortcutConfig {
    * - `string`: Shortcut only triggers when the specified input (by name) is focused*/
   usingInput?: string | boolean
   /** additional conditions that have to be met in order to enable the shortcut */
-  whenever?: WatchSource<boolean>[]
+  whenever?: WatchSource<boolean> | WatchSource<boolean>[]
 }
 
 interface ShortcutsConfig {
@@ -93,7 +93,8 @@ export function defineShortcuts(config: ShortcutsConfig, options: ShortcutOption
       } else if (typeof config.usingInput === 'string') {
         conditions.push(computed(() => usingInput.value === config.usingInput));
       }
-      shortcut.condition = logicAnd(...conditions, ...(config.whenever ?? []));
+      const whenever = config.whenever === undefined ? [] : Array.isArray(config.whenever) ? config.whenever : [config.whenever];
+      shortcut.condition = logicAnd(...conditions, ...whenever);
     }
 
     return shortcut as InternalShortcut;
