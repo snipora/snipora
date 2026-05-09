@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {
   Dialog,
   DialogDescription,
@@ -19,6 +19,7 @@ import {useAsyncAction} from "@/composables/useAsyncAction.ts";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {LucideCircleAlert} from "@lucide/vue";
 import {SnippetDto} from "@/api/dto.ts";
+import {defineShortcuts} from "@/composables/defineShortcut.ts";
 
 const props = defineProps<{
   snippet: SnippetDto
@@ -29,6 +30,7 @@ const isOpen = ref(false);
 const label = ref("");
 const snippet = ref("");
 const tags = ref<string[]>([]);
+const isSubmittable = computed(() => !isSubmitting.value && !!label.value.trim().length && !!snippet.value.trim().length);
 
 watch(() => props.snippet, (newSnippet) => {
   label.value = newSnippet.label;
@@ -49,6 +51,19 @@ const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAct
     tags: tags.value,
   });
   isOpen.value = false;
+});
+
+defineShortcuts({
+  ctrl_s: {
+    handler: handleSubmit,
+    whenever: [isOpen, isSubmittable],
+    usingInput: true,
+  },
+  ctrl_enter: {
+    handler: handleSubmit,
+    whenever: [isOpen, isSubmittable],
+    usingInput: true,
+  },
 });
 </script>
 
@@ -103,7 +118,7 @@ const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAct
         </Button>
         <Button
           type="submit"
-          :disabled="isSubmitting || !label.trim() || !snippet.trim()"
+          :disabled="!isSubmittable"
           @click="handleSubmit"
         >
           <Spinner v-if="isSubmitting" class="mr-2" />

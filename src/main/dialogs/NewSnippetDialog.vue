@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {
   Dialog,
   DialogDescription,
@@ -22,22 +22,16 @@ import {LucideCircleAlert} from "@lucide/vue";
 
 const isOpen = ref(false);
 
-defineShortcuts({
-  "ctrl_n": () => {
-    isOpen.value = true;
-  },
-});
-
 const label = ref("");
 const snippet = ref("");
 const tags = ref<string[]>([]);
+const isSubmittable = computed(() => !isSubmitting.value && !!label.value.trim().length && !!snippet.value.trim().length);
 
 function resetForm() {
   label.value = "";
   snippet.value = "";
   tags.value = [];
 }
-
 
 const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAction(async () => {
   if (!label.value.trim() || !snippet.value.trim()) {
@@ -51,6 +45,22 @@ const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAct
   });
   isOpen.value = false;
   resetForm();
+});
+
+defineShortcuts({
+  ctrl_n: () => {
+    isOpen.value = true;
+  },
+  ctrl_s: {
+    handler: handleSubmit,
+    whenever: [isOpen, isSubmittable],
+    usingInput: true,
+  },
+  ctrl_enter: {
+    handler: handleSubmit,
+    whenever: [isOpen, isSubmittable],
+    usingInput: true,
+  },
 });
 </script>
 
@@ -105,7 +115,7 @@ const { invoke: handleSubmit, isRunning: isSubmitting, lastError } = useAsyncAct
         </Button>
         <Button
           type="submit"
-          :disabled="isSubmitting || !label.trim() || !snippet.trim()"
+          :disabled="!isSubmittable"
           @click="handleSubmit"
         >
           <Spinner v-if="isSubmitting" class="mr-2" />
