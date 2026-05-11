@@ -7,12 +7,15 @@ on:
 
 jobs:
   preflight:
+    name: Preflight Checks
     runs-on: ubuntu-latest
     outputs:
       published_at: ${{ steps.release_meta.outputs.published_at }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true  # required for published_at
 
       - name: Setup just
         uses: extractions/setup-just@v3
@@ -61,6 +64,7 @@ jobs:
           echo "published_at=$PUBLISHED_AT" >> "$GITHUB_OUTPUT"
 
   build:
+    name: Build Artifacts
     needs: preflight
     strategy:
       fail-fast: true
@@ -172,6 +176,7 @@ jobs:
           if-no-files-found: error
 
   release:
+    name: Create Release
     needs: build
     permissions:
       contents: write
