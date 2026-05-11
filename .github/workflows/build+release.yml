@@ -5,12 +5,11 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
-permissions:
-  contents: write
-
 jobs:
   preflight:
     runs-on: ubuntu-latest
+    outputs:
+      published_at: ${{ steps.release_meta.outputs.published_at }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,6 +53,13 @@ jobs:
       - name: Rust check
         run: just type-check-backend
 
+      - name: Resolve release metadata
+        id: release_meta
+        run: |
+          PUBLISHED_AT="$(git for-each-ref --format='%(taggerdate:iso8601-strict)' '${{ github.ref }}')"
+          if [ -z "$PUBLISHED_AT" ]; then exit 1; fi
+          echo "published_at=$PUBLISHED_AT" >> "$GITHUB_OUTPUT"
+
   build:
     needs: preflight
     strategy:
@@ -72,9 +78,7 @@ jobs:
           - platform: 'macos-latest'  # for Arm based macs (M1 and above)
             target: aarch64-apple-darwin
             arch: arm64
-
     runs-on: ${{ matrix.platform }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -169,14 +173,12 @@ jobs:
 
   release:
     needs: build
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            scripts
-          sparse-checkout-cone-mode: false
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -191,8 +193,9 @@ jobs:
       - name: Generate updater.json
         run: node scripts/generate-updater.cjs
         env:
-          REF_NAME: ${{ github.ref_name }}
-          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+          PUBLISHED_AT: ${{ needs.preflight.outputs.published_at }}
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
@@ -216,3 +219,50 @@ jobs:
             release-artifacts/macOS-arm64/snipora-${{ github.ref_name }}-arm64.app.tar.gz
             
             release-artifacts/updater.json
+
+  publish-download-manifest:
+    name: Publish Download Manifest
+    needs: [preflight, release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout snipora repository
+        uses: actions/checkout@v4
+        with:
+          path: snipora
+
+      - name: Checkout website repository
+        uses: actions/checkout@v4
+        with:
+          repository: snipora/snipora.github.io
+          token: ${{ secrets.SNIPORA_WEBSITE_PUSH_TOKEN }}
+          path: website
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate download manifest
+        working-directory: snipora
+        run: node scripts/generate-download-manifest.cjs
+        env:
+          TAG: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+          OUTPUT_DIR: ../website/assets/download-manifests
+          PUBLISHED_AT: ${{ needs.preflight.outputs.published_at }}
+
+      - name: Commit manifest updates
+        working-directory: website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git add assets/download-manifests
+          
+          if git diff --cached --quiet; then
+            echo "No Changes to commit"
+            exit 0
+          fi
+          
+          git commit -m "chore: update download manifest for ${{ github.ref_name }}"
+          git push
