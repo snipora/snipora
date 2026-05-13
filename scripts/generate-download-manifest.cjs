@@ -25,7 +25,7 @@ function asset(file) {
 const manifest = {
   version: version,
   tag: TAG,
-  published: PUBLISHED_AT,
+  publishedAt: PUBLISHED_AT,
   notesUrl: `https://github.com/${REPOSITORY}/releases/tag/${TAG}`,
   downloads: {
     windows: {
