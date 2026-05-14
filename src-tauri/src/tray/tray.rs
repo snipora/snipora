@@ -3,6 +3,10 @@ use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 use crate::settings::internal::{LocalSettings, TrayIconTheme};
 
+static ICON_APP: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-app.png");
+static ICON_LIGHT: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-light.png");
+static ICON_DARK: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-dark.png");
+
 const TRAY_ID: &str = "tray";
 
 fn get_tray(app: &AppHandle) -> tauri::tray::TrayIcon {
@@ -19,11 +23,7 @@ pub fn create_tray(app: &AppHandle) {
         .expect("failed to lock settings")
         .clone();
     
-    let icon = get_icon_image(app, local_settings.appearance.tray_icon_theme)
-        .unwrap_or_else(|err| {
-            log::warn!("failed to get app-icon: {err}");
-            app.default_window_icon().unwrap().clone()
-        });
+    let icon = get_icon_image(local_settings.appearance.tray_icon_theme).clone();
 
     TrayIconBuilder::with_id(TRAY_ID)
         .icon(icon)
@@ -86,7 +86,7 @@ pub fn rebuild_tray_menu(app: &AppHandle) {
 }
 
 pub fn set_tray_icon(app: &AppHandle, theme: TrayIconTheme) -> Result<(), String> {
-    let icon = get_icon_image(app, theme)?;
+    let icon = get_icon_image(theme).clone();
 
     let tray = get_tray(app);
 
@@ -96,26 +96,10 @@ pub fn set_tray_icon(app: &AppHandle, theme: TrayIconTheme) -> Result<(), String
     Ok(())
 }
 
-fn get_icon_image(
-    app: &AppHandle,
-    theme: TrayIconTheme,
-) -> Result<tauri::image::Image<'static>, String> {
-    #[cfg(target_os = "windows")]
-    let ext = "ico";
-    #[cfg(not(target_os = "windows"))]
-    let ext = "png";
-
-    let relative_path = match theme {
-        TrayIconTheme::AppIcon => format!("tray-icons/logo-app.{ext}"),
-        TrayIconTheme::Light => format!("tray-icons/logo-light.{ext}"),
-        TrayIconTheme::Dark => format!("tray-icons/logo-dark.{ext}"),
-    };
-
-    let path = app
-        .path()
-        .resolve(relative_path, tauri::path::BaseDirectory::Resource)
-        .map_err(|e| e.to_string())?;
-
-    tauri::image::Image::from_path(path)
-        .map_err(|e| e.to_string())
+fn get_icon_image(theme: TrayIconTheme) -> &'static tauri::image::Image<'static> {
+    match theme {
+        TrayIconTheme::AppIcon => &ICON_APP,
+        TrayIconTheme::Light => &ICON_LIGHT,
+        TrayIconTheme::Dark => &ICON_DARK,
+    }
 }

@@ -39,4 +39,5 @@ i18n-check:
 # Generate app icons from source image
 [group: 'tools']
 generate-icons:
-    node scripts/generate-icons.ts
+    npx tauri icon assets/snipora.svg
+    node scripts/generate-tray-icons.ts

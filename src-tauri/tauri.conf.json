@@ -65,9 +65,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": {
-      "resources/tray-icons/*": "tray-icons/"
-    },
     "linux": {
       "appimage": {
         "bundleMediaFramework": false

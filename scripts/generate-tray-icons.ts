@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
-import pngToIco from "png-to-ico";
 
 const SOURCE_ROOT = "assets/";
-const OUTPUT_ROOT = "src-tauri/resources/tray-icons/";
+const OUTPUT_ROOT = "src-tauri/icons/tray/";
 const SIZE = 128;
 
 type Variant = { input: string, name: string };
@@ -23,9 +22,8 @@ for (const variant of variants) {
 
   const png_buffer = await sharp(input)
       .resize(SIZE, SIZE)
-      .png({ effort: 10, compressionLevel: 9 })
+      .ensureAlpha()
+      .png({ effort: 10, compressionLevel: 9, palette: false })
       .toBuffer();
-  const ico_buffer = await pngToIco(png_buffer);
   fs.writeFileSync(`${output}.png`, png_buffer);
-  fs.writeFileSync(`${output}.ico`, ico_buffer);
 }
