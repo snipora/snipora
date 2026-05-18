@@ -41,3 +41,7 @@ i18n-check:
 generate-icons:
     npx tauri icon assets/snipora.svg
     node scripts/generate-tray-icons.ts
+
+[group: 'tools']
+new-migration +DESCRIPTION:
+    touch "src-tauri/migrations/`date '+%Y%m%d%H%M%S'`_{{snakecase(lowercase(DESCRIPTION))}}.sql"

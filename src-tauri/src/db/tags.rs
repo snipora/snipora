@@ -1,139 +1,147 @@
-fn normalize_tag(input: &str) -> rusqlite::Result<String> {
+fn normalize_tag(input: &str) -> Result<String, sqlx::Error> {
     let tag = input.trim().to_lowercase();
 
     if tag.is_empty() {
-        return Err(rusqlite::Error::InvalidParameterName("empty tag".into()));
+        return Err(sqlx::Error::InvalidArgument("empty tag".into()));
     }
 
     if tag.len() > 32 {
-        return Err(rusqlite::Error::InvalidParameterName("tag too long".into()));
+        return Err(sqlx::Error::InvalidArgument("tag too long".into()));
     }
 
     if !tag
         .chars()
         .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-' || c == '_')
     {
-        return Err(rusqlite::Error::InvalidParameterName("invalid characters in tag".into()));
+        return Err(sqlx::Error::InvalidArgument("invalid characters in tag".into()));
     }
 
     Ok(tag)
 }
 
-pub fn get_tags_for_snippet(
-    conn: &rusqlite::Connection,
+pub async fn get_tags_for_snippet(
+    pool: &sqlx::SqlitePool,
     snippet_id: &str,
-) -> rusqlite::Result<Vec<String>> {
-    let mut stmt = conn.prepare(r#"
+) -> Result<Vec<String>, sqlx::Error> {
+    let rows = sqlx::query_scalar::<_, String>(r#"
 SELECT t.name
 FROM tags t
 JOIN snippet_tags st
     ON t.id = st.tag_id
-WHERE st.snippet_id = ?1
-    "#)?;
-    
-    let rows = stmt.query_map([snippet_id], |row| row.get(0))?;
+WHERE st.snippet_id = ?
+        "#)
+        .bind(snippet_id)
+        .fetch_all(pool)
+        .await?;
 
-    Ok(rows.filter_map(Result::ok).collect())
+    Ok(rows)
 }
 
-pub fn get_or_create_tag(
-    tx: &rusqlite::Transaction,
+pub async fn get_or_create_tag(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     name: &str,
-) -> rusqlite::Result<String> {
+) -> Result<String, sqlx::Error> {
     let normalized = normalize_tag(name)?;
 
-    let mut stmt = tx.prepare(r#"
+    let existing = sqlx::query_scalar::<_, String>(r#"
 SELECT id
 FROM tags
-WHERE name = ?1
-    "#)?;
-    let mut rows = stmt.query(rusqlite::params![&normalized])?;
+WHERE name = ?
+        "#)
+        .bind(&normalized)
+        .fetch_optional(&mut **tx)
+        .await?;
 
-    if let Some(row) = rows.next()? {
-        return Ok(row.get(0)?);
+    if let Some(id) = existing {
+        return Ok(id);
     }
 
     let id = uuid::Uuid::now_v7().to_string();
 
-    tx.execute(
-        r#"
-INSERT INTO tags(id, name) VALUES (?1, ?2)
-        "#,
-        rusqlite::params![id, normalized],
-    )?;
+    sqlx::query(r#"
+INSERT INTO tags(id, name) VALUES (?, ?)
+        "#)
+        .bind(&id)
+        .bind(&normalized)
+        .execute(&mut **tx)
+        .await?;
 
     Ok(id)
 }
 
-pub fn set_snippet_tags(
-    tx: &rusqlite::Transaction,
+pub async fn set_snippet_tags(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     snippet_id: &str,
     tags: Vec<String>,
-) -> rusqlite::Result<()> {
+) -> Result<(), sqlx::Error> {
     let mut unique_tags = std::collections::HashSet::new();
     for tag in tags {
         let normalized = normalize_tag(&tag)?;
         unique_tags.insert(normalized);
     }
 
-    tx.execute(
-        r#"
+    sqlx::query(r#"
 DELETE FROM snippet_tags
-WHERE snippet_id = ?1
-        "#,
-        rusqlite::params![snippet_id],
-    )?;
+WHERE snippet_id = ?
+        "#)
+        .bind(snippet_id)
+        .execute(&mut **tx)
+        .await?;
 
     for tag in unique_tags {
-        let tag_id = get_or_create_tag(&tx, &tag)?;
+        let tag_id = get_or_create_tag(tx, &tag)
+            .await?;
 
-        tx.execute(
-            r#"
+        sqlx::query(r#"
 INSERT OR IGNORE INTO snippet_tags(snippet_id, tag_id)
-VALUES (?1, ?2)
-            "#,
-            rusqlite::params![snippet_id, tag_id],
-        )?;
+VALUES (?, ?)
+        "#)
+        .bind(snippet_id)
+        .bind(&tag_id)
+        .execute(&mut **tx)
+        .await?;
     }
 
     Ok(())
 }
 
-pub fn cleanup_unused_tags(
-    tx: &rusqlite::Transaction,
-) -> rusqlite::Result<()> {
-    tx.execute(r#"
+pub async fn cleanup_unused_tags(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+) -> Result<(), sqlx::Error> {
+    sqlx::query(r#"
 DELETE FROM tags
 WHERE id NOT IN (
     SELECT DISTINCT tag_id FROM snippet_tags
 )
-    "#, [])?;
+        "#)
+        .execute(&mut **tx)
+        .await?;
 
     Ok(())
 }
 
-pub fn delete_tag(
-    tx: &rusqlite::Transaction,
+pub async fn delete_tag(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
     tag_name: &str,
-) -> rusqlite::Result<()> {
+) -> Result<(), sqlx::Error> {
     let normalized = normalize_tag(tag_name)?;
 
-    tx.execute(
-        r#"
+    sqlx::query(r#"
 DELETE FROM snippet_tags
 WHERE tag_id IN (
-    SELECT id FROM tags WHERE name = ?1
+    SELECT id FROM tags WHERE name = ?
 )
-        "#,
-        rusqlite::params![normalized],
-    )?;
+        "#)
+        .bind(&normalized)
+        .execute(&mut **tx)
+        .await?;
 
-    tx.execute(
-        r#"
-DELETE FROM tags WHERE name = ?1
-        "#,
-        rusqlite::params![normalized],
-    )?;
+    sqlx::query(r#"
+DELETE FROM tags WHERE name = ?
+        "#)
+        .bind(&normalized)
+        .execute(&mut **tx)
+        .await?;
 
     Ok(())
 }

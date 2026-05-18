@@ -73,9 +73,9 @@ pub fn run() {
         .setup(|app| {
             let app_handle = app.handle();
 
-            let conn = db::init_db(&app_handle)
+            let pool = tauri::async_runtime::block_on(db::init_db(&app_handle))
                 .expect("failed to init db");
-            app.manage(std::sync::Mutex::new(conn));
+            app.manage(pool);
 
             let clipboard = arboard::Clipboard::new()
                 .expect("failed to create clipboard");

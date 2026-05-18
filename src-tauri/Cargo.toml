@@ -27,9 +27,10 @@ tauri-plugin-single-instance = "2.4.2"
 tauri-plugin-window-state = "2.4.1"
 tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
+tokio = { version = "1", features = ["rt"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
-rusqlite = {version = "0.39.0", features = ["bundled"] }
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "migrate"] }
 rust-i18n = "4.0.0"
 uuid = { version = "1.23.1", features = ["v7"] }
 time = "0.3.47"

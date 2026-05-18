@@ -1,19 +1,13 @@
 #[tauri::command]
-pub fn insert_snippet(
-    state_conn: tauri::State<std::sync::Mutex<rusqlite::Connection>>,
-    state_clipboard: tauri::State<std::sync::Mutex<arboard::Clipboard>>,
+pub async fn insert_snippet(
+    pool: tauri::State<'_, sqlx::SqlitePool>,
+    state_clipboard: tauri::State<'_, std::sync::Mutex<arboard::Clipboard>>,
     snippet_id: String,
 ) -> Result<(), String> {
     log::debug!("cmd:insert_snippet({:?})", snippet_id);
-    
-    let mut clipboard = state_clipboard.lock()
-        .expect("failed to get clipboard");
-    let mut conn = state_conn.lock()
-        .expect("failed to get db-conn");
-    let tx = conn.transaction()
-        .expect("failed to start transaction");
 
-    let snippet = crate::db::snippets::get_snippet_by_id(&tx, &snippet_id)
+    let snippet = crate::db::snippets::get_snippet_by_id(&pool, &snippet_id)
+        .await
         .map_err(|e| e.to_string())?
         .ok_or("snippet not found")?;
 
@@ -21,14 +15,25 @@ pub fn insert_snippet(
         return Err("snippet is empty".into());
     }
 
-    clipboard.set_text(snippet.snippet)
+    {
+        let mut clipboard = state_clipboard.lock()
+            .expect("failed to get clipboard");
+        clipboard.set_text(snippet.snippet)
+            .map_err(|e| e.to_string())?;
+    }
+
+    let mut tx = pool
+        .begin()
+        .await
         .map_err(|e| e.to_string())?;
 
-    crate::db::snippets::mark_used(&tx, &snippet_id)
+    crate::db::snippets::mark_used(&mut tx, &snippet_id)
+        .await
         .map_err(|e| e.to_string())?;
 
     tx.commit()
-        .expect("failed to commit transaction");
+        .await
+        .map_err(|e| e.to_string())?;
 
     Ok(())
 }
