@@ -29,7 +29,8 @@ CREATE VIRTUAL TABLE IF NOT EXISTS snippets_fts USING fts5(
     label,
     snippet,
     content='snippets',
-    content_rowid='rowid'
+    content_rowid='rowid',
+    tokenize='unicode61 remove_diacritics 2'
 );
 
 CREATE TRIGGER IF NOT EXISTS snippets_ai AFTER INSERT ON snippets BEGIN

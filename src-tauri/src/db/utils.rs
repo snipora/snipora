@@ -27,7 +27,7 @@ pub fn get_database_path(app: &tauri::AppHandle) -> Result<PathBuf, String> {
 pub fn build_fts_query(input: &str) -> String {
     input
         .split_whitespace()
-        .map(|token| format!("{}*", token))
+        .map(|token| format!("\"{}\"*", token.replace("\"", "\"\"")))
         .collect::<Vec<_>>()
         .join(" ")
 }
