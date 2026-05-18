@@ -4,7 +4,7 @@ import {usePopupEscapeListener} from "@/popup/composables/usePopupEscapeListener
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {useSearchedSnippets} from "@/popup/composables/useSearchedSnippets.ts";
 import {useRecentSnippets} from "@/composables/data/useRecentSnippets.ts";
-import {invokeInsertSnippet, invokePopupHide} from "@/api/commands";
+import {invokeUseSnippet, invokePopupHide} from "@/api/commands";
 import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
 import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem} from "reka-ui";
 import {LucideSearch} from "@lucide/vue";
@@ -26,7 +26,7 @@ watch(displayedSnippets, () => {
 })
 
 async function handleSelect(snippetId: string) {
-  await invokeInsertSnippet(snippetId);
+  await invokeUseSnippet(snippetId);
   searchTerm.value = "";
   await invokePopupHide();
 }

@@ -56,7 +56,7 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
-            commands::clipboard::insert_snippet,
+            commands::usage::use_snippet,
             commands::info::runtime_info,
             commands::settings::fetch_local_settings,
             commands::settings::update_local_settings,

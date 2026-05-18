@@ -1,4 +1,4 @@
-export * from "./clipboard";
+export * from "./usage.ts";
 export * from "./settings";
 export * from "./snippets";
 export * from "./tags";

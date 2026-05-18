@@ -1,5 +1,5 @@
 #[tauri::command]
-pub async fn insert_snippet(
+pub async fn use_snippet(
     pool: tauri::State<'_, sqlx::SqlitePool>,
     state_clipboard: tauri::State<'_, std::sync::Mutex<arboard::Clipboard>>,
     snippet_id: String,
