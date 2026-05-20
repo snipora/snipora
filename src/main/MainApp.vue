@@ -7,6 +7,7 @@ import {ScrollArea} from "@/components/ui/scroll-area";
 import {useLocalStorage} from "@vueuse/core";
 import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
 import {useColorMode} from "@/composables/useColorMode.ts";
+import { Toaster } from "@/components/ui/sonner";
 
 useColorMode();
 
@@ -28,4 +29,5 @@ useTauriEventListener("main:show-settings", () => {
       <component :is="VIEW_TO_COMPONENT[viewState.id]" v-bind="viewState" />
     </ScrollArea>
   </SidebarProvider>
+  <Toaster />
 </template>
