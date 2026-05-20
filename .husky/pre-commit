@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+just check-i18n
+just check-types-frontend
+just check-types-backend

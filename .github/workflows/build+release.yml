@@ -32,11 +32,11 @@ jobs:
       - name: Install frontend dependencies
         run: npm clean-install
 
-      - name: TypeScript check
-        run: just type-check-frontend
-
       - name: i18n check
-        run: just i18n-check
+        run: just check-i18n
+
+      - name: TypeScript check
+        run: just check-types-frontend
 
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -55,7 +55,7 @@ jobs:
               libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
 
       - name: Rust check
-        run: just type-check-backend
+        run: just check-types-backend
 
       - name: Resolve release metadata
         id: release_meta

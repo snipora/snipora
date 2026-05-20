@@ -19,21 +19,21 @@ build-bundle bundle:
 
 # Check frontend and backend for type errors
 [group: 'checks']
-type-check: type-check-frontend type-check-backend
+check-types: check-types-frontend check-types-backend
 
 # Check frontend for type errors
 [group: 'checks']
-type-check-frontend:
+check-types-frontend:
     npx vue-tsc --noEmit
 
 # Check backend for type errors
 [group: 'checks']
-type-check-backend:
+check-types-backend:
     cargo check --manifest-path src-tauri/Cargo.toml
 
 # Check for missing or unused translation keys
 [group: 'checks']
-i18n-check:
+check-i18n:
     npx vue-i18n-extract --ci --vueFiles 'src/**/*.?(ts|vue)' --languageFiles 'src/locales/*.yaml'
 
 # Generate app icons from source image
@@ -43,5 +43,5 @@ generate-icons:
     node scripts/generate-tray-icons.ts
 
 [group: 'tools']
-new-migration +DESCRIPTION:
+new-db-migration +DESCRIPTION:
     touch "src-tauri/migrations/`date '+%Y%m%d%H%M%S'`_{{snakecase(lowercase(DESCRIPTION))}}.sql"
