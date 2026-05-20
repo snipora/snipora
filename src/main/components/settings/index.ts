@@ -1,8 +1,8 @@
-export { default as AutostartSetting } from "./AutostartSetting.vue";
-export { default as ShortcutSetting } from "./ShortcutSetting.vue";
-export { default as ShowTagCountsSetting } from "./ShowTagCountsSetting.vue";
-export { default as SnippetUsageBehaviorSetting } from "./SnippetUsageBehaviorSetting.vue";
-export { default as TrayThemeSetting } from "./TrayThemeSetting.vue";
-export { default as UiThemeSetting } from "./UiThemeSetting.vue";
-export { default as InfoAppVersion } from "./InfoAppVersion.vue";
-export { default as InfoRuntimeInfo } from "./InfoRuntimeInfo.vue";
+export { default as ShortcutSetting } from "./general/ShortcutSetting.vue";
+export { default as SnippetUsageBehaviorSetting } from "./general/SnippetUsageBehaviorSetting.vue";
+export { default as AutostartSetting } from "./general/AutostartSetting.vue";
+export { default as ShowTagCountsSetting } from "./appearance/ShowTagCountsSetting.vue";
+export { default as TrayThemeSetting } from "./appearance/TrayThemeSetting.vue";
+export { default as UiThemeSetting } from "./appearance/UiThemeSetting.vue";
+export { default as InfoAppVersion } from "./info/InfoAppVersion.vue";
+export { default as InfoRuntimeInfo } from "./info/InfoRuntimeInfo.vue";

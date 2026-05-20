@@ -21,9 +21,9 @@ import {
         {{ $t("settings.general.title") }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
-        <AutostartSetting />
         <ShortcutSetting />
         <SnippetUsageBehaviorSetting />
+        <AutostartSetting />
       </FieldGroup>
     </FieldSet>
     <FieldSeparator />

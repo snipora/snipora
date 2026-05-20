@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLocalSettings } from "@/composables/useLocalSettings.ts";
+import { useLocalSettings } from "@/composables/useLocalSettings.js";
 import {LucideClipboardCopy, LucideClipboardPaste, LucideKeyboard} from "@lucide/vue";
 
 const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
