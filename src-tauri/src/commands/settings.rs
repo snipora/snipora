@@ -35,6 +35,9 @@ pub fn update_local_settings(
         if let Some(snippet_usage_behavior) = general.snippet_usage_behavior {
             current.general.snippet_usage_behavior = snippet_usage_behavior;
         }
+        if let Some(auto_check_for_updates) = general.auto_check_for_updates {
+            current.general.auto_check_for_updates = auto_check_for_updates;
+        }
     }
 
     if let Some(shortcuts) = updated_settings.shortcuts {

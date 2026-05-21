@@ -50,6 +50,11 @@ settings:
         system: System
         light: Light
         dark: Dark
+  updates:
+    title: Updates
+    auto-check-updates:
+      label: Check for Updates Automatically
+      description: Periodically check for new versions of Snipora
   info:
     title: Info
     version:

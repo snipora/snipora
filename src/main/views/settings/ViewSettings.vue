@@ -9,6 +9,7 @@ import {
   ShowTagCountsSetting,
   TrayThemeSetting,
   UiThemeSetting,
+  AutoCheckForUpdatesSetting,
   InfoAppVersion,
   InfoRuntimeInfo,
 } from "@/main/components/settings";
@@ -35,6 +36,15 @@ import {
         <ShowTagCountsSetting />
         <TrayThemeSetting />
         <UiThemeSetting />
+      </FieldGroup>
+    </FieldSet>
+    <FieldSeparator />
+    <FieldSet>
+      <FieldLegend variant="legend">
+        {{ $t('settings.updates.title') }}
+      </FieldLegend>
+      <FieldGroup class="flex flex-col gap-6">
+        <AutoCheckForUpdatesSetting />
       </FieldGroup>
     </FieldSet>
     <FieldSeparator />

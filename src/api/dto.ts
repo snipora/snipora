@@ -20,6 +20,7 @@ export type LocalSettingsDto = {
   general: {
     locale: string
     snippetUsageBehavior: "copy-to-clipboard" | "simulate-paste"
+    autoCheckForUpdates: boolean
   }
 
   shortcuts: {

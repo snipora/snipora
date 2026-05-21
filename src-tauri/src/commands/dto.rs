@@ -37,6 +37,8 @@ pub struct PartialGeneralSettings {
     pub locale: Option<String>,
     #[serde(default)]
     pub snippet_usage_behavior: Option<SnippetUsageBehavior>,
+    #[serde(default)]
+    pub auto_check_for_updates: Option<bool>,
 }
 
 #[derive(serde::Deserialize, Default, Debug)]

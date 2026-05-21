@@ -14,6 +14,7 @@ pub struct LocalSettings {
 pub struct GeneralSettings {
     pub locale: String,
     pub snippet_usage_behavior: SnippetUsageBehavior,
+    pub auto_check_for_updates: bool,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
