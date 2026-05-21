@@ -8,8 +8,12 @@ import {useLocalStorage} from "@vueuse/core";
 import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
 import {useColorMode} from "@/composables/useColorMode.ts";
 import { Toaster } from "@/components/ui/sonner";
+import { useUpdaterToasts } from "@/composables/useUpdaterToasts";
+import { useUpdaterAutoChecker } from "@/composables/useUpdaterAutoChecker";
 
 useColorMode();
+useUpdaterToasts();
+useUpdaterAutoChecker();
 
 const viewState = useLocalStorage<ViewState>('view-state', () => ({
   id: "all-snippets",

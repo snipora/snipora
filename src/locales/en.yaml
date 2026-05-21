@@ -55,6 +55,10 @@ settings:
     auto-check-updates:
       label: Check for Updates Automatically
       description: Periodically check for new versions of Snipora
+    manual-check:
+      label: Check for Updates
+      description: Manually check if a new version of Snipora is available
+      button: Check
   info:
     title: Info
     version:
@@ -63,6 +67,27 @@ settings:
     runtime:
       label: Runtime Info
       description: Operating system, architecture and bundle type
+updater:
+  update-available:
+    title: Update {version} available
+    description: "Current version: {currentVersion}"
+    action: Download
+  downloading:
+    title: Downloading update...
+  download-failed:
+    title: Download failed
+    description: The update could not be downloaded. Please try again.
+  ready-to-install:
+    title: Ready to install {version}
+    description: The update has been downloaded and is ready to install.
+    action: Install & Restart
+  install-failed:
+    title: Installation failed
+    description: The update could not be installed. Please try again.
+  installed:
+    title: Update installed
+    description: Version {version} has been installed. Restart to apply the update.
+    action: Restart Now
 dialogs:
   new-snippet:
     dialog-title: Create New Snippet

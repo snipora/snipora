@@ -5,5 +5,6 @@ export { default as ShowTagCountsSetting } from "./appearance/ShowTagCountsSetti
 export { default as TrayThemeSetting } from "./appearance/TrayThemeSetting.vue";
 export { default as UiThemeSetting } from "./appearance/UiThemeSetting.vue";
 export { default as AutoCheckForUpdatesSetting } from "./updates/AutoCheckForUpdatesSetting.vue";
+export { default as ManualCheckButton } from "./updates/ManualCheckButton.vue";
 export { default as InfoAppVersion } from "./info/InfoAppVersion.vue";
 export { default as InfoRuntimeInfo } from "./info/InfoRuntimeInfo.vue";

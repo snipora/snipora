@@ -6,7 +6,7 @@ pub fn get_defaults() -> LocalSettings {
         general: GeneralSettings {
             locale: sys_locale::get_locale().unwrap_or("en_US".to_string()),
             snippet_usage_behavior: SnippetUsageBehavior::default(),
-            auto_check_for_updates: false,
+            auto_check_for_updates: cfg!(not(debug_assertions)),
         },
         shortcuts: ShortcutsSettings {
             open_popup: "CommandOrControl+Shift+Space".to_string(),

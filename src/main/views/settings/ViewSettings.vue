@@ -10,6 +10,7 @@ import {
   TrayThemeSetting,
   UiThemeSetting,
   AutoCheckForUpdatesSetting,
+  ManualCheckButton,
   InfoAppVersion,
   InfoRuntimeInfo,
 } from "@/main/components/settings";
@@ -45,6 +46,7 @@ import {
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
         <AutoCheckForUpdatesSetting />
+        <ManualCheckButton />
       </FieldGroup>
     </FieldSet>
     <FieldSeparator />

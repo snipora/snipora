@@ -17,7 +17,6 @@ const autoCheckForUpdates = useLocalSettings("general.autoCheckForUpdates");
       </FieldDescription>
     </FieldContent>
     <Switch
-        disabled
         v-model="autoCheckForUpdates"
         class="cursor-pointer"
     />

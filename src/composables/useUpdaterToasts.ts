@@ -1,0 +1,116 @@
+import { h, watch } from "vue";
+import { toast } from "vue-sonner";
+import { Progress } from "@/components/ui/progress";
+import { useI18n } from "vue-i18n";
+import { createSharedComposable } from "@vueuse/core";
+import { useUpdater } from "@/composables/useUpdater";
+
+export const useUpdaterToasts = createSharedComposable(() => {
+  const { t } = useI18n();
+  const updater = useUpdater();
+
+  let toastId: string | number | undefined;
+
+  function showProgressToast() {
+    toastId = toast.loading(t("updater.downloading.title"), {
+      id: toastId,
+      duration: Infinity,
+      dismissible: false,
+      closeButton: false,
+      description: () => {
+        const pct = updater.progress.value;
+        return !isNaN(pct) ? h(Progress, { modelValue: pct, class: "w-full" }) : null;
+      },
+    });
+  }
+
+  watch(() => updater.status.value, (status, prevStatus) => {
+    switch (status) {
+      case "available": {
+        if (prevStatus === "downloading" && updater.error.value) {
+          toast.error(t("updater.download-failed.title"), {
+            id: toastId,
+            description: t("updater.download-failed.description"),
+            duration: Infinity,
+            dismissible: true,
+            closeButton: true,
+          });
+          return;
+        }
+        if (!updater.update.value) return;
+        toast.info(
+          t("updater.update-available.title", { version: updater.update.value.version }),
+          {
+            description: t("updater.update-available.description", {
+              currentVersion: updater.update.value.currentVersion,
+            }),
+            duration: Infinity,
+            dismissible: true,
+            closeButton: true,
+            action: {
+              label: t("updater.update-available.action"),
+              onClick: () => updater.downloadUpdate(),
+            },
+          },
+        );
+        break;
+      }
+      case "downloading":
+        showProgressToast();
+        break;
+      case "ready": {
+        if (prevStatus === "installing") {
+          toast.error(t("updater.install-failed.title"), {
+            id: toastId,
+            description: t("updater.install-failed.description"),
+            duration: Infinity,
+            dismissible: true,
+            closeButton: true,
+          });
+          return;
+        }
+        if (!updater.update.value) return;
+        toast.info(t("updater.ready-to-install.title"), {
+          description: t("updater.ready-to-install.description", {
+            version: updater.update.value.version,
+          }),
+          id: toastId,
+          duration: Infinity,
+          dismissible: false,
+          closeButton: false,
+          action: {
+            label: t("updater.ready-to-install.action"),
+            onClick: () => updater.installUpdate(),
+          },
+        });
+        break;
+      }
+      case "installed": {
+        if (!updater.update.value) return;
+        toast.info(t("updater.installed.title"), {
+          description: t("updater.installed.description", {
+            version: updater.update.value.version,
+          }),
+          duration: Infinity,
+          dismissible: true,
+          closeButton: true,
+          action: {
+            label: t("updater.installed.action"),
+            onClick: () => updater.relaunchApp(),
+          },
+        });
+        break;
+      }
+    }
+  });
+
+  watch(() => updater.progress.value, () => {
+    if (updater.isDownloading.value) {
+      showProgressToast();
+    }
+  });
+
+  return {
+    checkForUpdate: updater.checkForUpdate,
+  };
+});
