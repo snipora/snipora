@@ -1,0 +1,189 @@
+# Changelog
+
+All notable changes to Snipora will be documented in this file.
+
+## 0.3.0 - 2026-05-25
+
+### Features
+
+* added &lt;Toaster&gt; to MainApp.vue
+* add husky and commitlint
+* add pre-commit hook
+* add setting `autoCheckForUpdates`
+* added update management into the frontend via toasts
+
+### Fixes
+
+* invokation of git-cliff
+
+### Refactors
+
+* re-structured settings components directory
+
+### CI
+
+* revamped build+release.yml to be triggered via dispatch
+
+### Other
+
+* npx shadcn-vue add progress
+
+**Full Changelog**: https://github.com/snipora/snipora/compare/v0.2.0...v0.3.0
+
+
+## 0.2.0 - 2026-05-18
+
+### Features
+
+* moved schema.rs#init raw sql-string into a new file migrations/0001_init.sql
+* cleanup of tray-icon handling by embedding the icons
+* cleanup of frontend custom icons
+* slightly improved search
+* changed db library from rusqlite to sqlx
+
+### Other
+
+* renamed command `insert_snippet` to `use_snippet`
+
+**Full Changelog**: https://github.com/snipora/snipora/compare/v0.1.1...v0.2.0
+
+
+## 0.1.1 - 2026-05-13
+
+### Fixes
+
+* generate-download-manifest.cjs renamed property published-&gt;publishedAt
+
+### Other
+
+* updated dependencies
+
+**Full Changelog**: https://github.com/snipora/snipora/compare/v0.1.0...v0.1.1
+
+
+## 0.1.0 - 2026-05-11
+
+### Features
+
+* improved defineShortcut
+* added shortcuts for EditSnippetDialog and NewSnippetDialog
+* added auto generation of download-manifests for snipora.github.io into build+release.yml
+
+### Fixes
+
+* added fetch-tags to build+release.yml preflight and added proper job names
+* build+release.yml PUBLISHED_AT
+
+**Full Changelog**: https://github.com/snipora/snipora/compare/v0.0.1...v0.1.0
+
+
+## 0.0.1 - 2026-05-09
+
+### Features
+
+* npx shadcn-vue@latest add popover
+* implemented custom component TagsInputWithCompletion.vue
+* implemented dialog for &quot;New Snippet&quot;
+* search_snippet make limit optional
+* added missing `invokeSearchSnippets`
+* added backend emit for data-changed and frontend listener
+* added useAllSnippets
+* update from lucide-vue-next to @lucide/vue
+* removed custom query endpoints `invokeGetRecentSnippets` and `invokeGetAllUntaggedSnippets` from the backend in favor of derived state
+* implemented composables `useAllTags`, `useRecentSnippets`, and `useUntaggedSnippets`
+* implemented `TagsList` component
+* implemented crude version of a `SnippetCard` component
+* implemented crude views for ViewAllSnippets, ViewByTag, and ViewUntagged
+* ux improvements for ViewSettings.vue regarding feedback
+* made clipboard tauri-state managed
+* NewSnippetDialog.vue changed textarea font to monospace
+* reworked SnippetCard component
+* updated views to use updated SnippetCard
+* added auto cleanup of unused tags
+* implemented basic popup
+* replaced icons for SnippetCardSnippet.vue copy button
+* added (empty) action &quot;duplicate&quot; to SnippetListEntry.vue
+* added backend command to delete a specific tag
+* resolve --from-autostart cli flag in lib.rs before showing the main-window
+* added defineShortcut composable
+* removed specialized `invokeGetAllTags` command in favor of derived state
+* added shortcut to open the &quot;new snippet&quot; dialog
+* added tag usage counts to the sidebar next to tags and updated settings view
+* implemented useAsyncAction for later
+* implemented &quot;duplicate snippet&quot; action
+* added confirmation dialog before deleting a snippet
+* updated sidebar snippet counts
+* TagsInputWithCompletion.vue proper splitting/processing of tags in input
+* shadcn-vue add alert
+* useSmartPopupHeight.ts replaced debounced with throttle
+* implemented EditSnippetDialog.vue
+* npx shadcn-vue add select
+* updated ViewSettings.vue
+* updated dependencies
+* added memory to main-window view-state
+* code cleanup
+* new component NoSnippets.vue
+* implemented layout system
+* implemented custom settings management system
+* split ViewSettings.vue for better management
+* small popup-window changed
+* updated useAllSnippets missing value
+* implemented new useOsType composable
+* dialog close-button is now default hidden
+* implemented a Shortcut component
+* added global search for snippets
+* updated settings page for a future feature
+* added type check and i18n check
+* moved from npm scripts to a justfile
+* calling tauri `app.set_theme`
+* added info section to ViewSettings to display app-version and runtime-info
+* improved forwarding console logs to the backend
+* useAsyncAction is now ignoring re-runs by default
+* added release workflow
+* added tauri updater plugin
+* cleanup of settings
+* cleanup of dto
+* justfile - added unified `type-check` recipe
+* added some logs
+* cleanup of build and dev commands in tauri.conf.json
+
+### Fixes
+
+* corrected command-name for `invokeGetAllTags`
+* removed debug statement
+* added proper props typing for custom icon components
+* fixed lucide imports and typing
+* replaced `invokeGetAllTags` usage with `useAllTags`
+* fixed search_snippets
+* TagsListTag.vue added missing capitalize class
+* TagOff.vue was slightly off
+* props binding for SnippetCardAction.vue
+* useAsyncAction.ts proper convert of error type
+* fixed search-input being hidden when scrolling
+* replaced hardcoded text with i18n
+* fixed just-version
+* regenerated pubkey
+* build+release.yml bad target directories
+
+### Refactors
+
+* improved window calls in backend
+* moved components
+* updated typing for SnippetCardAction.vue
+* NewSnippetDialog.vue rewritten to use useAsyncAction and added error message
+* renamed db::helper -&gt; db::utils
+* improved ViewByTag.vue by converting computed to global composable
+* added better settings logging to the backend and code reformat
+
+### Other
+
+* added console forwarding to terminal
+* added listener for ESC and auto-adjust popup-height based on content
+* added console-logging for critical errors
+* added shadcn-vue components that should be relevant
+* designed rough sidebar
+* reformatted snipora icon files
+* code reformat
+
+### New Contributors
+* @Barakudum made their first contribution
