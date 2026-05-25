@@ -1,4 +1,5 @@
 import "@/index.css";
+import "vue-sonner/style.css";
 import "@/forward-console.ts";
 import {_initLocalSettings} from "@/composables/useLocalSettings.ts";
 import {App, createApp} from "vue";

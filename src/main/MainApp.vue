@@ -33,5 +33,5 @@ useTauriEventListener("main:show-settings", () => {
       <component :is="VIEW_TO_COMPONENT[viewState.id]" v-bind="viewState" />
     </ScrollArea>
   </SidebarProvider>
-  <Toaster />
+  <Toaster rich-colors />
 </template>
