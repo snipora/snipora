@@ -59,9 +59,8 @@ export const useUpdater = createSharedComposable(() => {
     totalBytes.value = 0;
     error.value = null;
     try {
-      // const raw = toRaw(update.value);
-      // const downloadFn = raw.download.bind(raw);
-      const downloadFn = toRaw(update.value.download);
+      // ! Required work around. Otherwise, we get an TypeError
+      const downloadFn = toRaw(update.value).download;
       await downloadFn((event) => {
         switch (event.event) {
           case "Started":
@@ -88,9 +87,8 @@ export const useUpdater = createSharedComposable(() => {
     status.value = "installing";
     error.value = null;
     try {
-      // const raw = toRaw(update.value);
-      // const installFn = raw.install.bind(raw);
-      const installFn = toRaw(update.value.install);
+      // ! Required work around. Otherwise, we get an TypeError
+      const installFn = toRaw(update.value).install;
       await installFn();
       status.value = "installed";
       console.info("[updater] Update installed");
