@@ -26,11 +26,29 @@ export const useUpdaterToasts = createSharedComposable(() => {
 
   watch(() => updater.status.value, (status, prevStatus) => {
     switch (status) {
+      case "idle": {
+        if (prevStatus === 'checking' && updater.error.value) {
+          toast.error(t("updater.checking-failed.title"), {
+            description: t("updater.checking-failed.description", { error: updater.error.value }),
+            classes: {
+              description: "whitespace-pre-line",
+            },
+            duration: Infinity,
+            dismissible: true,
+            closeButton: true,
+          });
+          return;
+        }
+        break;
+      }
       case "available": {
         if (prevStatus === "downloading" && updater.error.value) {
           toast.error(t("updater.download-failed.title"), {
             id: toastId,
-            description: t("updater.download-failed.description"),
+            description: t("updater.download-failed.description", { error: updater.error.value }),
+            classes: {
+              description: "whitespace-pre-line",
+            },
             duration: Infinity,
             dismissible: true,
             closeButton: true,
@@ -62,7 +80,10 @@ export const useUpdaterToasts = createSharedComposable(() => {
         if (prevStatus === "installing") {
           toast.error(t("updater.install-failed.title"), {
             id: toastId,
-            description: t("updater.install-failed.description"),
+            description: t("updater.install-failed.description", { error: updater.error.value }),
+            classes: {
+              description: "whitespace-pre-line",
+            },
             duration: Infinity,
             dismissible: true,
             closeButton: true,

@@ -74,16 +74,25 @@ updater:
     action: Download
   downloading:
     title: Downloading update...
+  checking-failed:
+    title: Update check failed
+    description: |
+      An error occurred while checking for updates. Please try again.
+      ({error})
   download-failed:
     title: Download failed
-    description: The update could not be downloaded. Please try again.
+    description: |
+      The update could not be downloaded. Please try again.
+      ({error})
   ready-to-install:
     title: Ready to install {version}
     description: The update has been downloaded and is ready to install.
     action: Install & Restart
   install-failed:
     title: Installation failed
-    description: The update could not be installed. Please try again.
+    description: |
+      The update could not be installed. Please try again.
+      ({error})
   installed:
     title: Update installed
     description: Version {version} has been installed. Restart to apply the update.
