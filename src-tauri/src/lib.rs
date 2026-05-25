@@ -26,6 +26,8 @@ fn get_logging_level_filter() -> log::LevelFilter {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    log_panics::init();
+
     tauri::Builder::default()
         .plugin(tauri_plugin_window_state::Builder::new()
             .with_denylist(&["popup"])
@@ -42,7 +44,7 @@ pub fn run() {
             tauri_plugin_log::Builder::new()
                 .level(get_logging_level_filter())
                 .clear_targets()
-                .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout))
+                .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stderr))
                 .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir { file_name: None }))
                 .target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Webview))
                 .rotation_strategy(RotationStrategy::KeepOne)
