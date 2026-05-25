@@ -10,8 +10,7 @@ if (!TAG || !REPOSITORY || !OUTPUT_DIR || !PUBLISHED_AT) {
   console.error("Missing TAG or REPOSITORY or OUTPUT_DIR or PUBLISHED_AT env vars");
   process.exit(1);
 }
-
-const version = TAG.replace(/^v/, "");
+const VERSION = TAG.replace(/^v/, "");
 
 const baseReleaseUrl = `https://github.com/${REPOSITORY}/releases/download/${TAG}`;
 
@@ -23,32 +22,32 @@ function asset(file) {
 }
 
 const manifest = {
-  version: version,
+  version: VERSION,
   tag: TAG,
   publishedAt: PUBLISHED_AT,
   notesUrl: `https://github.com/${REPOSITORY}/releases/tag/${TAG}`,
   downloads: {
     windows: {
       x86_64: {
-        nsis: asset(`snipora-${TAG}-x86_64-setup.exe`),
-        msi: asset(`snipora-${TAG}-x86_64.msi`),
+        nsis: asset(`snipora-${VERSION}-x86_64-setup.exe`),
+        msi: asset(`snipora-${VERSION}-x86_64.msi`),
       },
     },
     linux: {
       x86_64: {
-        appimage: asset(`snipora-${TAG}-x86_64.AppImage`),
-        deb: asset(`snipora-${TAG}-x86_64.deb`),
-        rpm: asset(`snipora-${TAG}-x86_64.rpm`),
+        appimage: asset(`snipora-${VERSION}-x86_64.AppImage`),
+        deb: asset(`snipora-${VERSION}-x86_64.deb`),
+        rpm: asset(`snipora-${VERSION}-x86_64.rpm`),
       },
     },
     macos: {
       x86_64: {
-        dmg: asset(`snipora-${TAG}-x86_64.dmg`),
-        app: asset(`snipora-${TAG}-x86_64.app.tar.gz`),
+        dmg: asset(`snipora-${VERSION}-x86_64.dmg`),
+        app: asset(`snipora-${VERSION}-x86_64.app.tar.gz`),
       },
       arm64: {
-        dmg: asset(`snipora-${TAG}-arm64.dmg`),
-        app: asset(`snipora-${TAG}-arm64.app.tar.gz`),
+        dmg: asset(`snipora-${VERSION}-arm64.dmg`),
+        app: asset(`snipora-${VERSION}-arm64.app.tar.gz`),
       },
     },
   },
