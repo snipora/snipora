@@ -362,6 +362,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
