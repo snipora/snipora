@@ -1,5 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+set -eu
 
-just check-i18n
-just check-types-frontend
-just check-types-backend
+changed_files="$(git diff --cached --name-only)"
+
+if echo "$changed_files" | grep -q '^src/'; then
+  just check-i18n
+  just check-types-frontend
+fi
+
+if echo "$changed_files" | grep -q '^src-tauri/'; then
+  just check-types-backend
+fi

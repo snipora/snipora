@@ -29,7 +29,7 @@ check-types-frontend:
 # Check backend for type errors
 [group: 'checks']
 check-types-backend:
-    cargo check --manifest-path src-tauri/Cargo.toml
+    cargo check --locked --manifest-path src-tauri/Cargo.toml
 
 # Check for missing or unused translation keys
 [group: 'checks']
