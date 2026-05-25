@@ -1,22 +1,121 @@
 name: Build & Release
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type override'
+        required: false
+        default: auto
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
 
 permissions:
   contents: read
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
-  preflight:
-    name: Preflight Checks
+  prepare-release:
+    name: Prepare Release
     runs-on: ubuntu-latest
+
     outputs:
-      published_at: ${{ steps.release_meta.outputs.published_at }}
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      published_at: ${{ steps.meta.outputs.published_at }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install extra dependencies
+        run: |
+          npm install --no-save conventional-recommended-bump git-cliff semver
+
+      - name: Resolve release metadata
+        id: meta
+        run: |
+          PUBLISHED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+          echo "published_at=$PUBLISHED_AT" >> "$GITHUB_OUTPUT"
+
+      - name: Determine version bump
+        id: bump
+        run: |
+          if [ "${{ inputs.release_type }}" != "auto" ]; then
+            BUMP="${{ inputs.release_type }}"
+          else
+            BUMP="$(npx conventional-recommended-bump -p conventionalcommits)"  
+          fi
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+
+      - name: Compute next version
+        id: version
+        run: |
+          CURRENT_VERSION="$(node -p "require('./package.json').version")"
+          
+          NEXT_VERSION="$(node -e "
+            const semver = require('semver');
+          
+          const current = process.argv[1];
+          const bump = process.argv[2];
+          
+          console.log(semver.inc(current, bump));
+          " -- "$CURRENT_VERSION" "${{ steps.bump.outputs.bump }}")"
+          
+          TAG="v$NEXT_VERSION"
+          
+          echo "version=$NEXT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version
+        run: |
+          npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+
+      - name: Generate changelog
+        run: |
+          git-cliff \
+            --config .github/cliff.yaml \
+            --tag "${{ steps.version.outputs.tag }}" \
+            --output CHANGELOG.md
+
+      - name: Upload release state
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-state
+          path: |
+            CHANGELOG.md
+            package.json
+            package-lock.json
+
+  preflight:
+    name: Preflight Checks
+    runs-on: ubuntu-latest
+    needs: prepare-release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore release state
+        uses: actions/download-artifact@v4
+        with:
+          name: release-state
+          path: .
 
       - name: Setup just
         uses: extractions/setup-just@v3
@@ -57,36 +156,43 @@ jobs:
       - name: Rust check
         run: just check-types-backend
 
-      - name: Resolve release metadata
-        id: release_meta
-        run: |
-          PUBLISHED_AT="$(git log -1 --format='%cI' '${{ github.ref }}')"
-          if [ -z "$PUBLISHED_AT" ]; then exit 1; fi
-          echo "published_at=$PUBLISHED_AT" >> "$GITHUB_OUTPUT"
-
   build:
     name: Build Artifacts
-    needs: preflight
+    needs:
+      - prepare-release
+      - preflight
+
     strategy:
       fail-fast: true
       matrix:
         include:
-          - platform: 'windows-latest'
+          - platform: windows-latest
             target: x86_64-pc-windows-msvc
             arch: x86_64
-          - platform: 'ubuntu-latest'
+
+          - platform: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             arch: x86_64
-          - platform: 'macos-latest'  # for Intel based macs
+
+          - platform: macos-latest
             target: x86_64-apple-darwin
             arch: x86_64
-          - platform: 'macos-latest'  # for Arm based macs (M1 and above)
+
+          - platform: macos-latest
             target: aarch64-apple-darwin
             arch: arm64
+
     runs-on: ${{ matrix.platform }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Restore release state
+        uses: actions/download-artifact@v4
+        with:
+          name: release-state
+          path: .
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -94,28 +200,29 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Install frontend dependencies
+        run: npm clean-install
+
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           target: ${{ matrix.target }}
-
-      - name: Install Frontend Dependencies
-        run: npm clean-install
 
       - name: Cache Rust
         uses: swatinem/rust-cache@v2
         with:
           workspaces: './src-tauri -> target'
 
-      - name: Install Linux Dependencies
+      - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
               libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
 
-      - name: Build (Tauri)
-        run: npx tauri build --target ${{ matrix.target }}
+      - name: Build Tauri app
+        run: |
+          npx tauri build --target ${{ matrix.target }}
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
@@ -129,13 +236,17 @@ jobs:
           
           BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
           
-          mv "$BUNDLE_DIR"/msi/*.msi release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi
-          mv "$BUNDLE_DIR"/msi/*.msi.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.msi.sig
-          
-          mv "$BUNDLE_DIR"/nsis/*-setup.exe release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe
-          mv "$BUNDLE_DIR"/nsis/*-setup.exe.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}-setup.exe.sig
+          mv "$BUNDLE_DIR"/msi/*.msi \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.msi
+          mv "$BUNDLE_DIR"/msi/*.msi.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.msi.sig
 
-      - name: Collect Artifacts (Linux)
+          mv "$BUNDLE_DIR"/nsis/*-setup.exe \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}-setup.exe
+          mv "$BUNDLE_DIR"/nsis/*-setup.exe.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}-setup.exe.sig
+
+      - name: Collect Linux artifacts
         if: runner.os == 'Linux'
         shell: bash
         run: |
@@ -144,16 +255,22 @@ jobs:
           
           BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
 
-          mv "$BUNDLE_DIR"/appimage/*.AppImage release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage
-          mv "$BUNDLE_DIR"/appimage/*.AppImage.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.AppImage.sig
+          mv "$BUNDLE_DIR"/appimage/*.AppImage \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.AppImage
+          mv "$BUNDLE_DIR"/appimage/*.AppImage.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.AppImage.sig
 
-          mv "$BUNDLE_DIR"/deb/*.deb release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb
-          mv "$BUNDLE_DIR"/deb/*.deb.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.deb.sig
+          mv "$BUNDLE_DIR"/deb/*.deb \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.deb
+          mv "$BUNDLE_DIR"/deb/*.deb.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.deb.sig
 
-          mv "$BUNDLE_DIR"/rpm/*.rpm release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm
-          mv "$BUNDLE_DIR"/rpm/*.rpm.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.rpm.sig
+          mv "$BUNDLE_DIR"/rpm/*.rpm \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.rpm
+          mv "$BUNDLE_DIR"/rpm/*.rpm.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.rpm.sig
 
-      - name: Collect Artifacts (macOS)
+      - name: Collect macOS artifacts
         if: runner.os == 'macOS'
         shell: bash
         run: |
@@ -162,31 +279,90 @@ jobs:
           
           BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
 
-          mv "$BUNDLE_DIR"/dmg/*.dmg release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.dmg
-          # .sig doesn't exist for .dmg
+          mv "$BUNDLE_DIR"/dmg/*.dmg \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.dmg
 
-          mv "$BUNDLE_DIR"/macos/*.app.tar.gz release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz
-          mv "$BUNDLE_DIR"/macos/*.app.tar.gz.sig release-artifacts/snipora-${{ github.ref_name }}-${{ matrix.arch }}.app.tar.gz.sig
+          mv "$BUNDLE_DIR"/macos/*.app.tar.gz \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.app.tar.gz
+          mv "$BUNDLE_DIR"/macos/*.app.tar.gz.sig \
+            release-artifacts/snipora-${{ needs.prepare-release.outputs.version }}-${{ matrix.arch }}.app.tar.gz.sig
 
-      - name: Upload Artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-${{ matrix.arch }}
-          path: |
-            release-artifacts/*
+          path: release-artifacts/*
           if-no-files-found: error
 
-  release:
-    name: Create Release
-    needs: [preflight, build]
+  finalize-release:
+    name: Finalize Release
     permissions:
       contents: write
+    needs:
+      - prepare-release
+      - build
+
     runs-on: ubuntu-latest
+
+    outputs:
+      tag: ${{ needs.prepare-release.outputs.tag }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Download Artifacts
+      - name: Restore release state
+        uses: actions/download-artifact@v4
+        with:
+          name: release-state
+          path: .
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit release files
+        run: |
+          git add \
+            CHANGELOG.md \
+            package.json \
+            package-lock.json
+          
+          if git diff --cached --quiet; then
+            echo "No release changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore(release): ${{ needs.prepare-release.outputs.tag }}"
+
+      - name: Create git tag
+        run: |
+          if git rev-parse "${{ needs.prepare-release.outputs.tag }}" >/dev/null 2>&1; then
+            echo "Tag ${{ needs.prepare-release.outputs.tag }} already exists"
+          else        
+            git tag "${{ needs.prepare-release.outputs.tag }}"
+          fi
+
+      - name: Push commit and tag
+        run: |
+          git push origin HEAD
+          git push origin "${{ needs.prepare-release.outputs.tag }}" || echo "Tag already pushed"
+
+  release:
+    name: Publish GitHub Release
+    permissions:
+      contents: write
+    needs:
+      - prepare-release
+      - finalize-release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
@@ -197,39 +373,46 @@ jobs:
           node-version: 22
 
       - name: Generate updater.json
-        run: node scripts/generate-updater.cjs
+        run: |
+          node scripts/generate-updater.cjs
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ needs.prepare-release.outputs.tag }}
           REPOSITORY: ${{ github.repository }}
-          PUBLISHED_AT: ${{ needs.preflight.outputs.published_at }}
+          PUBLISHED_AT: ${{ needs.prepare-release.outputs.published_at }}
+          OUTPUT: release-artifacts/updater.json
 
-      - name: Create GitHub Release
+      - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.ref_name }}
-          name: "Snipora ${{ github.ref_name }}"
+          allowUpdates: true
+          tag: ${{ needs.prepare-release.outputs.tag }}
+          name: "Snipora ${{ needs.prepare-release.outputs.tag }}"
           generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
-            release-artifacts/Windows-x86_64/snipora-${{ github.ref_name }}-x86_64.msi
-            release-artifacts/Windows-x86_64/snipora-${{ github.ref_name }}-x86_64-setup.exe
+            release-artifacts/Windows-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.msi
+            release-artifacts/Windows-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64-setup.exe
             
-            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.AppImage
-            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.deb
-            release-artifacts/Linux-x86_64/snipora-${{ github.ref_name }}-x86_64.rpm
+            release-artifacts/Linux-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.AppImage
+            release-artifacts/Linux-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.deb
+            release-artifacts/Linux-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.rpm
             
-            release-artifacts/macOS-x86_64/snipora-${{ github.ref_name }}-x86_64.dmg
-            release-artifacts/macOS-x86_64/snipora-${{ github.ref_name }}-x86_64.app.tar.gz
+            release-artifacts/macOS-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.dmg
+            release-artifacts/macOS-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.app.tar.gz
             
-            release-artifacts/macOS-arm64/snipora-${{ github.ref_name }}-arm64.dmg
-            release-artifacts/macOS-arm64/snipora-${{ github.ref_name }}-arm64.app.tar.gz
+            release-artifacts/macOS-arm64/snipora-${{ needs.prepare-release.outputs.version }}-arm64.dmg
+            release-artifacts/macOS-arm64/snipora-${{ needs.prepare-release.outputs.version }}-arm64.app.tar.gz
             
             release-artifacts/updater.json
 
   publish-download-manifest:
     name: Publish Download Manifest
-    needs: [preflight, release]
+    needs:
+      - prepare-release
+      - release
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout snipora repository
         uses: actions/checkout@v4
@@ -250,14 +433,15 @@ jobs:
 
       - name: Generate download manifest
         working-directory: snipora
-        run: node scripts/generate-download-manifest.cjs
+        run: |
+          node scripts/generate-download-manifest.cjs
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ needs.prepare-release.outputs.tag }}
           REPOSITORY: ${{ github.repository }}
           OUTPUT_DIR: ../website/assets/download-manifests
-          PUBLISHED_AT: ${{ needs.preflight.outputs.published_at }}
+          PUBLISHED_AT: ${{ needs.prepare-release.outputs.published_at }}
 
-      - name: Commit manifest updates
+      - name: Commit website updates
         working-directory: website
         run: |
           git config user.name "github-actions[bot]"
@@ -266,9 +450,9 @@ jobs:
           git add assets/download-manifests
           
           if git diff --cached --quiet; then
-            echo "No Changes to commit"
+            echo "No changes to commit"
             exit 0
           fi
           
-          git commit -m "chore: update download manifest for ${{ github.ref_name }}"
+          git commit -m "chore: update download manifest for ${{ needs.prepare-release.outputs.tag }}"
           git push
