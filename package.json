@@ -1,7 +1,7 @@
 {
   "name": "snipora",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "dependencies": {
     "@lucide/vue": "^1.14.0",

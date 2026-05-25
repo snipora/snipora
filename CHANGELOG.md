@@ -2,6 +2,15 @@
 
 All notable changes to Snipora will be documented in this file.
 
+## 0.3.1 - 2026-05-25
+
+### Fixes
+
+* add missing actions/checkout
+
+**Full Changelog**: https://github.com/snipora/snipora/compare/v0.3.0...v0.3.1
+
+
 ## 0.3.0 - 2026-05-25
 
 ### Features
@@ -27,7 +36,10 @@ All notable changes to Snipora will be documented in this file.
 ### Other
 
 * npx shadcn-vue add progress
+* v0.3.0
 
+### New Contributors
+* @github-actions[bot] made their first contribution
 **Full Changelog**: https://github.com/snipora/snipora/compare/v0.2.0...v0.3.0
 
 
