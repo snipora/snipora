@@ -1,5 +1,5 @@
 import { createSharedComposable } from "@vueuse/core";
-import { computed, readonly, ref, toRaw } from "vue";
+import {computed, readonly, shallowRef, toRaw} from "vue";
 import { check, type Update } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { invokeRuntimeInfo } from "@/api/commands/info";
@@ -14,11 +14,11 @@ export type UpdateStatus =
   | "installed";
 
 export const useUpdater = createSharedComposable(() => {
-  const status = ref<UpdateStatus>("idle");
-  const update = ref<Update | null>(null);
-  const downloadedBytes = ref(0);
-  const totalBytes = ref(0);
-  const error = ref<string | null>(null);
+  const status = shallowRef<UpdateStatus>("idle");
+  const update = shallowRef<Update | null>(null);
+  const downloadedBytes = shallowRef(0);
+  const totalBytes = shallowRef(0);
+  const error = shallowRef<string | null>(null);
 
   const isChecking = computed(() => status.value === "checking");
   const isDownloading = computed(() => status.value === "downloading");
@@ -60,7 +60,7 @@ export const useUpdater = createSharedComposable(() => {
     error.value = null;
     try {
       // ! Required work around. Otherwise, we get an TypeError
-      const downloadFn = toRaw(update.value).download;
+      const downloadFn = update.value.download.bind(toRaw(update.value));
       await downloadFn((event) => {
         switch (event.event) {
           case "Started":
@@ -88,7 +88,7 @@ export const useUpdater = createSharedComposable(() => {
     error.value = null;
     try {
       // ! Required work around. Otherwise, we get an TypeError
-      const installFn = toRaw(update.value).install;
+      const installFn = update.value.install.bind(toRaw(update.value));
       await installFn();
       status.value = "installed";
       console.info("[updater] Update installed");
