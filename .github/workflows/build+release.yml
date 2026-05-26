@@ -154,7 +154,7 @@ jobs:
               libwebkit2gtk-4.1-dev build-essential libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
 
       - name: Rust check
-        run: just check-types-backend
+        run: just check-types-backend --release
 
   build:
     name: Build Artifacts
