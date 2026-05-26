@@ -59,6 +59,8 @@ git:
     - field: "author.name"
       pattern: github-actions\[bot\]
       skip: true
+    - body: "BREAKING CHANGE:"
+      group: <!-- 01 -->Breaking Changes
     - message: "^.+!:"
       group: <!-- 01 -->Breaking Changes
     - message: ^feat

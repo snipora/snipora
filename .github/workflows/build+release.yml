@@ -89,9 +89,18 @@ jobs:
       - name: Generate changelog
         run: |
           npx git-cliff \
-            --config .github/cliff.yaml \
+            --config .github/cliff-changelog.yaml \
             --tag "${{ steps.version.outputs.tag }}" \
+            --latest \
             --output CHANGELOG.md
+
+      - name: Generate release notes
+        run: |
+          npx git-cliff \
+            --config .github/cliff-release.yaml \
+            --tag "${{ steps.version.outputs.tag }}" \
+            --latest \
+            --output RELEASE_NOTES.md
 
       - name: Upload release state
         uses: actions/upload-artifact@v4
@@ -99,6 +108,7 @@ jobs:
           name: release-state
           path: |
             CHANGELOG.md
+            RELEASE_NOTES.md
             package.json
             package-lock.json
 
@@ -393,7 +403,7 @@ jobs:
           allowUpdates: true
           tag: ${{ needs.prepare-release.outputs.tag }}
           name: "Snipora ${{ needs.prepare-release.outputs.tag }}"
-          generateReleaseNotes: true
+          bodyFile: release-artifacts/release-state/RELEASE_NOTES.md
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: |
             release-artifacts/Windows-x86_64/snipora-${{ needs.prepare-release.outputs.version }}-x86_64.msi
