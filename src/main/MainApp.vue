@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {AppSidebar} from "@/main/sidebar";
 import {SidebarProvider} from "@/components/ui/sidebar";
-import {provide} from "vue";
+import {provide, useTemplateRef, watch} from "vue";
 import {INJECTION_KEY_MAIN_VIEW, ViewState, VIEW_TO_COMPONENT} from "@/main/views";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {useLocalStorage} from "@vueuse/core";
@@ -24,12 +24,18 @@ provide(INJECTION_KEY_MAIN_VIEW, viewState);
 useTauriEventListener("main:show-settings", () => {
   viewState.value = { id: "settings" };
 });
+
+const scrollAreaRef = useTemplateRef("scroll-area");
+
+watch(viewState, () => {
+  scrollAreaRef.value?.scrollTo({ top: 0, left: 0, behavior: "instant" });
+}, { deep: false });
 </script>
 
 <template>
   <SidebarProvider>
     <AppSidebar />
-    <ScrollArea class="h-svh w-full">
+    <ScrollArea ref="scroll-area" class="h-svh w-full">
       <component :is="VIEW_TO_COMPONENT[viewState.id]" v-bind="viewState" />
     </ScrollArea>
   </SidebarProvider>

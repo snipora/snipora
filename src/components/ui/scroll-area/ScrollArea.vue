@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ScrollAreaRootProps } from "reka-ui"
-import type { HTMLAttributes } from "vue"
+import {HTMLAttributes, useTemplateRef} from "vue"
 import { reactiveOmit } from "@vueuse/core"
 import {
   ScrollAreaCorner,
@@ -13,10 +13,21 @@ import ScrollBar from "./ScrollBar.vue"
 const props = defineProps<ScrollAreaRootProps & { class?: HTMLAttributes["class"] }>()
 
 const delegatedProps = reactiveOmit(props, "class")
+
+const scrollAreaRootRef = useTemplateRef("scroll-area-root")
+
+function scrollTo(options: ScrollToOptions) {
+  scrollAreaRootRef.value?.viewport?.scrollTo(options)
+}
+
+defineExpose({
+  scrollTo,
+})
 </script>
 
 <template>
   <ScrollAreaRoot
+    ref="scroll-area-root"
     data-slot="scroll-area"
     v-bind="delegatedProps"
     :class="cn('relative', props.class)"
