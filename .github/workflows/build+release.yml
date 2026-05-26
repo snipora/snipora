@@ -17,10 +17,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: release
-  cancel-in-progress: false
-
 jobs:
   prepare-release:
     name: Prepare Release
@@ -44,7 +40,7 @@ jobs:
 
       - name: Install extra dependencies
         run: |
-          npm install --no-save conventional-recommended-bump git-cliff semver
+          npm install --no-save conventional-recommended-bump@11.2 git-cliff@2.13.1 semver@7.8.1
 
       - name: Resolve release metadata
         id: meta
