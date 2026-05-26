@@ -91,7 +91,6 @@ jobs:
           npx git-cliff \
             --config .github/cliff-changelog.yaml \
             --tag "${{ steps.version.outputs.tag }}" \
-            --latest \
             --output CHANGELOG.md
 
       - name: Generate release notes
@@ -99,7 +98,7 @@ jobs:
           npx git-cliff \
             --config .github/cliff-release.yaml \
             --tag "${{ steps.version.outputs.tag }}" \
-            --latest \
+            --unreleased \
             --output RELEASE_NOTES.md
 
       - name: Upload release state

@@ -33,7 +33,7 @@ changelog:
     {% if version -%}
       {% if previous.version %}
         **Full Changelog**: {{ self::remote_url() }}/compare/{{ previous.version }}...{{ version }}    
-      {% endif %}
+      {% endif -%}
     {% endif -%}
     
     {%- macro remote_url() -%}
