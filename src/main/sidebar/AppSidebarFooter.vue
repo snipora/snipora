@@ -2,8 +2,16 @@
 import {SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem} from "@/components/ui/sidebar";
 import {LucideSettings} from "@lucide/vue";
 import {useViewState} from "@/main/views/useViewState.ts";
+import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {Shortcut} from "@/components/ui2/shortcut";
 
 const { viewState, setViewState } = useViewState();
+
+defineShortcuts({
+  ctrl_alt_s: () => {
+    setViewState({ id: 'settings' });
+  },
+});
 </script>
 
 <template>
@@ -16,6 +24,7 @@ const { viewState, setViewState } = useViewState();
         >
           <LucideSettings />
           {{ $t('sidebar.settings.label') }}
+          <Shortcut shortcut="ctrl_alt_s" class="ml-auto" />
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

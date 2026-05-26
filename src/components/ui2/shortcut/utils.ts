@@ -17,6 +17,7 @@ export type ParsedShortcut =
 
 const chainedShortcutRegex = /^[^-]+.*-.*[^-]+$/;
 const combinedShortcutRegex = /^[^_]+.*_.*[^_]+$/;
+const characterShortcutRegex = /^.$/;
 
 export function parseShortcut(shortcut: string): ParsedShortcut | null {
   if (chainedShortcutRegex.test(shortcut)) {
@@ -33,6 +34,12 @@ export function parseShortcut(shortcut: string): ParsedShortcut | null {
       ctrlKey: keySplit.includes("ctrl"),
       shiftKey: keySplit.includes("shift"),
       altKey: keySplit.includes("alt"),
+    };
+  }
+  if (characterShortcutRegex.test(shortcut)) {
+    return {
+      type: "chained",
+      keys: [shortcut],
     };
   }
   console.warn(`Failed to parse shortcut: '${shortcut}'`);

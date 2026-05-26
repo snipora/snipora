@@ -13,7 +13,10 @@ import {logicNot} from "@vueuse/math";
 const open = ref(false);
 
 defineShortcuts({
-  "ctrl_k": () => {
+  ctrl_f: () => {
+    open.value = true;
+  },
+  ctrl_k: () => {
     open.value = true;
   },
 });

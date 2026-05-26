@@ -9,6 +9,7 @@ import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
 import {useLocalSettings} from "@/composables/useLocalSettings.ts";
 import GlobalSearchDialog from "@/main/dialogs/GlobalSearchDialog.vue";
 import {Shortcut} from "@/components/ui2/shortcut";
+import {defineShortcuts} from "@/composables/defineShortcut.ts";
 
 const { viewState, setViewState } = useViewState();
 
@@ -16,6 +17,12 @@ const showTagCounts = useLocalSettings("appearance.showTagCounts");
 
 const { snippets: allSnippets } = useAllSnippets();
 const { untaggedSnippets } = useUntaggedSnippets();
+
+defineShortcuts({
+  '#': () => {
+    setViewState({ id: 'all-snippets' });
+  },
+});
 </script>
 
 <template>
@@ -35,7 +42,7 @@ const { untaggedSnippets } = useUntaggedSnippets();
           <SidebarMenuButton>
             <LucideSearch />
             {{ $t('sidebar.global-search.label') }}
-            <Shortcut shortcut="ctrl_k" class="ml-auto" />
+            <Shortcut shortcut="ctrl_f" class="ml-auto" />
           </SidebarMenuButton>
         </SidebarMenuItem>
       </GlobalSearchDialog>
@@ -51,6 +58,7 @@ const { untaggedSnippets } = useUntaggedSnippets();
           <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
             {{ allSnippets?.length }}
           </span>
+          <Shortcut v-else shortcut="#" class="ml-auto" />
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem v-if="untaggedSnippets?.length">
