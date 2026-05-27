@@ -14,12 +14,14 @@ import {
   InfoAppVersion,
   InfoRuntimeInfo,
 } from "@/main/components/settings";
+import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizontal} from "@lucide/vue";
 </script>
 
 <template>
   <DefaultLayout class="flex flex-col gap-8">
     <FieldSet>
       <FieldLegend variant="legend">
+        <LucideSlidersHorizontal />
         {{ $t("settings.general.title") }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
@@ -31,17 +33,19 @@ import {
     <FieldSeparator />
     <FieldSet>
       <FieldLegend variant="legend">
+        <LucidePalette />
         {{ $t("settings.appearance.title") }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
         <ShowTagCountsSetting />
-        <TrayThemeSetting />
         <UiThemeSetting />
+        <TrayThemeSetting />
       </FieldGroup>
     </FieldSet>
     <FieldSeparator />
     <FieldSet>
       <FieldLegend variant="legend">
+        <LucideRefreshCw />
         {{ $t('settings.updates.title') }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
@@ -52,6 +56,7 @@ import {
     <FieldSeparator />
     <FieldSet>
       <FieldLegend variant="legend">
+        <LucideNotebookText />
         {{ $t("settings.info.title") }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
