@@ -53,12 +53,12 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
       <DialogFooter>
         <Button variant="outline" @click="open = false">
           <LucideX />
-          {{ $t('dialogs.common.cancel') }}
+          {{ $t('dialogs.action.cancel') }}
         </Button>
         <Button variant="destructive" :disabled="isDeleting" @click="handleDelete">
           <Spinner v-if="isDeleting" />
           <LucideTrash v-else />
-          {{ $t('dialogs.delete-tag.confirm') }}
+          {{ $t('dialogs.action.delete') }}
         </Button>
       </DialogFooter>
     </DialogContent>

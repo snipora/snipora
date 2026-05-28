@@ -69,11 +69,11 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" @click="isDeleteDialogOpen = false">
-            {{ $t("dialogs.delete-snippet.cancel") }}
+            {{ $t("dialogs.action.cancel") }}
           </Button>
           <Button variant="destructive" :disabled="isDeleting" @click="handleDelete">
             <Spinner v-if="isDeleting" />
-            {{ $t("dialogs.delete-snippet.confirm") }}
+            {{ $t("dialogs.action.delete") }}
           </Button>
         </DialogFooter>
       </DialogScrollContent>

@@ -104,7 +104,7 @@ defineShortcuts({
       <DialogFooter>
         <Button variant="secondary" @click="isOpen = false">
           <LucideX />
-          {{ $t('dialogs.common.cancel') }}
+          {{ $t('dialogs.action.cancel') }}
         </Button>
         <Button :disabled="!isValid || isRenaming" @click="renameOrMerge">
           <Spinner v-if="isRenaming" />

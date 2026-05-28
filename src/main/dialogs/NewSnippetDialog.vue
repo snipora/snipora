@@ -18,7 +18,7 @@ import {TagsInputWithCompletion} from "@/main/components/tags-input-with-complet
 import {defineShortcuts} from "@/composables/defineShortcut.ts";
 import {useAsyncAction} from "@/composables/useAsyncAction.ts";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {LucideCircleAlert} from "@lucide/vue";
+import {LucideCircleAlert, LucideStickyNotePlus, LucideX} from "@lucide/vue";
 
 const isOpen = ref(false);
 
@@ -80,7 +80,7 @@ defineShortcuts({
       </DialogHeader>
       <form @submit.prevent="handleSubmit" class="grid gap-4">
         <Input
-            v-model="label"
+            v-model.trim="label"
             required
             autofocus
             :placeholder="$t('dialogs.new-snippet.form.label-placeholder')"
@@ -111,15 +111,17 @@ defineShortcuts({
             variant="outline"
             @click="isOpen = false"
         >
-          {{ $t("dialogs.new-snippet.form.cancel") }}
+          <LucideX />
+          {{ $t("dialogs.action.cancel") }}
         </Button>
         <Button
           type="submit"
           :disabled="!isSubmittable"
           @click="handleSubmit"
         >
-          <Spinner v-if="isSubmitting" class="mr-2" />
-          {{ $t("dialogs.new-snippet.form.create") }}
+          <Spinner v-if="isSubmitting" />
+          <LucideStickyNotePlus v-else />
+          {{ $t("dialogs.action.create") }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>

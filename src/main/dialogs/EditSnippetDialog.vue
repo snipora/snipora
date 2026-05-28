@@ -17,7 +17,7 @@ import {invokeUpdateSnippet} from "@/api/commands/snippets";
 import {TagsInputWithCompletion} from "@/main/components/tags-input-with-completion";
 import {useAsyncAction} from "@/composables/useAsyncAction.ts";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {LucideCircleAlert} from "@lucide/vue";
+import {LucideCircleAlert, LucideSave, LucideX} from "@lucide/vue";
 import {SnippetDto} from "@/api/dto.ts";
 import {defineShortcuts} from "@/composables/defineShortcut.ts";
 
@@ -114,15 +114,17 @@ defineShortcuts({
             variant="outline"
             @click="isOpen = false"
         >
-          {{ $t("dialogs.edit-snippet.form.cancel") }}
+          <LucideX />
+          {{ $t("dialogs.action.cancel") }}
         </Button>
         <Button
           type="submit"
           :disabled="!isSubmittable"
           @click="handleSubmit"
         >
-          <Spinner v-if="isSubmitting" class="mr-2" />
-          {{ $t("dialogs.edit-snippet.form.save") }}
+          <Spinner v-if="isSubmitting" />
+          <LucideSave v-else />
+          {{ $t("dialogs.action.save") }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>
