@@ -12,6 +12,7 @@ import {
 import {useViewState} from "@/main/views/useViewState.ts";
 import {useAllTags} from "@/composables/data/useAllTags.ts";
 import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+import {TagContextMenu} from "@/main/components/tag-context-menu";
 
 const showTagCounts = useLocalSettings("appearance.showTagCounts");
 
@@ -25,19 +26,21 @@ const { viewState, setViewState } = useViewState();
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem v-for="tag in tags" :key="tag">
-            <SidebarMenuButton
-                class="capitalize"
-                :is-active="viewState.id === 'snippets-by-tag' && tag === viewState.tag"
-                @click="setViewState({ id: 'snippets-by-tag', tag })"
-            >
-              <LucideTag :style="{ fill: stringToColor(`${tag}`) }" />
-              <span>
-                {{ tag }}
-              </span>
-              <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
-                {{ tagCounts?.get(tag) }}
-              </span>
-            </SidebarMenuButton>
+            <TagContextMenu :tag="tag">
+              <SidebarMenuButton
+                  class="capitalize"
+                  :is-active="viewState.id === 'snippets-by-tag' && tag === viewState.tag"
+                  @click="setViewState({ id: 'snippets-by-tag', tag })"
+              >
+                <LucideTag :style="{ fill: stringToColor(`${tag}`) }" />
+                <span>
+                  {{ tag }}
+                </span>
+                <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
+                  {{ tagCounts?.get(tag) }}
+                </span>
+              </SidebarMenuButton>
+            </TagContextMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>

@@ -69,6 +69,8 @@ pub fn run() {
             commands::snippets::get_snippet_by_id,
             commands::snippets::search_snippets,
             commands::tags::delete_tag,
+            commands::tags::rename_tag,
+            commands::tags::merge_tag,
             commands::windows::popup_hide,
             commands::windows::popup_adjust_height,
         ])

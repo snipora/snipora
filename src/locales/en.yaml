@@ -97,7 +97,14 @@ updater:
     title: Update installed
     description: Version {version} has been installed. Restart to apply the update.
     action: Restart Now
+context-menu:
+  tag:
+    view: View Snippets
+    rename: Rename Tag
+    delete: Delete Tag
 dialogs:
+  common:
+    cancel: Cancel
   new-snippet:
     dialog-title: Create New Snippet
     dialog-description: Add a new snippet to your collection.
@@ -124,7 +131,17 @@ dialogs:
     dialog-title: Delete Snippet
     dialog-description: Are you sure you want to delete this snippet? This action cannot be undone.
     confirm: Delete
-    cancel: Cancel
+  rename-tag:
+    dialog-title: Rename Tag
+    rename-description: Rename this tag
+    merge-description: Merge all snippets into existing "{tag}"
+    input-placeholder: New tag name...
+    rename: Rename
+    merge: Merge
+  delete-tag:
+    dialog-title: Delete Tag
+    dialog-description: Are you sure you want to delete this tag? This will remove it from all snippets.
+    confirm: Delete
 popup:
   input:
     placeholder: Search for snippets...

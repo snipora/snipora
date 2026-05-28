@@ -145,3 +145,99 @@ DELETE FROM tags WHERE name = ?
 
     Ok(())
 }
+
+pub async fn rename_tag(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    old_name: &str,
+    new_name: &str,
+) -> Result<(), sqlx::Error> {
+    let normalized_old = normalize_tag(old_name)?;
+    let normalized_new = normalize_tag(new_name)?;
+
+    if normalized_old == normalized_new {
+        return Ok(());
+    }
+
+    let old_exists = sqlx::query_scalar::<_, String>(
+        "SELECT id FROM tags WHERE name = ?"
+    )
+        .bind(&normalized_old)
+        .fetch_optional(&mut **tx)
+        .await?;
+
+    if old_exists.is_none() {
+        return Err(sqlx::Error::InvalidArgument("tag not found".into()));
+    }
+
+    let new_exists = sqlx::query_scalar::<_, String>(
+        "SELECT id FROM tags WHERE name = ?"
+    )
+        .bind(&normalized_new)
+        .fetch_optional(&mut **tx)
+        .await?;
+
+    if new_exists.is_some() {
+        return Err(sqlx::Error::InvalidArgument("a tag with this name already exists".into()));
+    }
+
+    sqlx::query("UPDATE tags SET name = ? WHERE name = ?")
+        .bind(&normalized_new)
+        .bind(&normalized_old)
+        .execute(&mut **tx)
+        .await?;
+
+    Ok(())
+}
+
+pub async fn merge_tag(
+    tx: &mut sqlx::Transaction<'_, sqlx::Sqlite>,
+    source_name: &str,
+    target_name: &str,
+) -> Result<(), sqlx::Error> {
+    let normalized_source = normalize_tag(source_name)?;
+    let normalized_target = normalize_tag(target_name)?;
+
+    if normalized_source == normalized_target {
+        return Ok(());
+    }
+
+    let source_id = sqlx::query_scalar::<_, String>(
+        "SELECT id FROM tags WHERE name = ?"
+    )
+        .bind(&normalized_source)
+        .fetch_optional(&mut **tx)
+        .await?;
+
+    if source_id.is_none() {
+        return Err(sqlx::Error::InvalidArgument("source tag not found".into()));
+    }
+
+    let target_id = sqlx::query_scalar::<_, String>(
+        "SELECT id FROM tags WHERE name = ?"
+    )
+        .bind(&normalized_target)
+        .fetch_optional(&mut **tx)
+        .await?;
+
+    if target_id.is_none() {
+        return Err(sqlx::Error::InvalidArgument("target tag not found".into()));
+    }
+
+    let source_id = source_id.unwrap();
+    let target_id = target_id.unwrap();
+
+    sqlx::query(
+        "INSERT OR IGNORE INTO snippet_tags (snippet_id, tag_id) SELECT snippet_id, ? FROM snippet_tags WHERE tag_id = ?"
+    )
+        .bind(&target_id)
+        .bind(&source_id)
+        .execute(&mut **tx)
+        .await?;
+
+    sqlx::query("DELETE FROM tags WHERE id = ?")
+        .bind(&source_id)
+        .execute(&mut **tx)
+        .await?;
+
+    Ok(())
+}
