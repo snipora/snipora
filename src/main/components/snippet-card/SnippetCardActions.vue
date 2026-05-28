@@ -5,7 +5,7 @@ import {ButtonGroup} from "@/components/ui/button-group";
 <template>
   <ButtonGroup
       data-slot="snippet-card-actions"
-      class="opacity-0 group-hover/snippet-card:opacity-100 transition-opacity"
+      class="opacity-0 group-focus-within/snippet-card:opacity-100 group-hover/snippet-card:opacity-100 transition-opacity"
   >
     <slot />
   </ButtonGroup>

@@ -24,7 +24,7 @@ async function handleCopy() {
       data-slot="snippet-card-snippet"
       class="relative overflow-hidden"
   >
-    <Button variant="ghost" size="icon-sm" class="bg-secondary opacity-0 group-hover/snippet-card:opacity-100 transition-opacity absolute top-0 right-0 cursor-pointer" @click="handleCopy">
+    <Button variant="ghost" size="icon-sm" class="bg-secondary opacity-0 group-focus-within/snippet-card:opacity-100 group-hover/snippet-card:opacity-100 transition-opacity absolute top-0 right-0 cursor-pointer" @click="handleCopy">
       <LucideClipboardCheck v-if="recentlyCopied" />
       <LucideClipboardCopy v-else />
     </Button>
