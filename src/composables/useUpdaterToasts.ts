@@ -12,7 +12,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
   let toastId: string | number | undefined;
 
   function showProgressToast() {
-    toastId = toast.loading(t("updater.downloading.title"), {
+    toastId = toast.loading(t('updater.downloading.title'), {
       id: toastId,
       duration: Infinity,
       dismissible: false,
@@ -28,8 +28,8 @@ export const useUpdaterToasts = createSharedComposable(() => {
     switch (status) {
       case "idle": {
         if (prevStatus === 'checking' && updater.error.value) {
-          toast.error(t("updater.checking-failed.title"), {
-            description: t("updater.checking-failed.description", { error: updater.error.value }),
+          toast.error(t('updater.checking-failed.title'), {
+            description: t('updater.checking-failed.description', { error: updater.error.value }),
             classes: {
               description: "whitespace-pre-line",
             },
@@ -43,9 +43,9 @@ export const useUpdaterToasts = createSharedComposable(() => {
       }
       case "available": {
         if (prevStatus === "downloading" && updater.error.value) {
-          toast.error(t("updater.download-failed.title"), {
+          toast.error(t('updater.download-failed.title'), {
             id: toastId,
-            description: t("updater.download-failed.description", { error: updater.error.value }),
+            description: t('updater.download-failed.description', { error: updater.error.value }),
             classes: {
               description: "whitespace-pre-line",
             },
@@ -57,16 +57,16 @@ export const useUpdaterToasts = createSharedComposable(() => {
         }
         if (!updater.update.value) return;
         toast.info(
-          t("updater.update-available.title", { version: updater.update.value.version }),
+          t('updater.update-available.title', { version: updater.update.value.version }),
           {
-            description: t("updater.update-available.description", {
+            description: t('updater.update-available.description', {
               currentVersion: updater.update.value.currentVersion,
             }),
             duration: Infinity,
             dismissible: true,
             closeButton: true,
             action: {
-              label: t("updater.update-available.action"),
+              label: t('updater.update-available.action'),
               onClick: () => updater.downloadUpdate(),
             },
           },
@@ -78,9 +78,9 @@ export const useUpdaterToasts = createSharedComposable(() => {
         break;
       case "ready": {
         if (prevStatus === "installing") {
-          toast.error(t("updater.install-failed.title"), {
+          toast.error(t('updater.install-failed.title'), {
             id: toastId,
-            description: t("updater.install-failed.description", { error: updater.error.value }),
+            description: t('updater.install-failed.description', { error: updater.error.value }),
             classes: {
               description: "whitespace-pre-line",
             },
@@ -91,8 +91,8 @@ export const useUpdaterToasts = createSharedComposable(() => {
           return;
         }
         if (!updater.update.value) return;
-        toast.info(t("updater.ready-to-install.title"), {
-          description: t("updater.ready-to-install.description", {
+        toast.info(t('updater.ready-to-install.title'), {
+          description: t('updater.ready-to-install.description', {
             version: updater.update.value.version,
           }),
           id: toastId,
@@ -100,7 +100,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
           dismissible: false,
           closeButton: false,
           action: {
-            label: t("updater.ready-to-install.action"),
+            label: t('updater.ready-to-install.action'),
             onClick: () => updater.installUpdate(),
           },
         });
@@ -108,15 +108,15 @@ export const useUpdaterToasts = createSharedComposable(() => {
       }
       case "installed": {
         if (!updater.update.value) return;
-        toast.info(t("updater.installed.title"), {
-          description: t("updater.installed.description", {
+        toast.info(t('updater.installed.title'), {
+          description: t('updater.installed.description', {
             version: updater.update.value.version,
           }),
           duration: Infinity,
           dismissible: true,
           closeButton: true,
           action: {
-            label: t("updater.installed.action"),
+            label: t('updater.installed.action'),
             onClick: () => updater.relaunchApp(),
           },
         });

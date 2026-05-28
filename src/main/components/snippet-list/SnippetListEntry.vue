@@ -64,16 +64,16 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
     <Dialog v-model:open="isDeleteDialogOpen">
       <DialogScrollContent>
         <DialogHeader>
-          <DialogTitle>{{ $t("dialog.delete-snippet.dialog-title") }}</DialogTitle>
-          <DialogDescription>{{ $t("dialog.delete-snippet.dialog-description") }}</DialogDescription>
+          <DialogTitle>{{ $t('dialog.delete-snippet.dialog-title') }}</DialogTitle>
+          <DialogDescription>{{ $t('dialog.delete-snippet.dialog-description') }}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" @click="isDeleteDialogOpen = false">
-            {{ $t("dialog.action.cancel") }}
+            {{ $t('dialog.action.cancel') }}
           </Button>
           <Button variant="destructive" :disabled="isDeleting" @click="handleDelete">
             <Spinner v-if="isDeleting" />
-            {{ $t("dialog.action.delete") }}
+            {{ $t('dialog.action.delete') }}
           </Button>
         </DialogFooter>
       </DialogScrollContent>

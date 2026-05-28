@@ -10,10 +10,10 @@ const autostartEnabled = useAutostart();
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("setting.general.startup.label") }}
+        {{ $t('setting.general.startup.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("setting.general.startup.description") }}
+        {{ $t('setting.general.startup.description') }}
       </FieldDescription>
     </FieldContent>
     <Switch

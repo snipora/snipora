@@ -22,7 +22,7 @@ import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizon
     <FieldSet>
       <FieldLegend variant="legend">
         <LucideSlidersHorizontal />
-        {{ $t("setting.general.title") }}
+        {{ $t('setting.general.title') }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
         <ShortcutSetting />
@@ -34,7 +34,7 @@ import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizon
     <FieldSet>
       <FieldLegend variant="legend">
         <LucidePalette />
-        {{ $t("setting.appearance.title") }}
+        {{ $t('setting.appearance.title') }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
         <ShowTagCountsSetting />
@@ -57,7 +57,7 @@ import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizon
     <FieldSet>
       <FieldLegend variant="legend">
         <LucideNotebookText />
-        {{ $t("setting.info.title") }}
+        {{ $t('setting.info.title') }}
       </FieldLegend>
       <FieldGroup class="flex flex-col gap-6">
         <InfoAppVersion />

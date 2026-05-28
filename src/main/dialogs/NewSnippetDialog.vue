@@ -72,10 +72,10 @@ defineShortcuts({
     <DialogScrollContent class="max-w-2xl">
       <DialogHeader>
         <DialogTitle>
-          {{ $t("dialog.new-snippet.dialog-title") }}
+          {{ $t('dialog.new-snippet.dialog-title') }}
         </DialogTitle>
         <DialogDescription>
-          {{ $t("dialog.new-snippet.dialog-description") }}
+          {{ $t('dialog.new-snippet.dialog-description') }}
         </DialogDescription>
       </DialogHeader>
       <form @submit.prevent="handleSubmit" class="grid gap-4">
@@ -112,7 +112,7 @@ defineShortcuts({
             @click="isOpen = false"
         >
           <LucideX />
-          {{ $t("dialog.action.cancel") }}
+          {{ $t('dialog.action.cancel') }}
         </Button>
         <Button
           type="submit"
@@ -121,7 +121,7 @@ defineShortcuts({
         >
           <Spinner v-if="isSubmitting" />
           <LucideStickyNotePlus v-else />
-          {{ $t("dialog.action.create") }}
+          {{ $t('dialog.action.create') }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>

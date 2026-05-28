@@ -10,10 +10,10 @@ const appVersion = computedAsync(getAppVersion);
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("setting.info.version.label") }}
+        {{ $t('setting.info.version.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("setting.info.version.description") }}
+        {{ $t('setting.info.version.description') }}
       </FieldDescription>
     </FieldContent>
     <span class="text-sm text-muted-foreground">

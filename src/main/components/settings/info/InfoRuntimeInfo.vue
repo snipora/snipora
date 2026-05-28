@@ -9,10 +9,10 @@ const runtimeInfo = useRuntimeInfo();
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("setting.info.runtime.label") }}
+        {{ $t('setting.info.runtime.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("setting.info.runtime.description") }}
+        {{ $t('setting.info.runtime.description') }}
       </FieldDescription>
     </FieldContent>
     <span v-if="runtimeInfo" class="text-sm text-muted-foreground">

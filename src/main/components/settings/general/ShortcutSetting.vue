@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input";
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("setting.general.shortcut.label") }}
+        {{ $t('setting.general.shortcut.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("setting.general.shortcut.description") }}
+        {{ $t('setting.general.shortcut.description') }}
       </FieldDescription>
     </FieldContent>
     <Input
