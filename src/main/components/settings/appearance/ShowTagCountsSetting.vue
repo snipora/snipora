@@ -10,10 +10,10 @@ const showTagCounts = useLocalSettings("appearance.showTagCounts");
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("settings.appearance.show-tag-counts.label") }}
+        {{ $t("setting.appearance.show-tag-counts.label") }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("settings.appearance.show-tag-counts.description") }}
+        {{ $t("setting.appearance.show-tag-counts.description") }}
       </FieldDescription>
     </FieldContent>
     <Switch

@@ -10,10 +10,10 @@ const autoCheckForUpdates = useLocalSettings("general.autoCheckForUpdates");
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("settings.updates.auto-check-updates.label") }}
+        {{ $t("setting.updates.auto-check-updates.label") }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("settings.updates.auto-check-updates.description") }}
+        {{ $t("setting.updates.auto-check-updates.description") }}
       </FieldDescription>
     </FieldContent>
     <Switch

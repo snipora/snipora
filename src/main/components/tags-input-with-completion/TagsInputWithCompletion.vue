@@ -85,7 +85,7 @@ watch(searchTerm, (s) => {
       <PopoverContent class="p-1 w-(--reka-popper-anchor-width)" @open-auto-focus.prevent>
         <ListboxContent class="max-h-80 scroll-py-1 overflow-x-hidden empty:p-1" tabindex="0">
           <span v-if="!filteredTags?.length" class="text-muted-foreground">
-            {{ $t('components.tags-input-with-completion.no-tags') }}
+            {{ $t('component.tags-input-with-completion.no-tags') }}
           </span>
           <ListboxItem
               v-for="tag in filteredTags"

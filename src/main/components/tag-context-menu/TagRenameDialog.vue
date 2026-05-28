@@ -81,14 +81,14 @@ defineShortcuts({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>
-          {{ $t('dialogs.rename-tag.dialog-title') }}
+          {{ $t('dialog.rename-tag.dialog-title') }}
         </DialogTitle>
         <DialogDescription>
           <template v-if="matchesExistingTag">
-            {{ $t('dialogs.rename-tag.merge-description', { tag: tagName }) }}
+            {{ $t('dialog.rename-tag.merge-description', { tag: tagName }) }}
           </template>
           <template v-else>
-            {{ $t('dialogs.rename-tag.rename-description') }}
+            {{ $t('dialog.rename-tag.rename-description') }}
           </template>
         </DialogDescription>
       </DialogHeader>
@@ -97,24 +97,24 @@ defineShortcuts({
             v-model.trim="tagName"
             :disabled="isRenaming"
             class="capitalize placeholder:normal-case"
-            :placeholder="$t('dialogs.rename-tag.input-placeholder')"
+            :placeholder="$t('dialog.rename-tag.input-placeholder')"
         />
         <FieldError :errors="[error]" />
       </Field>
       <DialogFooter>
         <Button variant="secondary" @click="isOpen = false">
           <LucideX />
-          {{ $t('dialogs.action.cancel') }}
+          {{ $t('dialog.action.cancel') }}
         </Button>
         <Button :disabled="!isValid || isRenaming" @click="renameOrMerge">
           <Spinner v-if="isRenaming" />
           <LucideTextCursor v-else-if="!matchesExistingTag" />
           <LucideMerge v-else />
           <template v-if="matchesExistingTag">
-            {{ $t('dialogs.rename-tag.merge') }}
+            {{ $t('dialog.rename-tag.merge') }}
           </template>
           <template v-else>
-            {{ $t('dialogs.rename-tag.rename') }}
+            {{ $t('dialog.rename-tag.rename') }}
           </template>
         </Button>
       </DialogFooter>

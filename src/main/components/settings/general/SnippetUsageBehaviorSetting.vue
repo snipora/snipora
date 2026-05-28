@@ -11,10 +11,10 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t('settings.general.snippet-usage-behavior.label') }}
+        {{ $t('setting.general.snippet-usage-behavior.label') }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t('settings.general.snippet-usage-behavior.description') }}
+        {{ $t('setting.general.snippet-usage-behavior.description') }}
       </FieldDescription>
     </FieldContent>
     <Select v-model="snippetUsageBehavior">
@@ -25,28 +25,28 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
         <SelectItem value="copy-to-clipboard">
           <template #default>
             <LucideClipboardCopy />
-            {{ $t('settings.general.snippet-usage-behavior.copy-to-clipboard.label') }}
+            {{ $t('setting.general.snippet-usage-behavior.copy-to-clipboard.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.snippet-usage-behavior.copy-to-clipboard.description') }}
+            {{ $t('setting.general.snippet-usage-behavior.copy-to-clipboard.description') }}
           </template>
         </SelectItem>
         <SelectItem value="simulate-paste" disabled>
           <template #default>
             <LucideClipboardPaste />
-            {{ $t('settings.general.snippet-usage-behavior.simulate-paste.label') }}
+            {{ $t('setting.general.snippet-usage-behavior.simulate-paste.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.snippet-usage-behavior.simulate-paste.description') }}
+            {{ $t('setting.general.snippet-usage-behavior.simulate-paste.description') }}
           </template>
         </SelectItem>
         <SelectItem value="natural-typing" disabled>
           <template #default>
             <LucideKeyboard />
-            {{ $t('settings.general.snippet-usage-behavior.natural-typing.label') }}
+            {{ $t('setting.general.snippet-usage-behavior.natural-typing.label') }}
           </template>
           <template #description>
-            {{ $t('settings.general.snippet-usage-behavior.natural-typing.description') }}
+            {{ $t('setting.general.snippet-usage-behavior.natural-typing.description') }}
           </template>
         </SelectItem>
       </SelectContent>

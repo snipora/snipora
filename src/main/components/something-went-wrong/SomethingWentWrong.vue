@@ -10,10 +10,10 @@ import {LucideCircleAlert} from "@lucide/vue";
         <LucideCircleAlert />
       </EmptyMedia>
       <EmptyTitle>
-        {{ $t('components.something-went-wrong.title') }}
+        {{ $t('component.something-went-wrong.title') }}
       </EmptyTitle>
       <EmptyDescription>
-        {{ $t('components.something-went-wrong.description') }}
+        {{ $t('component.something-went-wrong.description') }}
       </EmptyDescription>
     </EmptyHeader>
   </Empty>

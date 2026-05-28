@@ -16,10 +16,10 @@ const disabled = computed(() =>
   <Field orientation="horizontal">
     <FieldContent>
       <FieldTitle>
-        {{ $t("settings.updates.manual-check.label") }}
+        {{ $t("setting.updates.manual-check.label") }}
       </FieldTitle>
       <FieldDescription>
-        {{ $t("settings.updates.manual-check.description") }}
+        {{ $t("setting.updates.manual-check.description") }}
       </FieldDescription>
     </FieldContent>
     <Button
@@ -28,7 +28,7 @@ const disabled = computed(() =>
       @click="updater.checkForUpdate()"
     >
       <Spinner v-if="updater.isChecking.value" />
-      {{ $t("settings.updates.manual-check.button") }}
+      {{ $t("setting.updates.manual-check.button") }}
     </Button>
   </Field>
 </template>

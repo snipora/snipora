@@ -10,10 +10,10 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
 <template>
   <Field orientation="vertical">
     <FieldTitle>
-      {{ $t("settings.appearance.tray-icon-theme.label") }}
+      {{ $t("setting.appearance.tray-icon-theme.label") }}
     </FieldTitle>
     <FieldDescription>
-      {{ $t("settings.appearance.tray-icon-theme.description") }}
+      {{ $t("setting.appearance.tray-icon-theme.description") }}
     </FieldDescription>
     <RadioGroup class="grid-cols-3" v-model="trayTheme">
       <FieldLabel class="cursor-pointer">
@@ -23,7 +23,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
               <SniporaLogo class="size-6" />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.tray-icon-theme.options.app-icon") }}
+              {{ $t("setting.appearance.tray-icon-theme.options.app-icon") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="app-icon" />
@@ -37,7 +37,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
               <SniporaIconLight />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.tray-icon-theme.options.light") }}
+              {{ $t("setting.appearance.tray-icon-theme.options.light") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="light" />
@@ -51,7 +51,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
               <SniporaIconDark />
             </div>
             <FieldTitle class="text-center">
-              {{ $t("settings.appearance.tray-icon-theme.options.dark") }}
+              {{ $t("setting.appearance.tray-icon-theme.options.dark") }}
             </FieldTitle>
           </FieldContent>
           <RadioGroupItem value="dark" />

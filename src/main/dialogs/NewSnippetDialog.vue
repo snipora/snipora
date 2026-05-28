@@ -72,10 +72,10 @@ defineShortcuts({
     <DialogScrollContent class="max-w-2xl">
       <DialogHeader>
         <DialogTitle>
-          {{ $t("dialogs.new-snippet.dialog-title") }}
+          {{ $t("dialog.new-snippet.dialog-title") }}
         </DialogTitle>
         <DialogDescription>
-          {{ $t("dialogs.new-snippet.dialog-description") }}
+          {{ $t("dialog.new-snippet.dialog-description") }}
         </DialogDescription>
       </DialogHeader>
       <form @submit.prevent="handleSubmit" class="grid gap-4">
@@ -83,23 +83,23 @@ defineShortcuts({
             v-model.trim="label"
             required
             autofocus
-            :placeholder="$t('dialogs.new-snippet.form.label-placeholder')"
+            :placeholder="$t('dialog.new-snippet.form.label-placeholder')"
         />
         <Textarea
             v-model="snippet"
             class="max-h-96 font-mono placeholder:font-sans"
             required
-            :placeholder="$t('dialogs.new-snippet.form.snippet-placeholder')"
+            :placeholder="$t('dialog.new-snippet.form.snippet-placeholder')"
         />
         <TagsInputWithCompletion
             v-model="tags"
-            :placeholder="$t('dialogs.new-snippet.form.tags-placeholder')"
+            :placeholder="$t('dialog.new-snippet.form.tags-placeholder')"
         />
       </form>
       <Alert v-if="lastError" variant="destructive">
         <LucideCircleAlert />
         <AlertTitle>
-          {{ $t('dialogs.new-snippet.error.title') }}
+          {{ $t('dialog.new-snippet.error.title') }}
         </AlertTitle>
         <AlertDescription>
           {{ lastError.message }}
@@ -112,7 +112,7 @@ defineShortcuts({
             @click="isOpen = false"
         >
           <LucideX />
-          {{ $t("dialogs.action.cancel") }}
+          {{ $t("dialog.action.cancel") }}
         </Button>
         <Button
           type="submit"
@@ -121,7 +121,7 @@ defineShortcuts({
         >
           <Spinner v-if="isSubmitting" />
           <LucideStickyNotePlus v-else />
-          {{ $t("dialogs.action.create") }}
+          {{ $t("dialog.action.create") }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>

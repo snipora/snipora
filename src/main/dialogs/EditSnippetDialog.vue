@@ -75,10 +75,10 @@ defineShortcuts({
     <DialogScrollContent class="max-w-2xl">
       <DialogHeader>
         <DialogTitle>
-          {{ $t("dialogs.edit-snippet.dialog-title") }}
+          {{ $t("dialog.edit-snippet.dialog-title") }}
         </DialogTitle>
         <DialogDescription>
-          {{ $t("dialogs.edit-snippet.dialog-description") }}
+          {{ $t("dialog.edit-snippet.dialog-description") }}
         </DialogDescription>
       </DialogHeader>
       <form @submit.prevent="handleSubmit" class="grid gap-4">
@@ -86,23 +86,23 @@ defineShortcuts({
             v-model="label"
             required
             autofocus
-            :placeholder="$t('dialogs.edit-snippet.form.label-placeholder')"
+            :placeholder="$t('dialog.edit-snippet.form.label-placeholder')"
         />
         <Textarea
             v-model="snippet"
             class="max-h-96 font-mono placeholder:font-sans"
             required
-            :placeholder="$t('dialogs.edit-snippet.form.snippet-placeholder')"
+            :placeholder="$t('dialog.edit-snippet.form.snippet-placeholder')"
         />
         <TagsInputWithCompletion
             v-model="tags"
-            :placeholder="$t('dialogs.edit-snippet.form.tags-placeholder')"
+            :placeholder="$t('dialog.edit-snippet.form.tags-placeholder')"
         />
       </form>
       <Alert v-if="lastError" variant="destructive">
         <LucideCircleAlert />
         <AlertTitle>
-          {{ $t('dialogs.edit-snippet.error.title') }}
+          {{ $t('dialog.edit-snippet.error.title') }}
         </AlertTitle>
         <AlertDescription>
           {{ lastError.message }}
@@ -115,7 +115,7 @@ defineShortcuts({
             @click="isOpen = false"
         >
           <LucideX />
-          {{ $t("dialogs.action.cancel") }}
+          {{ $t("dialog.action.cancel") }}
         </Button>
         <Button
           type="submit"
@@ -124,7 +124,7 @@ defineShortcuts({
         >
           <Spinner v-if="isSubmitting" />
           <LucideSave v-else />
-          {{ $t("dialogs.action.save") }}
+          {{ $t("dialog.action.save") }}
         </Button>
       </DialogFooter>
     </DialogScrollContent>

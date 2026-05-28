@@ -9,7 +9,7 @@ sidebar:
     label: Untagged
   settings:
     label: Settings
-settings:
+setting:
   general:
     title: General
     startup:
@@ -102,7 +102,7 @@ context-menu:
     view: View Snippets
     rename: Rename Tag
     delete: Delete Tag
-dialogs:
+dialog:
   action:
     cancel: Cancel
     create: Create
@@ -142,7 +142,7 @@ dialogs:
 popup:
   input:
     placeholder: Search for snippets...
-components:
+component:
   no-snippets:
     title: Nothing here yet
     description: Start adding snippets to see them appear

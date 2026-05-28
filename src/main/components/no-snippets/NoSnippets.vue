@@ -10,10 +10,10 @@ import {SniporaLogo} from "@/components/icons";
         <SniporaLogo />
       </EmptyMedia>
       <EmptyTitle>
-        {{ $t('components.no-snippets.title') }}
+        {{ $t('component.no-snippets.title') }}
       </EmptyTitle>
       <EmptyDescription>
-        {{ $t('components.no-snippets.description') }}
+        {{ $t('component.no-snippets.description') }}
       </EmptyDescription>
     </EmptyHeader>
   </Empty>
