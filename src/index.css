@@ -121,3 +121,7 @@
     @apply text-foreground;
   }
 }
+
+[data-sonner-toast][data-mounted='true'][data-front='true'][data-expanded='true'] {
+  height: auto;
+}
