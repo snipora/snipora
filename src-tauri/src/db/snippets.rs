@@ -171,7 +171,7 @@ ORDER BY s.updated_at DESC
 
         let entry = map
             .entry(id.clone())
-            .or_insert(SnippetWithTags {
+            .or_insert_with(|| SnippetWithTags {
                 id,
                 label,
                 snippet,
