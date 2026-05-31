@@ -85,14 +85,14 @@ jobs:
       - name: Generate changelog
         run: |
           npx git-cliff \
-            --config .github/cliff-changelog.yaml \
+            --config .github/cliff/changelog.yaml \
             --tag "${{ steps.version.outputs.tag }}" \
             --output CHANGELOG.md
 
       - name: Generate release notes
         run: |
           npx git-cliff \
-            --config .github/cliff-release.yaml \
+            --config .github/cliff/release.yaml \
             --tag "${{ steps.version.outputs.tag }}" \
             --unreleased \
             --output RELEASE_NOTES.md
