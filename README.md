@@ -50,3 +50,13 @@ Available `just` recipes are documented in the [justfile](justfile) and can be b
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow, commit conventions, and pull request guidelines.
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=snipora%2Fsnipora&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=snipora/snipora&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=snipora/snipora&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=snipora/snipora&type=date&legend=top-left" />
+ </picture>
+</a>
