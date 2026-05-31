@@ -47,7 +47,7 @@ async function handleSelect(snippetId: string) {
           @update:open=""
           :ignore-filter="true"
           @keydown.esc="open = false"
-          class="bg-popover text-popover-foreground space-y-1 size-full overflow-clip rounded-lg p-1"
+          class="bg-popover text-popover-foreground space-y-1 size-full overflow-hidden rounded-lg p-1"
       >
         <div
             class="sticky top-0 z-10 bg-popover flex h-9 items-center gap-2 px-3 rounded-lg overflow-clip"
@@ -69,15 +69,13 @@ async function handleSelect(snippetId: string) {
               v-for="snippet in searchedSnippets"
               :key="snippet.id"
               :value="null"
-              class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
+              class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
               @select.prevent="handleSelect(snippet.id)"
           >
-            <div class="size-full">
-              <h3 class="select-none text-lg font-semibold tracking-tight">
-                {{ snippet.label }}
-              </h3>
-              <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
-            </div>
+            <h3 class="select-none text-lg font-semibold tracking-tight">
+              {{ snippet.label }}
+            </h3>
+            <pre class="w-full font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
           </ComboboxItem>
         </ComboboxContent>
       </ComboboxRoot>

@@ -47,7 +47,7 @@ useTauriEventListener("popup:focus-input", () => {
       :ignore-filter="true"
       :reset-search-term-on-blur="false"
       :reset_search-term-on-select="false"
-      class="bg-popover text-popover-foreground space-y-1 size-full overflow-clip rounded-md p-1"
+      class="bg-popover text-popover-foreground space-y-1 size-full overflow-hidden rounded-md p-1"
   >
     <div class="sticky top-1 z-10 bg-popover flex h-9 items-center gap-2 border-b px-3 rounded-lg overflow-clip shadow-xs">
       <Spinner v-if="isSearching" class="size-4 shrink-0 opacity-50" />
@@ -69,15 +69,13 @@ useTauriEventListener("popup:focus-input", () => {
           v-for="snippet in displayedSnippets"
           :key="snippet.id"
           :value="null"
-          class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
+          class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
           @select.prevent="handleSelect(snippet.id)"
       >
-        <div class="size-full">
-          <h3 class="select-none text-lg font-semibold tracking-tight">
-            {{ snippet.label }}
-          </h3>
-          <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
-        </div>
+        <h3 class="select-none text-lg font-semibold tracking-tight">
+          {{ snippet.label }}
+        </h3>
+        <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
       </ComboboxItem>
     </ComboboxContent>
   </ComboboxRoot>
