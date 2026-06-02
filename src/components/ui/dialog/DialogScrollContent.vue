@@ -31,6 +31,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     <DialogOverlay
       class="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
     >
+      <!-- @pointerdown.left.stop fixes a bug in reka-ui DialogOverlayImpl; should be resolved in next version -->
       <DialogContent
         :class="
           cn(
@@ -39,6 +40,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
           )
         "
         v-bind="{ ...$attrs, ...forwarded }"
+        @pointerdown.left.stop
         @pointer-down-outside="(event) => {
           const originalEvent = event.detail.originalEvent;
           const target = originalEvent.target as HTMLElement;
