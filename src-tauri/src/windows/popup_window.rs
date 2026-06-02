@@ -1,6 +1,7 @@
 use std::str::FromStr;
 use tauri::{AppHandle, Emitter, Manager, WindowEvent};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};
+use crate::settings::internal::LocalSettings;
 
 const POPUP_PADDING: f32 = 0.2; // 20%
 
@@ -15,6 +16,11 @@ pub fn init_popup_window(app: &AppHandle) {
     let window = get_popup_window(app);
     let app_handle = app.clone();
 
+    let local_settings = app.state::<std::sync::Mutex<LocalSettings>>()
+        .lock()
+        .expect("failed to lock settings")
+        .clone();
+
     window.on_window_event(move |event| {
         if let WindowEvent::Focused(false) = event {
             // todo: this fires whenever the shortcut is pressed. need some guard against that.
@@ -22,8 +28,13 @@ pub fn init_popup_window(app: &AppHandle) {
         }
     });
 
-    let shortcut = Shortcut::from_str("Ctrl+Shift+Space")
-        .expect("failed to parse shortcut");
+    let shortcut = Shortcut::from_str(local_settings.shortcuts.open_popup.as_str())
+        .unwrap_or_else(|e| {
+            log::error!("failed to parse shortcut {:?} {:?}", local_settings.shortcuts.open_popup, e);
+            log::info!("fallback to default shortcut");
+            Shortcut::from_str(crate::settings::defaults::get_defaults().shortcuts.open_popup.as_str())
+                .expect("failed to create fallback shortcut")
+        });
 
     app.global_shortcut()
         .on_shortcut(shortcut, |app_handle, _shortcut, _event| {
