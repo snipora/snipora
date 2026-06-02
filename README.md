@@ -1,8 +1,16 @@
-# snipora
+# Snipora
 
 A lightweight, local-first snippet manager for fast capture, simple organization, and quick search.
 
-[Website](https://snipora.github.io) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [License](LICENSE)
+[![Release](https://img.shields.io/github/v/release/snipora/snipora)](https://github.com/snipora/snipora/releases/latest)
+&nbsp;
+[![Website](https://img.shields.io/badge/website-blue)](https://snipora.github.io)
+&nbsp;
+[![Changelog](https://img.shields.io/badge/changelog-orange)](CHANGELOG.md)
+&nbsp;
+[![Contributing](https://img.shields.io/badge/contributing-green)](CONTRIBUTING.md)
+&nbsp;
+[![License](https://img.shields.io/github/license/snipora/snipora)](LICENSE)
 
 ## Tech Stack
 
