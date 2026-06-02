@@ -37,8 +37,10 @@ pub fn init_popup_window(app: &AppHandle) {
         });
 
     app.global_shortcut()
-        .on_shortcut(shortcut, |app_handle, _shortcut, _event| {
-            show_and_focus(app_handle);
+        .on_shortcut(shortcut, |app_handle, _shortcut, event| {
+            if matches!(event.state, tauri_plugin_global_shortcut::ShortcutState::Pressed) {
+                show_and_focus(app_handle);
+            }
         })
         .expect("failed to register global shortcut");
 }
