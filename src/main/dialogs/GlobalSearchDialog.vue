@@ -75,7 +75,7 @@ async function handleSelect(snippetId: string) {
             <h3 class="select-none text-lg font-semibold tracking-tight">
               {{ snippet.label }}
             </h3>
-            <pre class="w-full font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
+            <pre class="w-full font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
           </ComboboxItem>
         </ComboboxContent>
       </ComboboxRoot>
