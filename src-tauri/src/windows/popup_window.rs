@@ -105,7 +105,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
 
 pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
     let window = get_popup_window(app);
-    let window_width = window.inner_size().unwrap().width as i32;
+    let window_width = window.outer_size().unwrap().width as i32;
 
     let monitor = window
         .current_monitor()
