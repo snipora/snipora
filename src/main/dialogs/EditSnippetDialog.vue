@@ -109,19 +109,11 @@ defineShortcuts({
         </AlertDescription>
       </Alert>
       <DialogFooter>
-        <Button
-            type="button"
-            variant="outline"
-            @click="isOpen = false"
-        >
+        <Button variant="outline" @click="isOpen = false">
           <LucideX />
           {{ $t('dialog.action.cancel') }}
         </Button>
-        <Button
-          type="submit"
-          :disabled="!isSubmittable"
-          @click="handleSubmit"
-        >
+        <Button :disabled="!isSubmittable" @click="handleSubmit">
           <Spinner v-if="isSubmitting" />
           <LucideSave v-else />
           {{ $t('dialog.action.save') }}
