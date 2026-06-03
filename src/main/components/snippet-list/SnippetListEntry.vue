@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {ref} from "vue";
 import {SnippetDto} from "@/api/dto.ts";
 import {LucideCopy, LucidePencil, LucideTrash} from "@lucide/vue";
 import {
@@ -10,25 +9,16 @@ import {
   SnippetCardSnippet,
   SnippetCardTags
 } from "@/main/components/snippet-card";
-import {
-  Dialog,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogScrollContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
+
 import {Spinner} from "@/components/ui/spinner";
-import {invokeCreateSnippet, invokeDeleteSnippet} from "@/api/commands";
+import {invokeCreateSnippet} from "@/api/commands";
 import {useAsyncAction} from "@/composables/useAsyncAction.ts";
 import EditSnippetDialog from "@/main/dialogs/EditSnippetDialog.vue";
+import DeleteSnippetDialog from "@/main/dialogs/DeleteSnippetDialog.vue";
 
 const props = defineProps<{
   snippet: SnippetDto
 }>();
-
-const isDeleteDialogOpen = ref(false);
 
 const { invoke: handleDuplicate, isRunning: isDuplicating } = useAsyncAction(async () => {
   await invokeCreateSnippet({
@@ -36,11 +26,6 @@ const { invoke: handleDuplicate, isRunning: isDuplicating } = useAsyncAction(asy
     snippet: props.snippet.snippet,
     tags: props.snippet.tags,
   });
-});
-
-const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () => {
-  await invokeDeleteSnippet(props.snippet.id);
-  isDeleteDialogOpen.value = false;
 });
 </script>
 
@@ -57,27 +42,12 @@ const { invoke: handleDelete, isRunning: isDeleting } = useAsyncAction(async () 
         <Spinner v-if="isDuplicating" />
         <LucideCopy v-else />
       </SnippetCardAction>
-      <SnippetCardAction class="hover:text-destructive" @click="isDeleteDialogOpen = true">
-        <LucideTrash />
-      </SnippetCardAction>
+      <DeleteSnippetDialog :snippet="snippet">
+        <SnippetCardAction class="hover:text-destructive">
+          <LucideTrash />
+        </SnippetCardAction>
+      </DeleteSnippetDialog>
     </SnippetCardActions>
-    <Dialog v-model:open="isDeleteDialogOpen">
-      <DialogScrollContent>
-        <DialogHeader>
-          <DialogTitle>{{ $t('dialog.delete-snippet.dialog-title') }}</DialogTitle>
-          <DialogDescription>{{ $t('dialog.delete-snippet.dialog-description') }}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" @click="isDeleteDialogOpen = false">
-            {{ $t('dialog.action.cancel') }}
-          </Button>
-          <Button variant="destructive" :disabled="isDeleting" @click="handleDelete">
-            <Spinner v-if="isDeleting" />
-            {{ $t('dialog.action.delete') }}
-          </Button>
-        </DialogFooter>
-      </DialogScrollContent>
-    </Dialog>
     <SnippetCardTags :tags="snippet.tags" />
     <SnippetCardSnippet :snippet="snippet.snippet" />
   </SnippetCard>
