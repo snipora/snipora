@@ -3,12 +3,13 @@ import {onMounted, ref} from "vue";
 import {invokeGetAllSnippets} from "@/api/commands";
 import {onDataChanged} from "@/composables/onDataChanged.ts";
 import {SnippetDto} from "@/api/dto.ts";
+import sortOn from "sort-on";
 
 export const useAllSnippets = createSharedComposable(() => {
   const snippets = ref<SnippetDto[] | undefined>(undefined);
 
   async function fetchSnippets() {
-    snippets.value = await invokeGetAllSnippets();
+    snippets.value = sortOn(await invokeGetAllSnippets(), "-updatedAt");
   }
   const fetchThrottled = useThrottleFn(fetchSnippets, 100);
 

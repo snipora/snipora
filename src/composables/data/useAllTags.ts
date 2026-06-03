@@ -1,6 +1,7 @@
 import {createSharedComposable} from "@vueuse/core";
 import {computed} from "vue";
 import {useAllSnippets} from "./useAllSnippets.ts";
+import sortOn from "sort-on";
 
 export const useAllTags = createSharedComposable(() => {
   const {snippets} = useAllSnippets();
@@ -18,8 +19,7 @@ export const useAllTags = createSharedComposable(() => {
 
   const tags = computed(() => {
     if (tagCounts.value === undefined) return undefined;
-    return Array.from(tagCounts.value.keys())
-        .sort((a, b) => a.localeCompare(b));
+    return sortOn([...tagCounts.value.keys()], "");
   });
 
   return {
