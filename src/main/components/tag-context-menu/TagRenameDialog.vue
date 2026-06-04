@@ -35,26 +35,31 @@ const isOpen = useVModel(props, "open", emit, {
 
 const { tags: allTags } = useAllTags();
 
-const matchesExistingTag = computed(() => props.tag !== tagName.value && allTags.value?.includes(tagName.value));
+const rawInput = ref("");
+const inputValue = computed({
+  get: () => rawInput.value,
+  set: (val: string) => { rawInput.value = val.toLowerCase(); },
+});
+const normalizedTagName = computed(() => inputValue.value.trim().toLowerCase());
 
-const tagName = ref<Tag>("");
+const matchesExistingTag = computed(() => props.tag !== normalizedTagName.value && allTags.value?.includes(normalizedTagName.value));
 
 const tagRegex = /^[a-z0-9\-_]{1,32}$/;
 
 const isValid = computed(() => {
-  const normalized = tagName.value.trim().toLowerCase();
-  return normalized.length > 0 && tagRegex.test(normalized);
+  return normalizedTagName.value.length > 0 && tagRegex.test(normalizedTagName.value);
 });
 
 whenever(isOpen, () => {
-  tagName.value = props.tag;
+  rawInput.value = props.tag;
 });
 
 const { invoke: renameOrMerge, isRunning: isRenaming, lastError: error } = useAsyncAction(async () => {
+  const newTagName = normalizedTagName.value;
   if (matchesExistingTag.value) {
-    await invokeMergeTag(props.tag, tagName.value);
+    await invokeMergeTag(props.tag, newTagName);
   } else {
-    await invokeRenameTag(props.tag, tagName.value);
+    await invokeRenameTag(props.tag, newTagName);
   }
   isOpen.value = false;
 });
@@ -85,7 +90,7 @@ defineShortcuts({
         </DialogTitle>
         <DialogDescription>
           <template v-if="matchesExistingTag">
-            {{ $t('dialog.rename-tag.merge-description', { tag: tagName }) }}
+            {{ $t('dialog.rename-tag.merge-description', { tag: inputValue }) }}
           </template>
           <template v-else>
             {{ $t('dialog.rename-tag.rename-description') }}
@@ -94,7 +99,7 @@ defineShortcuts({
       </DialogHeader>
       <Field>
         <Input
-            v-model.trim="tagName"
+            v-model="inputValue"
             :disabled="isRenaming"
             class="capitalize placeholder:normal-case"
             :placeholder="$t('dialog.rename-tag.input-placeholder')"
