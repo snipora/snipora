@@ -19,6 +19,9 @@ import {Spinner} from "@/components/ui/spinner";
 import {LucideMerge, LucideTextCursor, LucideX} from "@lucide/vue";
 import {useVModel, whenever} from "@vueuse/core";
 import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {useViewState} from "@/main/views/useViewState.ts";
+
+const { setViewState } = useViewState();
 
 const props = defineProps<{
   tag: Tag
@@ -61,6 +64,7 @@ const { invoke: renameOrMerge, isRunning: isRenaming, lastError: error } = useAs
   } else {
     await invokeRenameTag(props.tag, newTagName);
   }
+  setViewState({ id: 'snippets-by-tag', tag: newTagName });
   isOpen.value = false;
 });
 
