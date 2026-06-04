@@ -208,9 +208,10 @@ pub async fn merge_tag(
         .fetch_optional(&mut **tx)
         .await?;
 
-    if source_id.is_none() {
-        return Err(sqlx::Error::InvalidArgument("source tag not found".into()));
-    }
+    let source_id = match source_id {
+        Some(source_id) => source_id,
+        None => return Err(sqlx::Error::InvalidArgument("source tag not found".into())),
+    };
 
     let target_id = sqlx::query_scalar::<_, String>(
         "SELECT id FROM tags WHERE name = ?"
@@ -219,12 +220,10 @@ pub async fn merge_tag(
         .fetch_optional(&mut **tx)
         .await?;
 
-    if target_id.is_none() {
-        return Err(sqlx::Error::InvalidArgument("target tag not found".into()));
-    }
-
-    let source_id = source_id.unwrap();
-    let target_id = target_id.unwrap();
+    let target_id = match target_id {
+        Some(target_id) => target_id,
+        None => return Err(sqlx::Error::InvalidArgument("target tag not found".into())),
+    };
 
     sqlx::query(
         "INSERT OR IGNORE INTO snippet_tags (snippet_id, tag_id) SELECT snippet_id, ? FROM snippet_tags WHERE tag_id = ?"
