@@ -63,12 +63,12 @@ pub fn init_popup_window(app: &AppHandle) {
 pub fn show_and_focus(app: &AppHandle) {
     let window = get_popup_window(app);
 
+    move_to_cursor_monitor(&window);
+
     if !window.is_visible().unwrap_or(false) {
         window.show()
             .expect("failed to show popup window");
     }
-
-    move_to_cursor_monitor(&window);
 
     if !window.is_focused().unwrap_or(false) {
         window.set_focus()
