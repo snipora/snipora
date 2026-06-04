@@ -7,13 +7,13 @@ export const useColorMode = createSharedComposable(() => {
 
   const preferredDark = usePreferredDark();
   const systemTheme = computed(() => preferredDark.value ? "dark" : "light");
-  const state = computed(() => colorTheme.value === "system" ? systemTheme.value : colorTheme.value);
+  const resolvedTheme = computed(() => colorTheme.value === "system" ? systemTheme.value : colorTheme.value);
 
-  watch(state, (cls) => {
+  watch(resolvedTheme, (theme) => {
     const el = window.document.querySelector("html");
     if (!el) return;
 
-    if (cls === "light") {
+    if (theme === "light") {
       el.classList.add("light");
       el.classList.remove("dark");
     } else {
@@ -22,5 +22,5 @@ export const useColorMode = createSharedComposable(() => {
     }
   }, { immediate: true });
 
-  return { colorTheme, systemTheme, state };
+  return { colorTheme, systemTheme };
 });

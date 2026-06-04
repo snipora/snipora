@@ -52,10 +52,6 @@ pub fn update_local_settings(
             current.appearance.show_tag_counts = show_tag_counts;
         }
         if let Some(theme) = appearance.ui_theme {
-            app.set_theme(Some(match theme {
-                settings::internal::UiTheme::Dark => tauri::Theme::Dark,
-                _ => tauri::Theme::Light,
-            }));
             current.appearance.ui_theme = theme;
         }
         if let Some(icon_theme) = appearance.tray_icon_theme {
