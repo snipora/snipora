@@ -41,7 +41,7 @@ const { tags: allTags } = useAllTags();
 const rawInput = ref("");
 const inputValue = computed({
   get: () => rawInput.value,
-  set: (val: string) => { rawInput.value = val.toLowerCase(); },
+  set: (val: string) => { rawInput.value = val.toLowerCase().replace(/[^a-z0-9\-_]/g, "-"); },
 });
 const normalizedTagName = computed(() => inputValue.value.trim().toLowerCase());
 
@@ -50,7 +50,7 @@ const matchesExistingTag = computed(() => props.tag !== normalizedTagName.value 
 const tagRegex = /^[a-z0-9\-_]{1,32}$/;
 
 const isValid = computed(() => {
-  return normalizedTagName.value.length > 0 && tagRegex.test(normalizedTagName.value);
+  return props.tag !== normalizedTagName.value && tagRegex.test(normalizedTagName.value);
 });
 
 whenever(isOpen, () => {
