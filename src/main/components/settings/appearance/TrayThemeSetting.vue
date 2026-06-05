@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { SniporaIconDark, SniporaIconLight, SniporaLogo } from "@/components/icons";
+import { SniporaLogo, SniporaWireframeDark, SniporaWireframeLight } from "@/components/icons";
 import { useLocalSettings } from "@/composables/useLocalSettings";
 
 const trayTheme = useLocalSettings("appearance.trayIconTheme");
@@ -34,7 +34,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
         <Field orientation="horizontal">
           <FieldContent>
             <div class="light size-10 grid place-items-center rounded-md border bg-background text-foreground">
-              <SniporaIconLight />
+              <SniporaWireframeLight class="size-6" />
             </div>
             <FieldTitle class="text-center">
               {{ $t('setting.appearance.tray-icon-theme.options.light') }}
@@ -48,7 +48,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
         <Field orientation="horizontal">
           <FieldContent>
             <div class="dark size-10 grid place-items-center rounded-md border bg-background text-foreground">
-              <SniporaIconDark />
+              <SniporaWireframeDark class="size-6" />
             </div>
             <FieldTitle class="text-center">
               {{ $t('setting.appearance.tray-icon-theme.options.dark') }}

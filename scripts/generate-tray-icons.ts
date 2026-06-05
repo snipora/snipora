@@ -10,20 +10,21 @@ type Variant = { input: string, name: string };
 
 const variants: Variant[] = [
   { input: "snipora.svg", name: "app" },
-  { input: "snipora-icon--dark.svg", name: "dark" },
-  { input: "snipora-icon--light.svg", name: "light" },
+  { input: "snipora-wireframe-dark.svg", name: "dark" },
+  { input: "snipora-wireframe-light.svg", name: "light" },
 ];
 
 fs.mkdirSync(OUTPUT_ROOT, { recursive: true })
 
 for (const variant of variants) {
   const input = path.join(SOURCE_ROOT, `${variant.input}`);
-  const output = path.join(OUTPUT_ROOT, `logo-${variant.name}`);
+  const output = path.join(OUTPUT_ROOT, `logo-${variant.name}.png`);
 
   const png_buffer = await sharp(input)
       .resize(SIZE, SIZE)
       .ensureAlpha()
       .png({ effort: 10, compressionLevel: 9, palette: false })
       .toBuffer();
-  fs.writeFileSync(`${output}.png`, png_buffer);
+  fs.writeFileSync(output, png_buffer);
+  console.info(`Created ${output}`);
 }

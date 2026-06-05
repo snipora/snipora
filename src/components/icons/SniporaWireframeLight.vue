@@ -1,0 +1,19 @@
+<template>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+      <path d="m21.1 29.7c-0.524 0.337-1.98 0.316-3.08 0.316h-14c-1.11 0-2-0.892-2-2v-24c0-1.11 0.892-2 2-2h8c1.28-1e-7 2.51 0.509 3.41 1.41l5.17 5.17c0.409 0.409 0.737 0.884 0.974 1.4"/>
+      <g>
+        <path d="m6 26h12"/>
+        <path d="m6 22h12"/>
+        <path d="m6 18h12"/>
+        <path d="m6 14h12"/>
+      </g>
+      <path d="m14 3v5a2 2 44.9 0 0 2 2l5.56-0.0105"/>
+      <g>
+        <path d="m22 14 2 1h6v-2h-6z"/>
+        <path d="m22 26 2 1h6v-2h-6z"/>
+        <path d="m22 20 2 1h6v-2h-6z"/>
+      </g>
+    </g>
+  </svg>
+</template>

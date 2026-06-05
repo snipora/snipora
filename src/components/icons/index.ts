@@ -1,8 +1,8 @@
 import {createLucideIcon} from "@lucide/vue";
 
 export { default as SniporaLogo } from './SniporaLogo.vue';
-export { default as SniporaIconLight } from './SniporaIconLight.vue';
-export { default as SniporaIconDark } from './SniporaIconDark.vue';
+export { default as SniporaWireframeLight } from './SniporaWireframeLight.vue';
+export { default as SniporaWireframeDark } from './SniporaWireframeDark.vue';
 
 export const LucideTagOff = createLucideIcon("tag-off", [
   ["path", { d: "m14.172 4.172-1.586-1.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l1.586 1.586" }],
