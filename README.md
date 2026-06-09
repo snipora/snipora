@@ -12,6 +12,8 @@ A lightweight, local-first snippet manager for fast capture, simple organization
 &nbsp;
 [![License](https://img.shields.io/github/license/snipora/snipora)](LICENSE)
 
+> **For end users:** Visit [snipora.github.io](https://snipora.github.io) to download and learn about Snipora. This repository is intended for developers and contributors.
+
 ## Tech Stack
 
 - **Frontend**: Vue 3, TypeScript, Tailwind CSS, shadcn-vue
