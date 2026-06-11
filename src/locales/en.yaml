@@ -25,12 +25,14 @@ setting:
       copy-to-clipboard:
         label: Copy to Clipboard
         description: Copies the snippet content directly into your clipboard
+        tooltip: You will need to manually paste the snippet
       simulate-paste:
         label: Simulate Paste
         description: Automatically pastes the snippet (coming soon)
       natural-typing:
         label: Natural Typing
         description: Types the snippet as if you were typing it
+        tooltip: Keystroke injection depends on system and target app compatibility; behavior may vary
   appearance:
     title: Appearance
     show-tag-counts:
