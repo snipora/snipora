@@ -26,9 +26,9 @@ watch(displayedSnippets, () => {
 })
 
 async function handleSelect(snippetId: string) {
+  await invokePopupHide();
   await invokeUseSnippet(snippetId);
   searchTerm.value = "";
-  await invokePopupHide();
 }
 
 useTauriEventListener("popup:prepare", () => {
