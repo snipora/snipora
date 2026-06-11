@@ -40,7 +40,7 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
             {{ $t('setting.general.snippet-usage-behavior.simulate-paste.description') }}
           </template>
         </SelectItem>
-        <SelectItem value="natural-typing" disabled>
+        <SelectItem value="natural-typing">
           <template #default>
             <LucideKeyboard />
             {{ $t('setting.general.snippet-usage-behavior.natural-typing.label') }}

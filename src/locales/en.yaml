@@ -30,7 +30,7 @@ setting:
         description: Automatically pastes the snippet (coming soon)
       natural-typing:
         label: Natural Typing
-        description: Types the snippet as if you were typing it (considered)
+        description: Types the snippet as if you were typing it
   appearance:
     title: Appearance
     show-tag-counts:

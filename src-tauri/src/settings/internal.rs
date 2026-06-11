@@ -37,6 +37,7 @@ pub enum SnippetUsageBehavior {
     #[default]
     CopyToClipboard,
     SimulatePaste,
+    NaturalTyping,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]

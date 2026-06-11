@@ -85,6 +85,10 @@ pub fn run() {
                 .expect("failed to create clipboard");
             app.manage(std::sync::Mutex::new(clipboard));
 
+            let enigo = enigo::Enigo::new(&enigo::Settings::default())
+                .expect("failed to create enigo instance");
+            app.manage(std::sync::Mutex::new(enigo));
+
             let local_settings = settings::load_settings(&app_handle)
                 .expect("failed to load settings");
             rust_i18n::set_locale(&local_settings.general.locale);

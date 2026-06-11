@@ -19,7 +19,7 @@ export type SnippetDto = {
 export type LocalSettingsDto = {
   general: {
     locale: string
-    snippetUsageBehavior: "copy-to-clipboard" | "simulate-paste"
+    snippetUsageBehavior: "copy-to-clipboard" | "simulate-paste" | "natural-typing"
     autoCheckForUpdates: boolean
   }
 
