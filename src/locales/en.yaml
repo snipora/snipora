@@ -89,7 +89,7 @@ updater:
   ready-to-install:
     title: Ready to install {version}
     description: The update has been downloaded and is ready to install.
-    action: Install & Restart
+    action: Install
   install-failed:
     title: Installation failed
     description: |
