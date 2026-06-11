@@ -69,7 +69,7 @@ async function handleSelect(snippetId: string) {
               v-for="snippet in searchedSnippets"
               :key="snippet.id"
               :value="null"
-              class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
+              class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
               @select.prevent="handleSelect(snippet.id)"
           >
             <h3 class="select-none text-lg font-semibold tracking-tight">

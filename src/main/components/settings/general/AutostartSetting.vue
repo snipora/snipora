@@ -16,9 +16,6 @@ const autostartEnabled = useAutostart();
         {{ $t('setting.general.startup.description') }}
       </FieldDescription>
     </FieldContent>
-    <Switch
-        v-model="autostartEnabled"
-        class="cursor-pointer"
-    />
+    <Switch v-model="autostartEnabled" />
   </Field>
 </template>

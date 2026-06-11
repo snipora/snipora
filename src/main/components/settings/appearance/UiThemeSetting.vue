@@ -16,7 +16,7 @@ const { colorTheme, systemTheme } = useColorMode();
       {{ $t('setting.appearance.ui-theme.description') }}
     </FieldDescription>
     <RadioGroup class="grid-cols-3" v-model="colorTheme">
-      <FieldLabel class="bg-background text-foreground cursor-pointer" :class="systemTheme">
+      <FieldLabel class="bg-background text-foreground" :class="systemTheme">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle class="text-center">
@@ -28,7 +28,7 @@ const { colorTheme, systemTheme } = useColorMode();
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="bg-background text-foreground cursor-pointer light">
+      <FieldLabel class="bg-background text-foreground light">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle class="text-center">
@@ -40,7 +40,7 @@ const { colorTheme, systemTheme } = useColorMode();
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="bg-background text-foreground cursor-pointer dark">
+      <FieldLabel class="bg-background text-foreground dark">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle class="text-center">

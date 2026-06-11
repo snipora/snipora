@@ -17,7 +17,7 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
       {{ $t('setting.general.snippet-usage-behavior.description') }}
     </FieldDescription>
     <RadioGroup v-model="snippetUsageBehavior">
-      <FieldLabel class="bg-background text-foreground cursor-pointer">
+      <FieldLabel class="bg-background text-foreground">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>
@@ -40,7 +40,7 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="bg-background text-foreground cursor-pointer opacity-50 pointer-events-none">
+      <FieldLabel class="bg-background text-foreground opacity-50 pointer-events-none">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>
@@ -55,7 +55,7 @@ const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="bg-background text-foreground cursor-pointer">
+      <FieldLabel class="bg-background text-foreground">
         <Field orientation="horizontal">
           <FieldContent>
             <FieldTitle>

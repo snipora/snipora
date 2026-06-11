@@ -28,18 +28,18 @@ async function handleCopy() {
       class="relative overflow-hidden"
   >
     <div class="absolute top-0 right-0 flex flex-row-reverse bg-secondary opacity-0 group-focus-within/snippet-card:opacity-100 group-hover/snippet-card:opacity-100 transition-opacity">
-      <Button variant="ghost" size="icon-sm" class="cursor-pointer" @click="handleCopy">
+      <Button variant="ghost" size="icon-sm" @click="handleCopy">
         <LucideClipboardCheck v-if="recentlyCopied" />
         <LucideClipboardCopy v-else />
       </Button>
-      <Button v-if="canExpand" variant="ghost" size="icon-sm" class="cursor-pointer" @click="isExpanded = !isExpanded">
+      <Button v-if="canExpand" variant="ghost" size="icon-sm" @click="isExpanded = !isExpanded">
         <LucideFoldVertical v-if="isExpanded" />
         <LucideUnfoldVertical v-else />
       </Button>
     </div>
     <pre
         :data-expanded="isExpanded"
-        :class="cn('font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs overflow-x-scroll! line-clamp-5 data-[expanded=true]:line-clamp-none', props.class)"
+        :class="cn('font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md select-auto cursor-text inset-shadow-xs overflow-x-scroll! line-clamp-5 data-[expanded=true]:line-clamp-none', props.class)"
     >{{ snippet }}</pre>
   </div>
 </template>

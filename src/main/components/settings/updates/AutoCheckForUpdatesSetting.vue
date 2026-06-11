@@ -16,9 +16,6 @@ const autoCheckForUpdates = useLocalSettings("general.autoCheckForUpdates");
         {{ $t('setting.updates.auto-check-updates.description') }}
       </FieldDescription>
     </FieldContent>
-    <Switch
-        v-model="autoCheckForUpdates"
-        class="cursor-pointer"
-    />
+    <Switch v-model="autoCheckForUpdates" />
   </Field>
 </template>

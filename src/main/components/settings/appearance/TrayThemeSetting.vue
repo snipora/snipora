@@ -16,7 +16,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
       {{ $t('setting.appearance.tray-icon-theme.description') }}
     </FieldDescription>
     <RadioGroup class="grid-cols-3" v-model="trayTheme">
-      <FieldLabel class="cursor-pointer">
+      <FieldLabel>
         <Field orientation="horizontal">
           <FieldContent>
             <div class="size-10 grid place-items-center rounded-md border bg-background text-foreground">
@@ -30,7 +30,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="cursor-pointer">
+      <FieldLabel>
         <Field orientation="horizontal">
           <FieldContent>
             <div class="light size-10 grid place-items-center rounded-md border bg-background text-foreground">
@@ -44,7 +44,7 @@ const trayTheme = useLocalSettings("appearance.trayIconTheme");
         </Field>
       </FieldLabel>
 
-      <FieldLabel class="cursor-pointer">
+      <FieldLabel>
         <Field orientation="horizontal">
           <FieldContent>
             <div class="dark size-10 grid place-items-center rounded-md border bg-background text-foreground">

@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-      class="flex h-5 items-center rounded-md py-0.5 px-2 text-sm shadow select-none capitalize text-white"
+      class="flex h-5 items-center rounded-md py-0.5 px-2 text-sm shadow capitalize text-white"
       :style="{ backgroundColor: stringToColor(tag) }"
   >
     <slot>

@@ -115,10 +115,10 @@
     @apply border-border outline-ring/50;
   }
   body[data-app="main"] {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground select-none cursor-default;
   }
   body[data-app="popup"] {
-    @apply text-foreground;
+    @apply text-foreground select-none cursor-default;
   }
 }
 

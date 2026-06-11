@@ -16,9 +16,6 @@ const showTagCounts = useLocalSettings("appearance.showTagCounts");
         {{ $t('setting.appearance.show-tag-counts.description') }}
       </FieldDescription>
     </FieldContent>
-    <Switch
-        v-model="showTagCounts"
-        class="cursor-pointer"
-    />
+    <Switch v-model="showTagCounts" />
   </Field>
 </template>

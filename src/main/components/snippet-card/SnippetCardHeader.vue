@@ -11,7 +11,7 @@ const props = defineProps<{
 <template>
   <h3
       data-slot="snippet-card-header"
-      :class="cn('select-none leading-none text-xl font-semibold tracking-tight', props.class)"
+      :class="cn('leading-none text-xl font-semibold tracking-tight', props.class)"
   >
     {{ label }}
   </h3>
