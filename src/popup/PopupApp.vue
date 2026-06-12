@@ -16,6 +16,7 @@ useSmartPopupHeight();
 usePopupEscapeListener();
 
 const queryInputEl = useTemplateRef("queryInputEl");
+const inputRef = computed(() => queryInputEl.value?.$el as HTMLInputElement);
 const searchTerm = ref("");
 const { matches: searchedSnippets, isSearching } = useSearchedSnippets(searchTerm);
 const { recentSnippets } = useRecentSnippets();
@@ -23,7 +24,7 @@ const displayedSnippets = computed(() => searchTerm.value.length ? searchedSnipp
 
 watch(displayedSnippets, () => {
   document.documentElement.scrollTo({ top: 0, behavior: "instant" });
-})
+});
 
 async function handleSelect(snippetId: string) {
   await invokePopupHide();
@@ -35,7 +36,7 @@ useTauriEventListener("popup:prepare", () => {
   searchTerm.value = "";
 });
 useTauriEventListener("popup:focus-input", () => {
-  queryInputEl.value?.$el.focus();
+  inputRef.value?.focus();
 });
 </script>
 
