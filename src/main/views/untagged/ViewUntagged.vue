@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useUntaggedSnippets} from "@/composables/data/useUntaggedSnippets.ts";
+import {useUntaggedSnippets} from "@/composables/data";
 import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
 import {NoSnippets} from "@/main/components/no-snippets";
 import {Spinner} from "@/components/ui/spinner";

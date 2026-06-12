@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
-import { useAutostart } from "@/composables/useAutostart";
+import { useAutostart } from "@/composables/settings";
 
 const autostartEnabled = useAutostart();
 </script>

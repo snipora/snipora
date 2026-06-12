@@ -1,6 +1,6 @@
 import {createSharedComposable} from "@vueuse/core";
 import {computed} from "vue";
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
+import {useAllSnippets} from "@/composables/data";
 
 export const useUntaggedSnippets = createSharedComposable(() => {
   const {snippets} = useAllSnippets();

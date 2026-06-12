@@ -2,7 +2,7 @@
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SniporaLogo, SniporaWireframeDark, SniporaWireframeLight } from "@/components/icons";
-import { useLocalSettings } from "@/composables/useLocalSettings";
+import { useLocalSettings } from "@/composables/settings";
 
 const trayTheme = useLocalSettings("appearance.trayIconTheme");
 </script>

@@ -13,7 +13,7 @@ import {
 import {stringToColor} from "@/lib/coloring.ts";
 import {Button} from "@/components/ui/button";
 import {LucideChevronDown, LucideCheck, LucideTag} from "@lucide/vue";
-import {useAllTags} from "@/composables/data/useAllTags.ts";
+import {useAllTags} from "@/composables/data";
 
 const props = defineProps<{
   defaultValue?: string[]

@@ -15,11 +15,11 @@ import {Textarea} from "@/components/ui/textarea";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeUpdateSnippet} from "@/api/commands/snippets";
 import {TagsInputWithCompletion} from "@/main/components/tags-input-with-completion";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {useAsyncAction} from "@/composables/primitives";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {LucideCircleAlert, LucideSave, LucideX} from "@lucide/vue";
 import {SnippetDto} from "@/api/dto.ts";
-import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {defineShortcuts} from "@/composables/interaction";
 
 const props = defineProps<{
   snippet: SnippetDto

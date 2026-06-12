@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
+import {useAllSnippets} from "@/composables/data";
 import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
 import {CenteredLayout, DefaultLayout} from "@/main/layouts";
 import {NoSnippets} from "@/main/components/no-snippets";

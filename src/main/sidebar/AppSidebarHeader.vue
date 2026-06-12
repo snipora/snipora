@@ -4,12 +4,11 @@ import {LucideDiamondPlus, LucideHash, LucideSearch} from "@lucide/vue";
 import {LucideTagOff} from "@/components/icons";
 import {useViewState} from "@/main/views/useViewState.ts";
 import NewSnippetDialog from "@/main/dialogs/NewSnippetDialog.vue";
-import {useUntaggedSnippets} from "@/composables/data/useUntaggedSnippets.ts";
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
-import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+import {useUntaggedSnippets, useAllSnippets} from "@/composables/data";
+import {useLocalSettings} from "@/composables/settings";
 import GlobalSearchDialog from "@/main/dialogs/GlobalSearchDialog.vue";
 import {Shortcut} from "@/components/ui2/shortcut";
-import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {defineShortcuts} from "@/composables/interaction";
 
 const { viewState, setViewState } = useViewState();
 

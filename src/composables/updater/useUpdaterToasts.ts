@@ -3,7 +3,7 @@ import { toast } from "vue-sonner";
 import { Progress } from "@/components/ui/progress";
 import { useI18n } from "vue-i18n";
 import { createSharedComposable } from "@vueuse/core";
-import { useUpdater } from "@/composables/useUpdater";
+import { useUpdater } from "@/composables/updater";
 
 export const useUpdaterToasts = createSharedComposable(() => {
   const { t } = useI18n();

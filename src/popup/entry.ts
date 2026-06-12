@@ -1,7 +1,7 @@
 import "@/index.css";
 import "@/forward-console";
 import "@/prevent-context-menu";
-import {_initLocalSettings} from "@/composables/useLocalSettings";
+import {_initLocalSettings} from "@/composables/settings";
 import {App, createApp} from "vue";
 import i18n from "@/i18n";
 import PopupApp from "./PopupApp.vue";

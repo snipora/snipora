@@ -10,15 +10,15 @@ import {
 import {Input} from "@/components/ui/input";
 import {computed, ref} from "vue";
 import {Button} from "@/components/ui/button";
-import {useAllTags} from "@/composables/data/useAllTags.ts";
+import {useAllTags} from "@/composables/data";
 import {Tag} from "@/api/dto.ts";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {useAsyncAction} from "@/composables/primitives";
 import {invokeMergeTag, invokeRenameTag} from "@/api/commands";
 import {Field, FieldError} from "@/components/ui/field";
 import {Spinner} from "@/components/ui/spinner";
 import {LucideMerge, LucideTextCursor, LucideX} from "@lucide/vue";
 import {useVModel, whenever} from "@vueuse/core";
-import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {defineShortcuts} from "@/composables/interaction";
 import {useViewState} from "@/main/views/useViewState.ts";
 
 const { setViewState } = useViewState();

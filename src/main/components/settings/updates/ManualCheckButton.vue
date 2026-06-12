@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { Button } from "@/components/ui/button";
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
-import { useUpdater } from "@/composables/useUpdater";
+import { useUpdater } from "@/composables/updater";
 import {Spinner} from "@/components/ui/spinner";
 
 const updater = useUpdater();

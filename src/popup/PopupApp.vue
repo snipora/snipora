@@ -3,13 +3,13 @@ import {useSmartPopupHeight} from "@/popup/composables/useSmartPopupHeight.ts";
 import {usePopupEscapeListener} from "@/popup/composables/usePopupEscapeListener.ts";
 import {computed, ref, useTemplateRef, watch} from "vue";
 import {useSearchedSnippets} from "@/popup/composables/useSearchedSnippets.ts";
-import {useRecentSnippets} from "@/composables/data/useRecentSnippets.ts";
+import {useRecentSnippets} from "@/composables/data";
 import {invokeUseSnippet, invokePopupHide} from "@/api/commands";
-import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
+import {useTauriEventListener} from "@/composables/primitives";
 import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem} from "reka-ui";
 import {LucideSearch} from "@lucide/vue";
 import {Spinner} from "@/components/ui/spinner";
-import {useColorMode} from "@/composables/useColorMode.ts";
+import {useColorMode} from "@/composables/settings";
 
 useColorMode();
 useSmartPopupHeight();

@@ -2,7 +2,7 @@
 import {Kbd} from "@/components/ui/kbd";
 import {computed, HTMLAttributes} from "vue";
 import {parseShortcut} from "@/components/ui2/shortcut/utils.ts";
-import {useOsType} from "@/composables/useOsType.ts";
+import {useOsType} from "@/composables/platform";
 import {cn} from "@/lib/utils.ts";
 import {LucideArrowBigUp, LucideChevronUp, LucideCommand, LucideOption} from "@lucide/vue";
 

@@ -2,7 +2,7 @@
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLocalSettings } from "@/composables/useLocalSettings.js";
+import { useLocalSettings } from "@/composables/settings";
 import { LucideCircleAlert, LucideCircleQuestionMark, LucideClipboardCopy, LucideClipboardPaste, LucideKeyboard } from "@lucide/vue";
 
 const snippetUsageBehavior = useLocalSettings("general.snippetUsageBehavior");

@@ -1,4 +1,4 @@
-import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+import {useLocalSettings} from "@/composables/settings";
 import {createSharedComposable, usePreferredDark} from "@vueuse/core";
 import {computed, watch} from "vue";
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {Tag} from "@/api/dto.ts";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {useAsyncAction} from "@/composables/primitives";
 import {invokeDeleteTag} from "@/api/commands";
 import {
   Dialog,

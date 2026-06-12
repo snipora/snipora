@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {Dialog, DialogScrollContent, DialogTrigger} from "@/components/ui/dialog";
-import {defineShortcuts} from "@/composables/defineShortcut.ts";
+import {defineShortcuts} from "@/composables/interaction";
 import {ComboboxRoot, ComboboxContent, ComboboxInput, ComboboxItem} from "reka-ui";
 import {useSearchedSnippets} from "@/popup/composables/useSearchedSnippets.ts";
 import {useViewState} from "@/main/views/useViewState.ts";

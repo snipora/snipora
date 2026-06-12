@@ -2,7 +2,7 @@ import "@/index.css";
 import "vue-sonner/style.css";
 import "@/forward-console.ts";
 import "@/prevent-context-menu";
-import {_initLocalSettings} from "@/composables/useLocalSettings.ts";
+import {_initLocalSettings} from "@/composables/settings";
 import {App, createApp} from "vue";
 import i18n from "@/i18n";
 import MainApp from "./MainApp.vue";

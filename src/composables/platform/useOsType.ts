@@ -1,6 +1,6 @@
 import {createSharedComposable} from "@vueuse/core";
 import {computed} from "vue";
-import {useRuntimeInfo} from "@/composables/useRuntimeInfo.ts";
+import {useRuntimeInfo} from "@/composables/platform";
 
 export const useOsType = createSharedComposable(() => {
   const runtimeInfo = useRuntimeInfo();

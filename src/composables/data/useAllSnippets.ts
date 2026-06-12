@@ -1,7 +1,7 @@
 import {createSharedComposable, useThrottleFn} from "@vueuse/core";
 import {onMounted, ref} from "vue";
 import {invokeGetAllSnippets} from "@/api/commands";
-import {onDataChanged} from "@/composables/onDataChanged.ts";
+import {onDataChanged} from "@/composables/data";
 import {SnippetDto} from "@/api/dto.ts";
 import sortOn from "sort-on";
 

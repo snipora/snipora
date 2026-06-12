@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {Field, FieldContent, FieldDescription, FieldLabel, FieldTitle} from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useColorMode } from "@/composables/useColorMode";
+import { useColorMode } from "@/composables/settings";
 import { LucideMoon, LucideSun, LucideSunMoon } from "@lucide/vue";
 
 const { colorTheme, systemTheme } = useColorMode();

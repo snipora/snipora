@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
-import { useLocalSettings } from "@/composables/useLocalSettings";
+import { useLocalSettings } from "@/composables/settings";
 
 const autoCheckForUpdates = useLocalSettings("general.autoCheckForUpdates");
 </script>

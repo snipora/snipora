@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SnippetList, SnippetListEntry} from "@/main/components/snippet-list";
 import {DefaultLayout} from "@/main/layouts";
-import {useSnippetsByTag} from "@/composables/data/useSnippetsByTag.ts";
+import {useSnippetsByTag} from "@/composables/data";
 
 const props = defineProps<{
   tag: string

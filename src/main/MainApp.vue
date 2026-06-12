@@ -5,11 +5,10 @@ import {provide, useTemplateRef, watch} from "vue";
 import {INJECTION_KEY_MAIN_VIEW, ViewState, VIEW_TO_COMPONENT} from "@/main/views";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {useLocalStorage} from "@vueuse/core";
-import {useTauriEventListener} from "@/composables/useTauriEventListener.ts";
-import {useColorMode} from "@/composables/useColorMode.ts";
+import {useTauriEventListener} from "@/composables/primitives";
+import {useColorMode} from "@/composables/settings";
 import { Toaster } from "@/components/ui/sonner";
-import { useUpdaterToasts } from "@/composables/useUpdaterToasts";
-import { useUpdaterAutoChecker } from "@/composables/useUpdaterAutoChecker";
+import { useUpdaterToasts, useUpdaterAutoChecker } from "@/composables/updater";
 
 useColorMode();
 useUpdaterToasts();

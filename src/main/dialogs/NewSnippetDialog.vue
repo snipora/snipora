@@ -15,8 +15,8 @@ import {Textarea} from "@/components/ui/textarea";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet} from "@/api/commands/snippets";
 import {TagsInputWithCompletion} from "@/main/components/tags-input-with-completion";
-import {defineShortcuts} from "@/composables/defineShortcut.ts";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {defineShortcuts} from "@/composables/interaction";
+import {useAsyncAction} from "@/composables/primitives";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {LucideCircleAlert, LucideStickyNotePlus, LucideX} from "@lucide/vue";
 

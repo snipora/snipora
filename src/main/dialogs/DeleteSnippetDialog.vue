@@ -12,7 +12,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Spinner} from "@/components/ui/spinner";
 import {invokeDeleteSnippet} from "@/api/commands/snippets";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {useAsyncAction} from "@/composables/primitives";
 import {LucideTrash, LucideX} from "@lucide/vue";
 import {SnippetDto} from "@/api/dto.ts";
 

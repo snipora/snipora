@@ -1,6 +1,6 @@
 import {createSharedComposable} from "@vueuse/core";
 import {computed} from "vue";
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
+import {useAllSnippets} from "@/composables/data";
 import sortOn from "sort-on";
 
 export const useRecentSnippets = createSharedComposable(() => {

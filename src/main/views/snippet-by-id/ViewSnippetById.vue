@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useSnippetById} from "@/composables/data/useSnippetById.ts";
+import {useSnippetById} from "@/composables/data";
 import {CenteredLayout, DefaultLayout} from "@/main/layouts";
 import {SomethingWentWrong} from "@/main/components/something-went-wrong";
 import {Spinner} from "@/components/ui/spinner";

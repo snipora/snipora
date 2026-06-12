@@ -12,7 +12,7 @@ import {
 
 import {Spinner} from "@/components/ui/spinner";
 import {invokeCreateSnippet} from "@/api/commands";
-import {useAsyncAction} from "@/composables/useAsyncAction.ts";
+import {useAsyncAction} from "@/composables/primitives";
 import EditSnippetDialog from "@/main/dialogs/EditSnippetDialog.vue";
 import DeleteSnippetDialog from "@/main/dialogs/DeleteSnippetDialog.vue";
 

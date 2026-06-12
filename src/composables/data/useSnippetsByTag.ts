@@ -1,5 +1,5 @@
 import {computed, type MaybeRefOrGetter, toValue} from "vue";
-import {useAllSnippets} from "@/composables/data/useAllSnippets.ts";
+import {useAllSnippets} from "@/composables/data";
 
 export function useSnippetsByTag(tagName: MaybeRefOrGetter<string>) {
   const {snippets: allSnippets} = useAllSnippets();

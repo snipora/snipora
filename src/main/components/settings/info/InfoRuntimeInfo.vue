@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
-import {useRuntimeInfo} from "@/composables/useRuntimeInfo.js";
+import {useRuntimeInfo} from "@/composables/platform";
 
 const runtimeInfo = useRuntimeInfo();
 </script>

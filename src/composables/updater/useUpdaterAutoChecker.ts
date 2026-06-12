@@ -1,7 +1,7 @@
 import { watch } from "vue";
 import { createSharedComposable, useIntervalFn } from "@vueuse/core";
-import { useUpdater } from "@/composables/useUpdater";
-import { useLocalSettings } from "@/composables/useLocalSettings";
+import { useUpdater } from "@/composables/updater";
+import { useLocalSettings } from "@/composables/settings";
 
 const UPDATE_CHECK_INTERVAL = 6/*h*/ * 60/*min*/ * 60/*sec*/ * 1000/*ms*/;  // = every 6h
 

@@ -10,8 +10,8 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 import {useViewState} from "@/main/views/useViewState.ts";
-import {useAllTags} from "@/composables/data/useAllTags.ts";
-import {useLocalSettings} from "@/composables/useLocalSettings.ts";
+import {useAllTags} from "@/composables/data";
+import {useLocalSettings} from "@/composables/settings";
 import {TagContextMenu} from "@/main/components/tag-context-menu";
 
 const showTagCounts = useLocalSettings("appearance.showTagCounts");
