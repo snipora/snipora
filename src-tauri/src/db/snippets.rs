@@ -1,4 +1,4 @@
-use sqlx::Row;
+use sqlx::{AssertSqlSafe, Row};
 
 use crate::db::utils::{build_fts_query, parse_query};
 
@@ -271,7 +271,7 @@ LIMIT ?
         "#);
     }
 
-    let mut q = sqlx::query(&sql_str);
+    let mut q = sqlx::query(AssertSqlSafe(sql_str.as_str()));
 
     if let Some(ref q_val) = fts_query {
         q = q.bind(q_val);

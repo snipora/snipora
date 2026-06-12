@@ -29,7 +29,7 @@ tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite", "migrate"] }
+sqlx = { version = "0.9.0", features = ["runtime-tokio", "sqlite", "migrate"] }
 rust-i18n = "4.1.0"
 uuid = { version = "1.23.1", features = ["v7"] }
 time = "0.3.47"
