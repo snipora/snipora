@@ -54,7 +54,7 @@ useTauriEventListener("popup:focus-input", () => {
       <LucideSearch v-else class="size-4 shrink-0 opacity-50" />
       <ComboboxInput
           ref="queryInputEl"
-          v-model.trim="searchTerm"
+          v-model="searchTerm"
           class="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
           :placeholder="$t('popup.input.placeholder')"
           @keydown.tab.prevent=""

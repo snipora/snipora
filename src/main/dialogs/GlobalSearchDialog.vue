@@ -56,7 +56,7 @@ async function handleSelect(snippetId: string) {
           <Spinner v-if="isSearching" class="size-4 shrink-0 opacity-50" />
           <LucideSearch v-else class="size-4 shrink-0 opacity-50" />
           <ComboboxInput
-              v-model.trim="searchTerm"
+              v-model="searchTerm"
               class="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground"
               :placeholder="$t('popup.input.placeholder')"
           />

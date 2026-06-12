@@ -80,7 +80,7 @@ defineShortcuts({
       </DialogHeader>
       <form @submit.prevent="handleSubmit" class="grid gap-4">
         <Input
-            v-model.trim="label"
+            v-model="label"
             required
             autofocus
             :placeholder="$t('dialog.new-snippet.form.label-placeholder')"
