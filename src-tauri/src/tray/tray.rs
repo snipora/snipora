@@ -3,9 +3,9 @@ use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 use crate::settings::internal::{LocalSettings, TrayIconTheme};
 
-static ICON_APP: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-app.png");
-static ICON_LIGHT: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-light.png");
-static ICON_DARK: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo-dark.png");
+static ICON_APP: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/app.png");
+static ICON_LIGHT: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/light.png");
+static ICON_DARK: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/dark.png");
 
 const TRAY_ID: &str = "tray";
 

@@ -40,7 +40,7 @@ check-i18n:
 [group: 'tools']
 generate-icons:
     npx tauri icon assets/snipora.svg
-    node scripts/generate-tray-icons.ts
+    node scripts/render-icons.ts
 
 [group: 'tools']
 new-db-migration +DESCRIPTION:
