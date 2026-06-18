@@ -28,7 +28,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
     switch (status) {
       case "idle": {
         if (prevStatus === 'checking' && updater.error.value) {
-          toast.error(t('updater.checking-failed.title'), {
+          toastId = toast.error(t('updater.checking-failed.title'), {
             id: toastId,
             description: t('updater.checking-failed.description', { error: updater.error.value }),
             classes: {
@@ -44,7 +44,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
       }
       case "available": {
         if (prevStatus === "downloading" && updater.error.value) {
-          toast.error(t('updater.download-failed.title'), {
+          toastId = toast.error(t('updater.download-failed.title'), {
             id: toastId,
             description: t('updater.download-failed.description', { error: updater.error.value }),
             classes: {
@@ -57,7 +57,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
           return;
         }
         if (!updater.update.value) return;
-        toast.info(
+        toastId = toast.info(
           t('updater.update-available.title', { version: updater.update.value.version }),
           {
             id: toastId,
@@ -80,7 +80,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
         break;
       case "ready": {
         if (prevStatus === "installing") {
-          toast.error(t('updater.install-failed.title'), {
+          toastId = toast.error(t('updater.install-failed.title'), {
             id: toastId,
             description: t('updater.install-failed.description', { error: updater.error.value }),
             classes: {
@@ -93,7 +93,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
           return;
         }
         if (!updater.update.value) return;
-        toast.info(t('updater.ready-to-install.title'), {
+        toastId = toast.info(t('updater.ready-to-install.title'), {
           id: toastId,
           description: t('updater.ready-to-install.description', {
             version: updater.update.value.version,
@@ -110,7 +110,7 @@ export const useUpdaterToasts = createSharedComposable(() => {
       }
       case "installed": {
         if (!updater.update.value) return;
-        toast.info(t('updater.installed.title'), {
+        toastId = toast.info(t('updater.installed.title'), {
           id: toastId,
           description: t('updater.installed.description', {
             version: updater.update.value.version,
