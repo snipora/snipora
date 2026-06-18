@@ -1,6 +1,5 @@
 use tauri::{AppHandle, Manager};
-use tauri::menu::{Menu, MenuItem};
-use tauri::tray::TrayIconBuilder;
+use tauri::menu::Menu;
 use crate::settings::internal::{LocalSettings, TrayIconTheme};
 
 static ICON_APP: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/app.png");
@@ -25,7 +24,7 @@ pub fn create_tray(app: &AppHandle) {
     
     let icon = get_icon_image(local_settings.appearance.tray_icon_theme).clone();
 
-    TrayIconBuilder::with_id(TRAY_ID)
+    tauri::tray::TrayIconBuilder::with_id(TRAY_ID)
         .icon(icon)
         .menu(&menu)
         .on_menu_event(|app, event| match event.id.as_ref() {
@@ -51,30 +50,13 @@ pub fn create_tray(app: &AppHandle) {
 }
 
 fn create_tray_menu(app: &AppHandle) -> Menu<tauri::Wry> {
-    Menu::with_items(
-        app,
-        &[
-            &MenuItem::with_id(
-                app,
-                "open",
-                &rust_i18n::t!("tray.open"),
-                true, None::<&str>,
-            ).unwrap(),
-            &MenuItem::with_id(
-                app,
-                "settings",
-                &rust_i18n::t!("tray.settings"),
-                true, None::<&str>,
-            ).unwrap(),
-            &MenuItem::with_id(
-                app,
-                "quit",
-                &rust_i18n::t!("tray.quit"),
-                true, None::<&str>,
-            ).unwrap(),
-        ],
-    )
-    .expect("failed to create tray-menu")
+    tauri::menu::MenuBuilder::new(app)
+        .text("open", rust_i18n::t!("tray.open"))
+        .text("settings", rust_i18n::t!("tray.settings"))
+        .separator()
+        .text("quit", rust_i18n::t!("tray.quit"))
+        .build()
+        .expect("failed to build tray-menu")
 }
 
 pub fn rebuild_tray_menu(app: &AppHandle) {
