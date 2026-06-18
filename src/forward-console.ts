@@ -20,7 +20,7 @@ function forwardConsole(
   const browserLogger = console[fnName];
   console[fnName] = (...args) => {
     browserLogger(...args);
-    logger(`[${windowLabel}]` + args.map(stringify).join(" "));
+    logger(`[${windowLabel}] ` + args.map(stringify).join(" "));
   };
 }
 
