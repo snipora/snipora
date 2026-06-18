@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { Button } from "@/components/ui/button";
 import { Field, FieldContent, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { useUpdater } from "@/composables/updater";
 import {Spinner} from "@/components/ui/spinner";
+import {LucideRefreshCw} from "@lucide/vue";
 
-const updater = useUpdater();
-
-const disabled = computed(() =>
-  updater.isChecking.value || updater.isDownloading.value || updater.isInstalling.value,
-);
+const { checkForUpdate, isChecking, canCheck } = useUpdater();
 </script>
 
 <template>
@@ -24,10 +20,11 @@ const disabled = computed(() =>
     </FieldContent>
     <Button
       variant="outline"
-      :disabled="disabled"
-      @click="updater.checkForUpdate()"
+      :disabled="!canCheck"
+      @click="checkForUpdate"
     >
-      <Spinner v-if="updater.isChecking.value" />
+      <Spinner v-if="isChecking" />
+      <LucideRefreshCw v-else />
       {{ $t('setting.updates.manual-check.button') }}
     </Button>
   </Field>

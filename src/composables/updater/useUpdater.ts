@@ -20,9 +20,19 @@ export const useUpdater = createSharedComposable(() => {
   const totalBytes = shallowRef(0);
   const error = shallowRef<string | null>(null);
 
+  const isIdle = computed(() => status.value === "idle");
   const isChecking = computed(() => status.value === "checking");
+  const isAvailable = computed(() => status.value === "available");
   const isDownloading = computed(() => status.value === "downloading");
+  const isReady = computed(() => status.value === "ready");
   const isInstalling = computed(() => status.value === "installing");
+  const isInstalled = computed(() => status.value === "installed");
+
+  // * doing nothing OR having available but update not started OR installation completed
+  const canCheck = computed(() => isIdle.value || isAvailable.value || isInstalled.value);
+  const canDownload = computed(() => isAvailable.value);
+  const canInstall = computed(() => isReady.value);
+  const canRelaunch = computed(() => isInstalled.value);
 
   const progress = computed(() => {
     if (totalBytes.value === 0) return NaN;
@@ -30,7 +40,7 @@ export const useUpdater = createSharedComposable(() => {
   });
 
   async function checkForUpdate(): Promise<Update | null> {
-    if (isChecking.value) return null;
+    if (!canCheck.value) return null;
     console.info("[updater] Checking for update...");
     status.value = "checking";
     error.value = null;
@@ -52,7 +62,7 @@ export const useUpdater = createSharedComposable(() => {
   }
 
   async function downloadUpdate(): Promise<void> {
-    if (!update.value || status.value !== "available") return;
+    if (!canDownload.value) return;
     console.info("[updater] Downloading update...");
     status.value = "downloading";
     downloadedBytes.value = 0;
@@ -60,7 +70,7 @@ export const useUpdater = createSharedComposable(() => {
     error.value = null;
     try {
       // ! Required work around. Otherwise, we get an TypeError
-      const downloadFn = update.value.download.bind(toRaw(update.value));
+      const downloadFn = update.value!.download.bind(toRaw(update.value));
       await downloadFn((event) => {
         switch (event.event) {
           case "Started":
@@ -82,13 +92,13 @@ export const useUpdater = createSharedComposable(() => {
   }
 
   async function installUpdate(): Promise<void> {
-    if (!update.value || status.value !== "ready") return;
+    if (!canInstall.value) return;
     console.info("[updater] Installing update...");
     status.value = "installing";
     error.value = null;
     try {
       // ! Required work around. Otherwise, we get an TypeError
-      const installFn = update.value.install.bind(toRaw(update.value));
+      const installFn = update.value!.install.bind(toRaw(update.value));
       await installFn();
       status.value = "installed";
       console.info("[updater] Update installed");
@@ -101,6 +111,7 @@ export const useUpdater = createSharedComposable(() => {
   }
 
   async function relaunchApp(): Promise<void> {
+    if (!canRelaunch.value) return;
     console.info("[updater] Relaunching app...");
     await relaunch();
   }
@@ -121,9 +132,17 @@ export const useUpdater = createSharedComposable(() => {
     totalBytes: readonly(totalBytes),
     progress: readonly(progress),
     error: readonly(error),
+    isIdle,
     isChecking,
+    isAvailable,
     isDownloading,
+    isReady,
     isInstalling,
+    isInstalled,
+    canCheck,
+    canDownload,
+    canInstall,
+    canRelaunch,
     checkForUpdate,
     downloadUpdate,
     installUpdate,
