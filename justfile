@@ -5,7 +5,7 @@
 # Start the app in development mode
 [group: 'development']
 dev:
-    npx tauri dev
+    npx tauri dev --config src-tauri/tauri.dev.conf.json
 
 # Build the app without installer bundles
 [group: 'build']
