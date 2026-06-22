@@ -1,2 +1,2 @@
-export * from "./useOsType"
-export * from "./useRuntimeInfo"
+export * from "./useOsType";
+export * from "./useRuntimeInfo";

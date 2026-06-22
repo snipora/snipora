@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import {useSmartPopupHeight} from "@/popup/composables/useSmartPopupHeight.ts";
-import {usePopupEscapeListener} from "@/popup/composables/usePopupEscapeListener.ts";
+import {usePopupEscapeListener, useSmartPopupHeight} from "@/composables/popup";
 import {computed, ref, useTemplateRef, watch} from "vue";
-import {useSearchedSnippets} from "@/composables/data/useSearchedSnippets.js";
-import {useAllTags, useRecentSnippets} from "@/composables/data";
-import {invokeUseSnippet, invokePopupHide} from "@/api/commands";
+import {useAllTags, useRecentSnippets, useSearchedSnippets} from "@/composables/data";
+import {invokePopupHide, invokeUseSnippet} from "@/api/commands";
 import {useTauriEventListener} from "@/composables/primitives";
-import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem, useFilter, ComboboxEmpty} from "reka-ui";
+import {ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxRoot, useFilter} from "reka-ui";
 import {LucideSearch, LucideTag} from "@lucide/vue";
 import {Spinner} from "@/components/ui/spinner";
 import {useColorMode, useLocalSettings} from "@/composables/settings";

@@ -1,2 +1,2 @@
-export * from "./defineShortcut"
-export * from "./useTriggerCompletion"
+export * from "./defineShortcut";
+export * from "./useTriggerCompletion";
