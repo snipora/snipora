@@ -69,6 +69,9 @@ setting:
     runtime:
       label: Runtime Info
       description: Operating system, architecture and bundle type
+  quit:
+    label: Quit Snipora
+    description: Fully exit the application
 updater:
   update-available:
     title: Update {version} available

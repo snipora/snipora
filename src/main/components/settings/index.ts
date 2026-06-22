@@ -8,3 +8,4 @@ export { default as AutoCheckForUpdatesSetting } from "./updates/AutoCheckForUpd
 export { default as ManualCheckButton } from "./updates/ManualCheckButton.vue";
 export { default as InfoAppVersion } from "./info/InfoAppVersion.vue";
 export { default as InfoRuntimeInfo } from "./info/InfoRuntimeInfo.vue";
+export { default as QuitSniporaButton } from "./quit/QuitSniporaButton.vue";
