@@ -2,29 +2,56 @@
 import {useSmartPopupHeight} from "@/popup/composables/useSmartPopupHeight.ts";
 import {usePopupEscapeListener} from "@/popup/composables/usePopupEscapeListener.ts";
 import {computed, ref, useTemplateRef, watch} from "vue";
-import {useSearchedSnippets} from "@/popup/composables/useSearchedSnippets.ts";
-import {useRecentSnippets} from "@/composables/data";
+import {useSearchedSnippets} from "@/composables/data/useSearchedSnippets.js";
+import {useAllTags, useRecentSnippets} from "@/composables/data";
 import {invokeUseSnippet, invokePopupHide} from "@/api/commands";
 import {useTauriEventListener} from "@/composables/primitives";
-import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem} from "reka-ui";
-import {LucideSearch} from "@lucide/vue";
+import {ComboboxRoot, ComboboxInput, ComboboxContent, ComboboxItem, useFilter, ComboboxEmpty} from "reka-ui";
+import {LucideSearch, LucideTag} from "@lucide/vue";
 import {Spinner} from "@/components/ui/spinner";
-import {useColorMode} from "@/composables/settings";
+import {useColorMode, useLocalSettings} from "@/composables/settings";
+import {useTriggerCompletion} from "@/composables/interaction";
+import {stringToColor} from "@/lib/coloring.ts";
 
 useColorMode();
 useSmartPopupHeight();
 usePopupEscapeListener();
 
+const { tags: allTags, tagCounts } = useAllTags();
+const showTagCounts = useLocalSettings("appearance.showTagCounts");
+
+const searchTerm = ref("");
 const queryInputEl = useTemplateRef("queryInputEl");
 const inputRef = computed(() => queryInputEl.value?.$el as HTMLInputElement);
-const searchTerm = ref("");
-const { matches: searchedSnippets, isSearching } = useSearchedSnippets(searchTerm);
+
+const { matches: searchedSnippets, isSearching, pause: pauseSearch, resume: resumeSearch } = useSearchedSnippets(searchTerm);
 const { recentSnippets } = useRecentSnippets();
 const displayedSnippets = computed(() => searchTerm.value.length ? searchedSnippets.value : recentSnippets.value?.slice(0, 5));
+
+const { isCompleting, searchText: completionText, replace: complete } = useTriggerCompletion({ input: inputRef, triggers: ["@"] });
+
+const { contains } = useFilter({ sensitivity: "base" });
+const completionTags = computed(() =>
+    !completionText.value.length
+        ? allTags.value
+        : allTags.value?.filter(tag => contains(tag, completionText.value))
+);
 
 watch(displayedSnippets, () => {
   document.documentElement.scrollTo({ top: 0, behavior: "instant" });
 });
+
+watch(isCompleting, (completing) => {
+  if (completing) {
+    pauseSearch();
+  } else {
+    resumeSearch();
+  }
+});
+
+function handleComplete(tagName: string) {
+  complete(`@${tagName}`);
+}
 
 async function handleSelect(snippetId: string) {
   await invokePopupHide();
@@ -47,7 +74,7 @@ useTauriEventListener("popup:focus-input", () => {
       @update:open=""
       :ignore-filter="true"
       :reset-search-term-on-blur="false"
-      :reset_search-term-on-select="false"
+      :reset-search-term-on-select="false"
       class="bg-popover text-popover-foreground border space-y-1 size-full overflow-clip rounded-md p-1"
   >
     <div class="sticky top-1 z-10 bg-popover flex h-9 items-center gap-2 border-b px-3 rounded-lg overflow-clip shadow-xs">
@@ -61,23 +88,49 @@ useTauriEventListener("popup:focus-input", () => {
           @keydown.tab.prevent=""
           @keydown.shift.tab.prevent=""
       />
-      <div v-if="searchedSnippets.length" class="grid place-items-center text-sm opacity-50">
+      <div v-if="searchTerm" class="grid place-items-center text-sm opacity-50">
         {{ searchedSnippets.length }}
       </div>
     </div>
     <ComboboxContent class="scroll-py-1 overflow-x-hidden">
-      <ComboboxItem
-          v-for="snippet in displayedSnippets"
-          :key="snippet.id"
-          :value="null"
-          class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
-          @select.prevent="handleSelect(snippet.id)"
-      >
-        <h3 class="select-none text-lg font-semibold tracking-tight">
-          {{ snippet.label }}
-        </h3>
-        <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
-      </ComboboxItem>
+      <template v-if="isCompleting">
+        <ComboboxItem
+            v-for="tag in completionTags"
+            :key="tag"
+            :value="null"
+            class="data-highlighted:bg-accent data-highlighted:text-accent-foreground flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 capitalize cursor-pointer"
+            @select.prevent="handleComplete(tag)"
+            @mousedown.prevent
+        >
+          <LucideTag :style="{ fill: stringToColor(tag) }" />
+          <span>
+            {{ tag }}
+          </span>
+          <span v-if="showTagCounts" class="ml-auto text-xs text-muted-foreground">
+            {{ tagCounts?.get(tag) }}
+          </span>
+        </ComboboxItem>
+        <ComboboxEmpty class="text-center text-sm text-muted-foreground">
+          No Tags
+        </ComboboxEmpty>
+      </template>
+      <template v-else>
+        <ComboboxItem
+            v-for="snippet in displayedSnippets"
+            :key="snippet.id"
+            :value="null"
+            class="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none"
+            @select.prevent="handleSelect(snippet.id)"
+        >
+          <h3 class="text-lg font-semibold tracking-tight">
+            {{ snippet.label }}
+          </h3>
+          <pre class="font-mono bg-secondary text-secondary-foreground px-2 py-1 rounded-md inset-shadow-xs shadow-xs overflow-hidden line-clamp-3">{{ snippet.snippet }}</pre>
+        </ComboboxItem>
+        <ComboboxEmpty v-if="searchTerm && !isSearching" class="text-center text-sm text-muted-foreground">
+          No Snippets Found.
+        </ComboboxEmpty>
+      </template>
     </ComboboxContent>
   </ComboboxRoot>
 </template>

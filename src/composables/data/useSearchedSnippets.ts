@@ -3,30 +3,31 @@ import {watchDebounced} from "@vueuse/core";
 import {invokeSearchSnippets} from "@/api/commands";
 import {SnippetDto} from "@/api/dto.ts";
 
+// todo: add error handling and returning
 export function useSearchedSnippets(queryRef: Ref<string>) {
   const matches = ref<SnippetDto[]>([]);
   const isSearching = ref(false);
 
-  watchDebounced(queryRef, async (query) => {
+  const { pause, resume } = watchDebounced(queryRef, async (query) => {
     if (!query.length) {
       matches.value = [];
       isSearching.value = false;
       return;
-    } else {
-      isSearching.value = true;
-      let result: SnippetDto[];
-      try {
-        result = await invokeSearchSnippets(query);
-      } catch (e) {
-        isSearching.value = false;
-        console.error(e);
-        throw e;
-      }
+    }
+
+    isSearching.value = true;
+    try {
+      const result = await invokeSearchSnippets(query);
       if (query !== queryRef.value) return;
       matches.value = result;
-      isSearching.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      if (query === queryRef.value) {
+        isSearching.value = false;
+      }
     }
-  }, { debounce: 300, immediate: true });
+  }, { debounce: 50, immediate: true });
 
-  return { matches, isSearching };
+  return { matches, isSearching, pause, resume };
 }
