@@ -1,9 +1,14 @@
 import { h, watch } from "vue";
-import { toast } from "vue-sonner";
+import { toast, type ToastClasses } from "vue-sonner";
 import { Progress } from "@/components/ui/progress";
 import { useI18n } from "vue-i18n";
 import { createSharedComposable } from "@vueuse/core";
 import { useUpdater } from "@/composables/updater";
+
+const CLASSES: ToastClasses = {
+  content: "w-full",
+  description: "w-full whitespace-pre-line",
+};
 
 export const useUpdaterToasts = createSharedComposable(() => {
   const { t } = useI18n();
@@ -14,13 +19,15 @@ export const useUpdaterToasts = createSharedComposable(() => {
   function showProgressToast() {
     toastId = toast.loading(t('updater.downloading.title'), {
       id: toastId,
-      duration: Infinity,
-      dismissible: false,
-      closeButton: false,
       description: () => {
         const pct = updater.progress.value;
         return !isNaN(pct) ? h(Progress, { modelValue: pct, class: "w-full" }) : null;
       },
+      action: undefined,
+      duration: Infinity,
+      dismissible: false,
+      closeButton: false,
+      classes: CLASSES,
     });
   }
 
@@ -31,12 +38,11 @@ export const useUpdaterToasts = createSharedComposable(() => {
           toastId = toast.error(t('updater.checking-failed.title'), {
             id: toastId,
             description: t('updater.checking-failed.description', { error: updater.error.value }),
-            classes: {
-              description: "whitespace-pre-line",
-            },
+            action: undefined,
             duration: Infinity,
             dismissible: true,
             closeButton: true,
+            classes: CLASSES,
           });
           return;
         }
@@ -47,12 +53,11 @@ export const useUpdaterToasts = createSharedComposable(() => {
           toastId = toast.error(t('updater.download-failed.title'), {
             id: toastId,
             description: t('updater.download-failed.description', { error: updater.error.value }),
-            classes: {
-              description: "whitespace-pre-line",
-            },
+            action: undefined,
             duration: Infinity,
             dismissible: true,
             closeButton: true,
+            classes: CLASSES,
           });
           return;
         }
@@ -64,13 +69,14 @@ export const useUpdaterToasts = createSharedComposable(() => {
             description: t('updater.update-available.description', {
               currentVersion: updater.update.value.currentVersion,
             }),
-            duration: Infinity,
-            dismissible: true,
-            closeButton: true,
             action: {
               label: t('updater.update-available.action'),
               onClick: () => updater.downloadUpdate(),
             },
+            duration: Infinity,
+            dismissible: true,
+            closeButton: true,
+            classes: CLASSES,
           },
         );
         break;
@@ -83,12 +89,11 @@ export const useUpdaterToasts = createSharedComposable(() => {
           toastId = toast.error(t('updater.install-failed.title'), {
             id: toastId,
             description: t('updater.install-failed.description', { error: updater.error.value }),
-            classes: {
-              description: "whitespace-pre-line",
-            },
+            action: undefined,
             duration: Infinity,
             dismissible: true,
             closeButton: true,
+            classes: CLASSES,
           });
           return;
         }
@@ -98,13 +103,14 @@ export const useUpdaterToasts = createSharedComposable(() => {
           description: t('updater.ready-to-install.description', {
             version: updater.update.value.version,
           }),
-          duration: Infinity,
-          dismissible: false,
-          closeButton: false,
           action: {
             label: t('updater.ready-to-install.action'),
             onClick: () => updater.installUpdate(),
           },
+          duration: Infinity,
+          dismissible: false,
+          closeButton: false,
+          classes: CLASSES,
         });
         break;
       }
@@ -115,13 +121,14 @@ export const useUpdaterToasts = createSharedComposable(() => {
           description: t('updater.installed.description', {
             version: updater.update.value.version,
           }),
-          duration: Infinity,
-          dismissible: true,
-          closeButton: true,
           action: {
             label: t('updater.installed.action'),
             onClick: () => updater.relaunchApp(),
           },
+          duration: Infinity,
+          dismissible: true,
+          closeButton: true,
+          classes: CLASSES,
         });
         break;
       }
