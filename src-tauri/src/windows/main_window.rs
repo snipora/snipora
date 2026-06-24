@@ -1,6 +1,17 @@
 use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_window_state::{StateFlags, WindowExt};
 
+#[expect(dead_code)]
+#[derive(Clone, serde::Serialize)]
+#[serde(tag = "id", rename_all = "kebab-case", rename_all_fields = "camelCase")]
+pub enum MainViewState {
+    AllSnippets,
+    UntaggedSnippets,
+    SnippetsByTag { tag: String },
+    Settings,
+    SnippetById { snippet_id: String },
+}
+
 fn get_main_window(app: &AppHandle) -> tauri::WebviewWindow {
     app.get_webview_window("main")
         .expect("couldn't get main window")
@@ -51,7 +62,7 @@ pub fn hide(app: &AppHandle) {
     }
 }
 
-pub fn show_settings(app: &AppHandle) {
-    app.emit("main:show-settings", ())
-        .expect("failed to emit 'main:show-settings'");
+pub fn set_view_state(app: &AppHandle, state: MainViewState) {
+    app.emit("main:set-view-state", state)
+        .expect("failed to emit 'main:set-view-state'");
 }

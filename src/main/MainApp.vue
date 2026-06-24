@@ -20,8 +20,8 @@ const viewState = useLocalStorage<ViewState>('view-state', () => ({
 
 provide(INJECTION_KEY_MAIN_VIEW, viewState);
 
-useTauriEventListener("main:show-settings", () => {
-  viewState.value = { id: "settings" };
+useTauriEventListener<ViewState>("main:set-view-state", (event) => {
+  viewState.value = event.payload;
 });
 
 const scrollAreaRef = useTemplateRef("scroll-area");

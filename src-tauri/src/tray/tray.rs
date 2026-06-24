@@ -1,6 +1,7 @@
 use tauri::{AppHandle, Manager};
 use tauri::menu::Menu;
 use crate::settings::internal::{LocalSettings, TrayIconTheme};
+use crate::windows::main_window::MainViewState;
 
 static ICON_APP: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/app.png");
 static ICON_LIGHT: tauri::image::Image<'static> = tauri::include_image!("icons/tray/logo/light.png");
@@ -29,13 +30,14 @@ pub fn create_tray(app: &AppHandle) {
         .menu(&menu)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "open" => {
-                log::debug!("opening main-window");
+                log::debug!("opening main-window with all-snippets");
                 crate::windows::main_window::show_and_focus(app);
+                crate::windows::main_window::set_view_state(app, MainViewState::AllSnippets);
             }
             "settings" => {
                 log::debug!("opening main-window with settings");
                 crate::windows::main_window::show_and_focus(app);
-                crate::windows::main_window::show_settings(app);
+                crate::windows::main_window::set_view_state(app, MainViewState::Settings);
             }
             "quit" => {
                 log::info!("app.exit");
