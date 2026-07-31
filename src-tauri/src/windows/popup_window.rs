@@ -120,7 +120,11 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
 
 pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
     let window = get_popup_window(app);
-    let window_width = get_window_width(&window) as i32;
+    let config_width = window.app_handle().config().app.windows
+        .iter()
+        .find(|w| w.label == "popup")
+        .map(|w| w.width as i32 + 10)
+        .unwrap_or(522);
 
     let monitor = window
         .current_monitor()
@@ -128,14 +132,14 @@ pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
         .expect("failed to get monitor");
 
     let monitor_height = monitor.size().height as f32;
-    let max_height = (monitor_height * (1. - POPUP_PADDING * 2.)) as i32;
+    let max_height = ((monitor_height * (1. - POPUP_PADDING * 2.)) * 2.) as i32 + 200;
 
     let clamped_height = preferred_height.min(max_height);
 
-    log::debug!("window.set_size({:?}, {:?})", window_width, clamped_height);
+    log::debug!("window.set_size({:?}, {:?})", config_width, clamped_height);
     window
         .set_size(tauri::PhysicalSize {
-            width: window_width,
+            width: config_width,
             height: clamped_height,
         })
         .expect("failed to set window size");

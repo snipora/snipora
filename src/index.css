@@ -118,7 +118,11 @@
     @apply bg-background text-foreground select-none cursor-default;
   }
   body[data-app="popup"] {
-    @apply text-foreground select-none cursor-default;
+    @apply text-foreground select-none cursor-default overflow-hidden p-0.5;
+  }
+  html:has(> body[data-app="popup"]) {
+    overflow: hidden;
+    scrollbar-gutter: none;
   }
 }
 
