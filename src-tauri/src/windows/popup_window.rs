@@ -10,12 +10,7 @@ fn get_popup_window(app: &AppHandle) -> tauri::WebviewWindow {
         .expect("couldn't get popup window")
 }
 
-fn get_window_width(window: &tauri::WebviewWindow) -> u32 {
-    match window.outer_size() {
-        Ok(outer_size) if outer_size.width > 0 => return outer_size.width,
-        Ok(_) => {},
-        Err(error) => log::error!("failed to get window size ({:?})", error),
-    }
+fn get_window_config_width(window: &tauri::WebviewWindow) -> u32 {
     let app = window.app_handle();
     let config = app.config();
     config.app.windows
@@ -105,7 +100,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
         let monitor_size = monitor.size();
         let monitor_pos = monitor.position();
 
-        let window_width = get_window_width(&window) as i32;
+        let window_width = get_window_config_width(&window) as i32;
 
         let x = monitor_pos.x + ((monitor_size.width as i32 - window_width) / 2);
         let y = monitor_pos.y + ((monitor_size.height as f32 * POPUP_PADDING) as i32);
@@ -120,7 +115,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
 
 pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
     let window = get_popup_window(app);
-    let window_width = get_window_width(&window) as i32;
+    let window_width = get_window_config_width(&window) as i32;
 
     let monitor = window
         .current_monitor()
