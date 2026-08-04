@@ -18,23 +18,23 @@ strip = true
 tauri-build = { version = "2.6.3", features = [] }
 
 [dependencies]
-tauri = { version = "2.11.3", features = ["tray-icon", "image-png"] }
-tauri-plugin-log = "2.8.0"
+tauri = { version = "2.11.5", features = ["tray-icon", "image-png"] }
+tauri-plugin-log = "2.9.0"
 tauri-plugin-notification = "2.3.3"
 tauri-plugin-autostart = "2.5.1"
 tauri-plugin-global-shortcut = "2.3.2"
-tauri-plugin-single-instance = "2.4.2"
+tauri-plugin-single-instance = "2.4.3"
 tauri-plugin-window-state = "2.4.1"
 tauri-plugin-updater = "2.10.1"
 tauri-plugin-process = "2.3.1"
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.150"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
 sqlx = { version = "0.9.0", features = ["runtime-tokio", "sqlite", "migrate"] }
-rust-i18n = "4.1.0"
-uuid = { version = "1.23.3", features = ["v7"] }
-time = "0.3.49"
+rust-i18n = "4.2.1"
+uuid = { version = "1.24.0", features = ["v7"] }
+time = "0.3.55"
 arboard = { version =  "3.6.1" }
 sys-locale = "0.3.2"
-log = "0.4.32"
+log = "0.4.33"
 log-panics = { version =  "2.1.0", features = ["with-backtrace"] }
 enigo = { version = "0.6.1", features = ["x11rb", "xdo", "wayland"] }
