@@ -12,19 +12,19 @@ export default defineConfig(async () => ({
     Vue(),
     TailwindCSS(),
     VueI18nPlugin({
-      include: path.resolve(__dirname, "src/locales/**"),
+      include: path.resolve(import.meta.dirname, "src/locales/**"),
     }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   build: {
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "main.html"),
-        popup: path.resolve(__dirname, "popup.html"),
+        main: path.resolve(import.meta.dirname, "main.html"),
+        popup: path.resolve(import.meta.dirname, "popup.html"),
       },
     },
   },
