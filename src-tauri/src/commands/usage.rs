@@ -1,9 +1,10 @@
 use enigo::Keyboard;
-
+use crate::commands::utils::emit_data_changed;
 use crate::settings::internal::SnippetUsageBehavior;
 
 #[tauri::command]
 pub async fn use_snippet(
+    app: tauri::AppHandle,
     pool: tauri::State<'_, sqlx::SqlitePool>,
     state_settings: tauri::State<'_, std::sync::Mutex<crate::settings::internal::LocalSettings>>,
     state_clipboard: tauri::State<'_, std::sync::Mutex<arboard::Clipboard>>,
@@ -57,6 +58,8 @@ pub async fn use_snippet(
     tx.commit()
         .await
         .map_err(|e| e.to_string())?;
+
+    emit_data_changed(app);
 
     Ok(())
 }
