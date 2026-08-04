@@ -3,9 +3,9 @@ import {invokePopupAdjustHeight} from "@/api/commands";
 
 
 export const useSmartPopupHeight = createSharedComposable(() => {
-  const { height: documentHeight } = useElementSize(document.documentElement);
+  const { height: bodyHeight } = useElementSize(document.body);
 
-  watchThrottled(documentHeight, async (preferredHeight) => {
+  watchThrottled(bodyHeight, async (preferredHeight) => {
     await invokePopupAdjustHeight(preferredHeight);
   }, { throttle: 50 });
 });
