@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {usePopupEscapeListener} from "@/composables/popup";
-import {computed, nextTick, ref, useTemplateRef, watch} from "vue";
+import {usePopupEscapeListener, useSmartPopupHeight} from "@/composables/popup";
+import {computed, ref, useTemplateRef, watch} from "vue";
 import {useAllTags, useRecentSnippets, useSearchedSnippets} from "@/composables/data";
-import {invokePopupHide, invokePopupAdjustHeight, invokeUseSnippet} from "@/api/commands";
+import {invokePopupHide, invokeUseSnippet} from "@/api/commands";
 import {useTauriEventListener} from "@/composables/primitives";
 import {ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxRoot, useFilter} from "reka-ui";
 import {LucideSearch, LucideTag} from "@lucide/vue";
@@ -12,6 +12,7 @@ import {useTriggerCompletion} from "@/composables/interaction";
 import {stringToColor} from "@/lib/coloring.ts";
 
 useColorMode();
+useSmartPopupHeight();
 usePopupEscapeListener();
 
 const { tags: allTags, tagCounts } = useAllTags();
@@ -33,20 +34,6 @@ const completionTags = computed(() =>
         ? allTags.value
         : allTags.value?.filter(tag => contains(tag, completionText.value))
 );
-
-async function updateHeight() {
-  await nextTick();
-  await new Promise(r => setTimeout(r, 60));
-  const h = document.body.scrollHeight;
-  if (h > 60) {
-    const physical = Math.ceil(h * window.devicePixelRatio) + 2;
-    await invokePopupAdjustHeight(physical);
-  }
-}
-
-watch([displayedSnippets, completionTags], async () => {
-  await updateHeight();
-}, {deep: false, immediate: true});
 
 watch(displayedSnippets, () => {
   document.documentElement.scrollTo({ top: 0, behavior: "instant" });
@@ -88,13 +75,13 @@ useTauriEventListener("popup:focus-input", () => {
       :reset-search-term-on-select="false"
       class="bg-popover text-popover-foreground border space-y-1 size-full overflow-clip rounded-md p-1"
   >
-    <div class="sticky top-1 z-10 bg-popover flex h-9 items-center gap-2 px-3 rounded-lg overflow-clip shadow-xs">
+    <div class="sticky top-1 z-10 bg-popover flex h-9 items-center gap-2 border-b px-3 rounded-lg overflow-clip shadow-xs">
       <Spinner v-if="isSearching" class="size-4 shrink-0 opacity-50" />
       <LucideSearch v-else class="size-4 shrink-0 opacity-50" />
       <ComboboxInput
           ref="queryInputEl"
           v-model="searchTerm"
-           class="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
+           class="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground"
           :placeholder="$t('popup.input.placeholder')"
           @keydown.tab.prevent=""
           @keydown.shift.tab.prevent=""
