@@ -14,7 +14,7 @@ function stringify(value: unknown): string {
 }
 
 function forwardConsole(
-    fnName: 'log' | 'debug' | 'info' | 'warn' | 'error',
+    fnName: 'log' | "trace" | 'debug' | 'info' | 'warn' | 'error',
     logger: (message: string) => Promise<void>
 ) {
   const browserLogger = console[fnName];
@@ -24,7 +24,8 @@ function forwardConsole(
   };
 }
 
-forwardConsole('log', trace);
+forwardConsole('log', debug);
+forwardConsole('trace', trace);
 forwardConsole('debug', debug);
 forwardConsole('info', info);
 forwardConsole('warn', warn);
