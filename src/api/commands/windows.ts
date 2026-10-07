@@ -12,8 +12,10 @@ export async function invokePopupHide(): Promise<void> {
 /**
  * Adjusts the window-height of the popup window with a preferred height.
  * The actual new height may differ.
- * @param preferredHeight preferred new height
+ * @param preferredPhysicalHeight preferred new height
  */
-export async function invokePopupAdjustHeight(preferredHeight: number): Promise<void> {
-  return await invoke<void>("popup_adjust_height", { preferredHeight: Math.round(preferredHeight) });
+export async function invokePopupAdjustHeight(preferredPhysicalHeight: number): Promise<void> {
+  return await invoke<void>("popup_adjust_height", {
+    preferredPhysicalHeight: Math.round(preferredPhysicalHeight),
+  });
 }

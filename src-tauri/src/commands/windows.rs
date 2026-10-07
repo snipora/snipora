@@ -12,7 +12,7 @@ pub fn popup_hide(app_handle: tauri::AppHandle) {
  * The actual new height may differ.
  */
 #[tauri::command]
-pub fn popup_adjust_height(app_handle: tauri::AppHandle, preferred_height: i32) {
-    log::debug!("cmd:popup_adjust_height({:?})", preferred_height);
-    crate::windows::popup_window::adjust_height(&app_handle, preferred_height);
+pub fn popup_adjust_height(app_handle: tauri::AppHandle, preferred_physical_height: i32) {
+    log::debug!("cmd:popup_adjust_height({:?})", preferred_physical_height);
+    crate::windows::popup_window::adjust_height(&app_handle, preferred_physical_height);
 }

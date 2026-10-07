@@ -149,7 +149,7 @@ fn move_to_cursor_monitor(window: &tauri::WebviewWindow) {
     }
 }
 
-pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
+pub fn adjust_height(app: &AppHandle, preferred_physical_height: i32) {
     let window = get_popup_window(app);
     let window_width = get_window_config_width(&window) as i32;
 
@@ -161,7 +161,7 @@ pub fn adjust_height(app: &AppHandle, preferred_height: i32) {
     let monitor_height = monitor.size().height as f32;
     let max_height = (monitor_height * (1. - POPUP_PADDING * 2.)) as i32;
 
-    let clamped_height = preferred_height.min(max_height);
+    let clamped_height = preferred_physical_height.min(max_height);
 
     log::debug!("window.set_size({:?}, {:?})", window_width, clamped_height);
     window
