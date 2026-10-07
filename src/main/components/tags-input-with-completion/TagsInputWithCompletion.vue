@@ -61,7 +61,7 @@ watch(searchTerm, (s) => {
             v-model="modelValue"
             :convert-value="value => value.toLowerCase()"
             @add-tag="searchTerm = ''"
-            :delimiter="/[^a-z0-9\-_]+/"
+            :delimiter="/[^a-z0-9\-_]+/i"
             add-on-paste
             add-on-tab
             class="w-full"
