@@ -2,7 +2,6 @@ use tauri::{Emitter, State};
 
 use crate::commands::dto::PartialLocalSettingsDto;
 use crate::settings::{self, internal::LocalSettings};
-use crate::tray::tray;
 
 #[tauri::command]
 pub fn fetch_local_settings(
@@ -30,7 +29,9 @@ pub fn update_local_settings(
         if let Some(locale) = general.locale {
             current.general.locale = locale.clone();
             rust_i18n::set_locale(&locale);
-            tray::rebuild_tray_menu(&app);
+            if let Err(e) = crate::tray::tray::rebuild_tray_menu(&app) {
+                log::error!("failed to rebuild tray menu ({:?})", e);
+            }
         }
         if let Some(snippet_usage_behavior) = general.snippet_usage_behavior {
             current.general.snippet_usage_behavior = snippet_usage_behavior;
@@ -56,7 +57,9 @@ pub fn update_local_settings(
         }
         if let Some(icon_theme) = appearance.tray_icon_theme {
             current.appearance.tray_icon_theme = icon_theme.clone();
-            let _ = tray::set_tray_icon(&app, icon_theme);
+            if let Err(e) = crate::tray::tray::set_tray_icon(&app, icon_theme) {
+                log::error!("failed set tray icon ({:?})", e)
+            }
         }
     }
 

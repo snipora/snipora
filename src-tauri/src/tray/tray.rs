@@ -61,12 +61,11 @@ fn create_tray_menu(app: &AppHandle) -> Menu<tauri::Wry> {
         .expect("failed to build tray-menu")
 }
 
-pub fn rebuild_tray_menu(app: &AppHandle) {
+pub fn rebuild_tray_menu(app: &AppHandle) -> Result<(), tauri::Error> {
     let tray = get_tray(app);
     let menu = create_tray_menu(app);
-    if let Err(e) = tray.set_menu(Some(menu)) {
-        log::error!("failed to rebuild tray menu: {e}");
-    }
+    tray.set_menu(Some(menu))?;
+    Ok(())
 }
 
 pub fn set_tray_icon(app: &AppHandle, theme: TrayIconTheme) -> Result<(), String> {
