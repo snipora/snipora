@@ -43,8 +43,14 @@ pub fn update_local_settings(
 
     if let Some(shortcuts) = updated_settings.shortcuts {
         if let Some(open_popup) = shortcuts.open_popup {
-            current.shortcuts.open_popup = open_popup;
-            // todo: clear old shortcut + register new
+            if open_popup != current.shortcuts.open_popup {
+                if let Err(e) = crate::windows::popup_window::change_global_shortcut(
+                    &app, current.shortcuts.open_popup.as_str(), open_popup.as_str(),
+                ) {
+                    return Err(e.to_string());
+                }
+                current.shortcuts.open_popup = open_popup;
+            }
         }
     }
 

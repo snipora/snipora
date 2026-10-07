@@ -1,4 +1,13 @@
+_version: 1
 tray:
   open: Open Snipora
   settings: Open Settings
   quit: Quit Snipora
+popup:
+  shortcut-register-error:
+    title: Failed to register the global shortcut
+    body: |
+      This means you won't be able to open or use the popup window.
+      Try to resolve the reason or change the shortcut in the settings!
+      
+      (Reason: %{error})

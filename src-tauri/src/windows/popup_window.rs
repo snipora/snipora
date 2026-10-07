@@ -38,21 +38,57 @@ pub fn init_popup_window(app: &AppHandle) {
         }
     });
 
-    let shortcut = Shortcut::from_str(local_settings.shortcuts.open_popup.as_str())
-        .unwrap_or_else(|e| {
-            log::error!("failed to parse shortcut {:?} {:?}", local_settings.shortcuts.open_popup, e);
-            log::info!("fallback to default shortcut");
-            Shortcut::from_str(crate::settings::defaults::get_defaults().shortcuts.open_popup.as_str())
-                .expect("failed to create fallback shortcut")
-        });
+    let result = register_global_shortcut(app, local_settings.shortcuts.open_popup.as_str());
 
+    if let Err(error) = result {
+        use tauri_plugin_notification::NotificationExt;
+        log::error!("failed to register global shortcut for popup ({:?})", error);
+        app.notification()
+            .builder()
+            .title(rust_i18n::t!("popup.shortcut-register-error.title"))
+            .body(rust_i18n::t!("popup.shortcut-register-error.body", error = error.to_string()))
+            .show()
+            .unwrap_or_else(|e| log::error!("{:?}", e));
+    }
+}
+
+fn unregister_global_shortcut(app: &AppHandle, shortcut: &str) -> Result<(), tauri_plugin_global_shortcut::Error> {
+    let shortcut = Shortcut::from_str(shortcut)
+        .inspect_err(|e| log::error!("failed to parse {:?} ({:?})", shortcut, e))?;
     app.global_shortcut()
-        .on_shortcut(shortcut, |app_handle, _shortcut, event| {
-            if matches!(event.state, tauri_plugin_global_shortcut::ShortcutState::Pressed) {
-                show_and_focus(app_handle);
-            }
-        })
-        .expect("failed to register global shortcut");
+        .unregister(shortcut)?;
+    Ok(())
+}
+
+fn register_global_shortcut(app: &AppHandle, shortcut: &str) -> Result<(), tauri_plugin_global_shortcut::Error> {
+    let shortcut = Shortcut::from_str(shortcut)
+        .inspect_err(|e| log::error!("failed to parse {:?} ({:?})", shortcut, e))?;
+    app.global_shortcut()
+        .on_shortcut(shortcut, shortcut_handle)?;
+    Ok(())
+}
+
+pub fn change_global_shortcut(app: &AppHandle, old: &str, new: &str) -> Result<(), tauri_plugin_global_shortcut::Error> {
+    register_global_shortcut(&app, new)
+        .inspect_err(|e| log::error!("failed to register new global shortcut ({:?})", e))?;
+
+    if let Err(error) = unregister_global_shortcut(&app, old) {
+        log::error!("failed to unregister old global shortcut ({:?} | {:?})", old, error);
+
+        if let Err(rb_error) = unregister_global_shortcut(&app, new) {
+            log::error!("failed rollback of new global shortcut ({:?} | {:?})", new, rb_error);
+        }
+
+        return Err(error);
+    }
+
+    Ok(())
+}
+
+fn shortcut_handle(app_handle: &AppHandle, _shortcut: &Shortcut, event: tauri_plugin_global_shortcut::ShortcutEvent) {
+    if matches!(event.state, tauri_plugin_global_shortcut::ShortcutState::Pressed) {
+        show_and_focus(app_handle);
+    }
 }
 
 pub fn show_and_focus(app: &AppHandle) {
