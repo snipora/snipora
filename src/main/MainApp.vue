@@ -9,10 +9,12 @@ import {useTauriEventListener} from "@/composables/primitives";
 import {useColorMode} from "@/composables/settings";
 import { Toaster } from "@/components/ui/sonner";
 import { useUpdaterToasts, useUpdaterAutoChecker } from "@/composables/updater";
+import {useCloseWindowShortcut} from "@/composables/main";
 
 useColorMode();
 useUpdaterToasts();
 useUpdaterAutoChecker();
+useCloseWindowShortcut();
 
 const viewState = useLocalStorage<ViewState>('view-state', () => ({
   id: "all-snippets",
