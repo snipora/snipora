@@ -60,6 +60,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::usage::use_snippet,
             commands::info::runtime_info,
+            commands::info::logs_location,
             commands::settings::fetch_local_settings,
             commands::settings::update_local_settings,
             commands::snippets::create_snippet,

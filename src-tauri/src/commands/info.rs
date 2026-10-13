@@ -1,3 +1,4 @@
+use tauri::{AppHandle, Manager};
 use crate::commands::dto::RuntimeInfo;
 
 #[tauri::command]
@@ -9,4 +10,12 @@ pub fn runtime_info() -> RuntimeInfo {
         bundle_type: tauri::utils::platform::bundle_type()
             .map_or("unknown".into(), |b| b.to_string()),
     }
+}
+
+#[tauri::command]
+pub fn logs_location(app: AppHandle) -> Result<String, String> {
+    log::debug!("cmd:logs_location()");
+    let log_dir = app.path().app_log_dir()
+        .map_err(|e| e.to_string())?;
+    Ok(log_dir.to_string_lossy().into_owned())
 }

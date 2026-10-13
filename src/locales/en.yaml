@@ -69,6 +69,9 @@ setting:
     runtime:
       label: Runtime Info
       description: Operating system, architecture and bundle type
+    logs-location:
+      label: Logs Location
+      description: Where the logs are saved. Useful for debugging or when reporting an error
   quit:
     label: Quit Snipora
     description: Fully exit the application

@@ -13,6 +13,7 @@ import {
   ManualCheckButton,
   InfoAppVersion,
   InfoRuntimeInfo,
+  InfoLogsLocation,
   QuitSniporaButton,
 } from "@/main/components/settings";
 import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizontal} from "@lucide/vue";
@@ -63,6 +64,7 @@ import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizon
       <FieldGroup class="flex flex-col gap-6">
         <InfoAppVersion />
         <InfoRuntimeInfo />
+        <InfoLogsLocation />
       </FieldGroup>
     </FieldSet>
     <FieldSeparator />

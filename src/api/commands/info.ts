@@ -4,3 +4,7 @@ import {invoke} from "@tauri-apps/api/core";
 export async function invokeRuntimeInfo(): Promise<RuntimeInfo> {
   return await invoke<RuntimeInfo>("runtime_info");
 }
+
+export async function invokeLogsLocation(): Promise<string> {
+  return await invoke<string>("logs_location");
+}
