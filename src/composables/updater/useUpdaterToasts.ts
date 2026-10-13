@@ -47,7 +47,6 @@ export const useUpdaterToasts = createSharedComposable(() => {
             closeButton: true,
             classes: CLASSES,
           });
-          return;
         }
         break;
       }
@@ -62,7 +61,6 @@ export const useUpdaterToasts = createSharedComposable(() => {
             closeButton: true,
             classes: CLASSES,
           });
-          return;
         }
         if (!updater.update.value) return;
         if (!isWindowFocused.value) {
@@ -106,7 +104,6 @@ export const useUpdaterToasts = createSharedComposable(() => {
             closeButton: true,
             classes: CLASSES,
           });
-          return;
         }
         if (!updater.update.value) return;
         toastId = toast.info(t('updater.ready-to-install.title'), {
