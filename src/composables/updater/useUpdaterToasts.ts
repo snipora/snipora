@@ -4,6 +4,8 @@ import { Progress } from "@/components/ui/progress";
 import { useI18n } from "vue-i18n";
 import { createSharedComposable } from "@vueuse/core";
 import { useUpdater } from "@/composables/updater";
+import { useIsWindowFocused } from "@/composables/main/useIsWindowFocused.ts";
+import { sendNotification } from "@tauri-apps/plugin-notification";
 
 const CLASSES: ToastClasses = {
   content: "w-full",
@@ -13,6 +15,7 @@ const CLASSES: ToastClasses = {
 export const useUpdaterToasts = createSharedComposable(() => {
   const { t } = useI18n();
   const updater = useUpdater();
+  const isWindowFocused = useIsWindowFocused();
 
   let toastId: string | number | undefined;
 
@@ -62,6 +65,14 @@ export const useUpdaterToasts = createSharedComposable(() => {
           return;
         }
         if (!updater.update.value) return;
+        if (!isWindowFocused.value) {
+          sendNotification({
+            title: t('updater.update-available.title', { version: updater.update.value.version }),
+            body: t('updater.update-available.description', {
+              currentVersion: updater.update.value.currentVersion,
+            }),
+          });
+        }
         toastId = toast.info(
           t('updater.update-available.title', { version: updater.update.value.version }),
           {
