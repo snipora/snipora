@@ -16,7 +16,19 @@ import {
   InfoLogsLocation,
   QuitSniporaButton,
 } from "@/main/components/settings";
-import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizontal} from "@lucide/vue";
+import {
+  LucideChevronDown, LucideChevronUp,
+  LucideNotebookText,
+  LucidePalette,
+  LucideRefreshCw,
+  LucideSlidersHorizontal
+} from "@lucide/vue";
+import { useLocalStorage } from "@vueuse/core";
+import { Button } from "@/components/ui/button";
+
+const infoOpen = useLocalStorage("setting:info-open", import.meta.env.DEV, {
+  listenToStorageChanges: false,
+});
 </script>
 
 <template>
@@ -57,11 +69,15 @@ import {LucideNotebookText, LucidePalette, LucideRefreshCw, LucideSlidersHorizon
     </FieldSet>
     <FieldSeparator />
     <FieldSet>
-      <FieldLegend variant="legend">
+      <FieldLegend variant="legend" :data-open="infoOpen" class="data-[open=false]:mb-0">
         <LucideNotebookText />
         {{ $t('setting.info.title') }}
+        <Button variant="ghost" size="icon-sm" class="ml-auto" @click="infoOpen = !infoOpen">
+          <LucideChevronUp v-if="infoOpen" />
+          <LucideChevronDown v-else />
+        </Button>
       </FieldLegend>
-      <FieldGroup class="flex flex-col gap-6">
+      <FieldGroup v-if="infoOpen" class="flex flex-col gap-6">
         <InfoAppVersion />
         <InfoRuntimeInfo />
         <InfoLogsLocation />
